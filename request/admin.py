@@ -58,7 +58,7 @@ class RequestAdmin(admin.ModelAdmin):
             info += (self.model._meta.model_name,)
         except AttributeError:
             info += (self.model._meta.module_name,)
-        
+
         return patterns('',
             url(r'^overview/$', wrap(self.overview), name='%s_%s_overview' % info),
             url(r'^overview/traffic.json$', wrap(self.traffic), name='%s_%s_traffic' % info),
