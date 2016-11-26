@@ -1,3 +1,4 @@
+<<<<<<< local
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2016, Raffaele Salmaso <raffaele@salmaso.org>
@@ -23,6 +24,8 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+=======
+>>>>>>> graft
 from django import template
 from django.test import TestCase
 from metrics.templatetags.metrics_admin import pie_chart

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (C) 2016, Raffaele Salmaso <raffaele@salmaso.org>
 # Copyright (C) 2009-2016, Kyle Fuller and Mariusz Felisiak
 # All rights reserved.
@@ -38,12 +36,6 @@ DURATION_OPTIONS = {
     'months': lambda amount: timezone.now() + relativedelta(months=-amount),
     'years': lambda amount: timezone.now() + relativedelta(years=-amount),
 }
-
-try:
-    # to keep backward Python 2 compatibility
-    input = raw_input
-except NameError:
-    pass
 
 
 class Command(BaseCommand):

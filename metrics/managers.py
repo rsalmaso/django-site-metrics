@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (C) 2016, Raffaele Salmaso <raffaele@salmaso.org>
 # Copyright (C) 2009-2016, Kyle Fuller and Mariusz Felisiak
 # All rights reserved.
@@ -132,7 +130,7 @@ class RequestManager(models.Manager):
     def __getattr__(self, attr, *args, **kwargs):
         if attr in QUERYSET_PROXY_METHODS:
             return getattr(self.get_query_set(), attr, None)
-        super(RequestManager, self).__getattr__(*args, **kwargs)
+        super().__getattr__(*args, **kwargs)
 
     def get_queryset(self):
         return RequestQuerySet(self.model)

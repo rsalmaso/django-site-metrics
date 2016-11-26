@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (C) 2016, Raffaele Salmaso <raffaele@salmaso.org>
 # Copyright (C) 2009-2016, Kyle Fuller and Mariusz Felisiak
 # All rights reserved.
@@ -28,7 +26,7 @@ import re
 from django.utils.six import string_types
 
 
-class RegexPattern(object):
+class RegexPattern:
     def __init__(self, regex, name=''):
         self.regex = re.compile(regex, re.UNICODE)
         self.name = name
@@ -39,7 +37,7 @@ class RegexPattern(object):
             return self.name, match.groupdict()
 
 
-class patterns(object):
+class patterns:
     def __init__(self, unknown, *args):
         self.patterns = []
         self.unknown = unknown

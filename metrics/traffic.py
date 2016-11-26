@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (C) 2016, Raffaele Salmaso <raffaele@salmaso.org>
 # Copyright (C) 2009-2016, Kyle Fuller and Mariusz Felisiak
 # All rights reserved.
@@ -42,7 +40,7 @@ def get_verbose_name(class_name):
                   class_name).strip()
 
 
-class Modules(object):
+class Modules:
     '''
     Set of :class:`.Module`.
     '''
@@ -110,7 +108,7 @@ class Modules(object):
 modules = Modules()
 
 
-class Module(object):
+class Module:
     '''
     Base module class.
     '''
