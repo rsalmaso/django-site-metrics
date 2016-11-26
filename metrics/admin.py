@@ -30,7 +30,7 @@ from functools import update_wrapper
 from django.contrib import admin
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from .models import Request
 from .plugins import plugins
@@ -54,7 +54,7 @@ class RequestAdmin(admin.ModelAdmin):
     readonly_fields = ('time',)
 
     def lookup_allowed(self, key, value):
-        return key == 'user__username' or super(RequestAdmin, self).lookup_allowed(key, value)
+        return key == 'user__username' or super().lookup_allowed(key, value)
 
     def request_from(self, obj):
         if obj.user_id:
@@ -83,7 +83,7 @@ class RequestAdmin(admin.ModelAdmin):
         return [
             url(r'^overview/$', wrap(self.overview), name='{0}_{1}_overview'.format(*info)),
             url(r'^overview/traffic/$', wrap(self.traffic), name='{0}_{1}_traffic'.format(*info)),
-        ] + super(RequestAdmin, self).get_urls()
+        ] + super().get_urls()
 
     def overview(self, request):
         qs = Request.objects.this_month()

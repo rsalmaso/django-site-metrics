@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (C) 2016, Raffaele Salmaso <raffaele@salmaso.org>
 # Copyright (C) 2009-2016, Kyle Fuller and Mariusz Felisiak
 # All rights reserved.
@@ -65,7 +63,7 @@ def set_count(items):
     return [(k, v) for v, k in items]
 
 
-class Plugins(object):
+class Plugins:
     def load(self):
         from importlib import import_module
         from django.core import exceptions
@@ -102,7 +100,7 @@ class Plugins(object):
 plugins = Plugins()
 
 
-class Plugin(object):
+class Plugin:
     def __init__(self):
         self.module_name = self.__class__.__name__
 

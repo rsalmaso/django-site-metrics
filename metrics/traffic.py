@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (C) 2016, Raffaele Salmaso <raffaele@salmaso.org>
 # Copyright (C) 2009-2016, Kyle Fuller and Mariusz Felisiak
 # All rights reserved.
@@ -27,8 +25,8 @@ import re
 from time import mktime
 
 from django.db.models import Count
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import string_concat, ugettext
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import string_concat, gettext
 
 from . import settings
 
@@ -42,7 +40,7 @@ def get_verbose_name(class_name):
                   class_name).strip()
 
 
-class Modules(object):
+class Modules:
     '''
     Set of :class:`.Module`.
     '''
@@ -103,14 +101,14 @@ class Modules(object):
         return [
             {'data': [(mktime(day.timetuple()) * 1000, module.count(qs))
                       for day, qs in days],
-             'label': ugettext(module.verbose_name_plural)}
+             'label': gettext(module.verbose_name_plural)}
             for module in self.modules
         ]
 
 modules = Modules()
 
 
-class Module(object):
+class Module:
     '''
     Base module class.
     '''
