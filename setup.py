@@ -35,7 +35,7 @@ setup(
         'locale/*/LC_MESSAGES/*.*',
     ]},
     install_requires=[
-        'django >= 1.4',
+        'django >= 1.8',
         'python-dateutil',
     ],
     license=metrics.__licence__,

@@ -27,17 +27,13 @@ import socket
 from datetime import datetime
 
 import mock
+from django.contrib.auth import get_user_model
 from django.http import HttpRequest, HttpResponse
 from django.test import TestCase
 from request import settings
 from metrics.models import Request
 
-try:
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-except ImportError:
-    # to keep backward (Django <= 1.4) compatibility
-    from django.contrib.auth.models import User
+User = get_user_model()
 
 
 class RequestTests(TestCase):

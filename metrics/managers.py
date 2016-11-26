@@ -31,11 +31,6 @@ from django.db.models import Q
 
 from . import settings
 
-try:  # For python <= 2.3
-    set()
-except NameError:
-    from sets import Set as set
-
 QUERYSET_PROXY_METHODS = (
     'year',
     'month',
@@ -141,8 +136,6 @@ class RequestManager(models.Manager):
 
     def get_queryset(self):
         return RequestQuerySet(self.model)
-
-    get_query_set = get_queryset  # Django 1.5 compat
 
     def active_users(self, **options):
         '''

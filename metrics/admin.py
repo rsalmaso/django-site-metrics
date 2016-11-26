@@ -72,23 +72,14 @@ class RequestAdmin(admin.ModelAdmin):
     request_from.allow_tags = True
 
     def get_urls(self):
-        try:
-            from django.conf.urls import url
-        except ImportError:
-            # to keep backward (Django <= 1.4) compatibility
-            from django.conf.urls.defaults import url
+        from django.conf.urls import url
 
         def wrap(view):
             def wrapper(*args, **kwargs):
                 return self.admin_site.admin_view(view)(*args, **kwargs)
             return update_wrapper(wrapper, view)
 
-        # to keep backward (Django <= 1.7) compatibility
-        info = (self.model._meta.app_label,)
-        try:
-            info += (self.model._meta.model_name,)
-        except AttributeError:
-            info += (self.model._meta.module_name,)
+        info = (self.model._meta.app_label, self.model._meta.model_name)
         return [
             url(r'^overview/$', wrap(self.overview), name='{0}_{1}_overview'.format(*info)),
             url(r'^overview/traffic/$', wrap(self.traffic), name='{0}_{1}_traffic'.format(*info)),

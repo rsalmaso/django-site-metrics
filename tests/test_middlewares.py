@@ -27,17 +27,13 @@ from unittest import skipIf
 
 import django
 import mock
+from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.test import RequestFactory, TestCase
 from metrics.middleware import RequestMiddleware
 from metrics.models import Request
 
-try:
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-except ImportError:
-    # to keep backward (Django <= 1.4) compatibility
-    from django.contrib.auth.models import User
+User = get_user_model()
 
 
 class RequestMiddlewareTest(TestCase):

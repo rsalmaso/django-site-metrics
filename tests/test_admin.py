@@ -26,17 +26,13 @@
 import json
 
 from django.contrib.admin import site
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.test import RequestFactory, TestCase
 from metrics.admin import RequestAdmin
 from metrics.models import Request
 
-try:
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-except ImportError:
-    # to keep backward (Django <= 1.4) compatibility
-    from django.contrib.auth.models import User
+User = get_user_model()
 
 
 class LookupAllowedTest(TestCase):

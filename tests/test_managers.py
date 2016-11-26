@@ -25,18 +25,14 @@
 
 from datetime import date, timedelta
 
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.utils.timezone import now
 from metrics import settings
 from metrics.managers import QUERYSET_PROXY_METHODS, RequestQuerySet
 from metrics.models import Request
 
-try:
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-except ImportError:
-    # to keep backward (Django <= 1.4) compatibility
-    from django.contrib.auth.models import User
+User = get_user_model()
 
 
 class RequestManagerTest(TestCase):
