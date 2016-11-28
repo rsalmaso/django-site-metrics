@@ -52,13 +52,17 @@ class RequestAdmin(admin.ModelAdmin):
             "fields": ("response",)
         }),
         (_("User info"), {
-            "fields": ("referer", "user_agent", "ip", "user_id", "language")
+            "fields": ("referer", "user_agent", "ip", "_user", "language")
         })
     )
     readonly_fields = ("time",)
 
     def lookup_allowed(self, key, value):
         return key == "user__username" or super().lookup_allowed(key, value)
+    def _user(self, obj):
+        user = obj.get_user()
+        return "{username} [{id}]".format(id=user.pk, username=user.username) if user else ""
+
 
     def request_from(self, obj):
         if obj.user_id:
