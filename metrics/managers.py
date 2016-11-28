@@ -45,7 +45,7 @@ QUERYSET_PROXY_METHODS = (
 )
 
 
-class RequestQuerySet(models.query.QuerySet):
+class RequestQuerySet(models.QuerySet):
     def year(self, year):
         return self.filter(time__year=year)
 
@@ -127,14 +127,11 @@ class RequestQuerySet(models.query.QuerySet):
         return self.filter(Q(referer__contains='google') | Q(referer__contains='yahoo') | Q(referer__contains='bing'))
 
 
-class RequestManager(models.Manager):
+class RequestManager(models.Manager.from_queryset(RequestQuerySet)):
     def __getattr__(self, attr, *args, **kwargs):
         if attr in QUERYSET_PROXY_METHODS:
             return getattr(self.get_query_set(), attr, None)
         super().__getattr__(*args, **kwargs)
-
-    def get_queryset(self):
-        return RequestQuerySet(self.model)
 
     def active_users(self, **options):
         '''
