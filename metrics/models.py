@@ -26,6 +26,7 @@ from socket import gethostbyaddr
 import django
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -58,6 +59,11 @@ class Request(models.Model):
     )
     full_path = StringField(
         verbose_name=_("full path"),
+    )
+    query_string = JSONField(
+        blank=True,
+        null=True,
+        verbose_name=_("query string"),
     )
     time = models.DateTimeField(
         default=timezone.now,
@@ -116,9 +122,9 @@ class Request(models.Model):
     def from_http_request(self, request, response=None, commit=True):
         # Request infomation
         self.method = request.method
-
         self.path = request.path
         self.full_path = request.get_full_path()
+        self.query_string = request.GET
         self.is_secure = request.is_secure()
         self.is_ajax = request.is_ajax()
 
