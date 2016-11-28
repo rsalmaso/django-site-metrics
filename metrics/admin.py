@@ -46,7 +46,7 @@ class RequestAdmin(admin.ModelAdmin):
     list_display = ("time", "path", "response", "method", "request_from")
     fieldsets = (
         (_("Request"), {
-            "fields": ("method", "path", "time", "is_secure", "is_ajax")
+            "fields": ("method", "path", "full_path", "time", "is_secure", "is_ajax")
         }),
         (_("Response"), {
             "fields": ("response",)

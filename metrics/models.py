@@ -56,6 +56,9 @@ class Request(models.Model):
     path = StringField(
         verbose_name=_("path"),
     )
+    full_path = StringField(
+        verbose_name=_("full path"),
+    )
     time = models.DateTimeField(
         default=timezone.now,
         db_index=True,
@@ -115,6 +118,7 @@ class Request(models.Model):
         self.method = request.method
 
         self.path = request.path
+        self.full_path = request.get_full_path()
         self.is_secure = request.is_secure()
         self.is_ajax = request.is_ajax()
 
