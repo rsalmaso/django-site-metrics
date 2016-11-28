@@ -55,7 +55,7 @@ class RequestAdmin(admin.ModelAdmin):
             "fields": ("referer", "user_agent", "ip", "_user", "language")
         })
     )
-    readonly_fields = ("time",)
+    readonly_fields = ("method", "path", "full_path", "_query_string", "time", "is_secure", "is_ajax", "_headers", "response", "referer", "user_agent", "ip", "_user", "language")
 
     def lookup_allowed(self, key, value):
         return key == "user__username" or super().lookup_allowed(key, value)
