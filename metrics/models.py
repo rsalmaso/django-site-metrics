@@ -76,11 +76,9 @@ class Request(models.Model):
     ip = models.GenericIPAddressField(
         verbose_name=_("ip address"),
     )
-    user = models.ForeignKey(
-        AUTH_USER_MODEL,
+    user_id = models.IntegerField(
         blank=True,
         null=True,
-        on_delete=models.CASCADE,
         verbose_name=_("user"),
     )
     referer = URLField(
@@ -129,7 +127,7 @@ class Request(models.Model):
             if django.VERSION < (1, 10):
                 is_authenticated = is_authenticated()
             if is_authenticated:
-                self.user = request.user
+                self.user_id = request.user.pk
 
         if response:
             self.response = response.status_code
@@ -174,6 +172,6 @@ class Request(models.Model):
             parts.append("1")
             self.ip = ".".join(parts)
         if not request_settings.LOG_USER:
-            self.user = None
+            self.user_id = None
 
         super().save(*args, **kwargs)
