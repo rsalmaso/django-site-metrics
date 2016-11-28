@@ -123,6 +123,8 @@ class Request(models.Model):
         if self.user_id:
             return get_user_model().objects.get(pk=self.user_id)
         return None
+    get_user.allow_tags = True
+    get_user.short_description = _("user")
 
     def from_http_request(self, request, response=None, commit=True):
         # Request infomation
