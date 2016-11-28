@@ -65,6 +65,11 @@ class Request(models.Model):
         null=True,
         verbose_name=_("query string"),
     )
+    headers = JSONField(
+        blank=True,
+        null=True,
+        verbose_name=_("headers"),
+    )
     time = models.DateTimeField(
         default=timezone.now,
         db_index=True,
@@ -124,6 +129,7 @@ class Request(models.Model):
         self.method = request.method
         self.path = request.path
         self.full_path = request.get_full_path()
+        self.headers = {k: v for k, v in request.META.items() if k.startswith("HTTP") or k.startswith("CONTENT")}
         self.query_string = request.GET
         self.is_secure = request.is_secure()
         self.is_ajax = request.is_ajax()
