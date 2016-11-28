@@ -48,14 +48,14 @@ class RequestMiddleware(MiddlewareMixin):
         if request.is_ajax() and settings.IGNORE_AJAX:
             return response
 
-        if request.META.get('REMOTE_ADDR') in settings.IGNORE_IP:
+        if request.META.get("REMOTE_ADDR") in settings.IGNORE_IP:
             return response
 
         ignore = patterns(False, *settings.IGNORE_USER_AGENTS)
-        if ignore.resolve(request.META.get('HTTP_USER_AGENT', '')):
+        if ignore.resolve(request.META.get("HTTP_USER_AGENT", "")):
             return response
 
-        if getattr(request, 'user', False):
+        if getattr(request, "user", False):
             if request.user.username in settings.IGNORE_USERNAME:
                 return response
 

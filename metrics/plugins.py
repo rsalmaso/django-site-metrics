@@ -32,22 +32,22 @@ from .traffic import modules
 
 
 def get_verbose_name(class_name):
-    '''
+    """
     Calculate the verbose_name by converting from InitialCaps to "lowercase with spaces".
-    '''
-    return re.sub('(((?<=[a-z])[A-Z])|([A-Z](?![A-Z]|$)))', ' \\1', class_name).strip()
+    """
+    return re.sub("(((?<=[a-z])[A-Z])|([A-Z](?![A-Z]|$)))", " \\1", class_name).strip()
 
 
 def set_count(items):
-    '''
+    """
     This is similar to "set", but this just creates a list with values.
     The list will be ordered from most frequent down.
 
     Example:
-        >>> inventory = ['apple', 'lemon', 'apple', 'orange', 'lemon', 'lemon']
+        >>> inventory = ["apple", "lemon", "apple", "orange", "lemon", "lemon"]
         >>> set_count(inventory)
-        [('lemon', 3), ('apple', 2), ('orange', 1)]
-    '''
+        [("lemon", 3), ("apple", 2), ("orange", 1)]
+    """
     item_count = {}
     for item in items:
         if not item:
@@ -71,20 +71,20 @@ class Plugins:
         self._plugins = []
         for module_path in settings.PLUGINS:
             try:
-                dot = module_path.rindex('.')
+                dot = module_path.rindex(".")
             except ValueError:
-                raise exceptions.ImproperlyConfigured('{0} isn\'t a plugin'.format(module_path))
+                raise exceptions.ImproperlyConfigured("{0} isn\"t a plugin".format(module_path))
             plugin, plugin_classname = module_path[:dot], module_path[dot + 1:]
 
             try:
                 mod = import_module(plugin)
             except ImportError as e:
-                raise exceptions.ImproperlyConfigured('Error importing plugin {0}: "{1}"'.format(plugin, e))
+                raise exceptions.ImproperlyConfigured("Error importing plugin {0}: '{1}'".format(plugin, e))
 
             try:
                 plugin_class = getattr(mod, plugin_classname)
             except AttributeError:
-                raise exceptions.ImproperlyConfigured('Plugin "{0}" does not define a "{1}" class'.format(
+                raise exceptions.ImproperlyConfigured("Plugin '{0}' does not define a '{1}' class".format(
                     plugin,
                     plugin_classname,
                 ))
@@ -92,7 +92,7 @@ class Plugins:
             self._plugins.append(plugin_class())
 
     def plugins(self):
-        if not hasattr(self, '_plugins'):
+        if not hasattr(self, "_plugins"):
             self.load()
         return self._plugins
     plugins = property(plugins)
@@ -104,7 +104,7 @@ class Plugin:
     def __init__(self):
         self.module_name = self.__class__.__name__
 
-        if not hasattr(self, 'verbose_name'):
+        if not hasattr(self, "verbose_name"):
             self.verbose_name = get_verbose_name(self.module_name)
 
     def template_context(self):
@@ -116,27 +116,27 @@ class Plugin:
             'metrics/plugins/base.html',
         ]
 
-        if hasattr(self, 'template'):
+        if hasattr(self, "template"):
             templates.insert(0, self.template)
 
         kwargs = self.template_context()
-        kwargs['verbose_name'] = self.verbose_name
-        kwargs['plugin'] = self
+        kwargs["verbose_name"] = self.verbose_name
+        kwargs["plugin"] = self
         return render_to_string(templates, kwargs)
 
 
 class LatestRequests(Plugin):
     def template_context(self):
-        return {'requests': Request.objects.all()[:5]}
+        return {"requests": Request.objects.all()[:5]}
 
 
 class TrafficInformation(Plugin):
     def template_context(self):
-        INFO_TABLE = ('today', 'this_week', 'this_month', 'this_year', 'all')
+        INFO_TABLE = ("today", "this_week", "this_month", "this_year", "all")
         INFO_TABLE_QUERIES = [getattr(Request.objects, query, None)() for query in INFO_TABLE]
 
         return {
-            'traffic': modules.table(INFO_TABLE_QUERIES)
+            "traffic": modules.table(INFO_TABLE_QUERIES)
         }
 
 
@@ -146,7 +146,7 @@ class TopPaths(Plugin):
 
     def template_context(self):
         return {
-            'paths': self.queryset().values('path').annotate(Count('path')).order_by('-path__count')[:10]
+            "paths": self.queryset().values("path").annotate(Count("path")).order_by("-path__count")[:10]
         }
 
 
@@ -159,25 +159,25 @@ class TopErrorPaths(TopPaths):
 
 class TopReferrers(Plugin):
     def queryset(self):
-        return self.qs.unique_visits().exclude(referer='')
+        return self.qs.unique_visits().exclude(referer="")
 
     def template_context(self):
         return {
-            'referrers': self.queryset().values('referer').annotate(Count('referer')).order_by('-referer__count')[:10]
+            "referrers": self.queryset().values("referer").annotate(Count("referer")).order_by("-referer__count")[:10]
         }
 
 
 class TopSearchPhrases(Plugin):
     def template_context(self):
         return {
-            'phrases': set_count(self.qs.search().only('referer').attr_list('keywords'))[:10]
+            "phrases": set_count(self.qs.search().only("referer").attr_list("keywords"))[:10]
         }
 
 
 class TopBrowsers(Plugin):
     def template_context(self):
         return {
-            'browsers': set_count(self.qs.only('user_agent').attr_list('browser'))[:5]
+            "browsers": set_count(self.qs.only("user_agent").attr_list("browser"))[:5]
         }
 
 
