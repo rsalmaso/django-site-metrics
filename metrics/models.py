@@ -63,9 +63,9 @@ class Request(models.Model):
     objects = RequestManager()
 
     class Meta:
+        ordering = ["-time"]
         verbose_name = _("request")
         verbose_name_plural = _("requests")
-        ordering = ("-time",)
 
     def __str__(self):
         return "[{0}] {1} {2} {3}".format(self.time, self.method, self.path, self.response)
