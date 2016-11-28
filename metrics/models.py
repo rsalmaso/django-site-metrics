@@ -126,6 +126,10 @@ class Request(models.Model):
     get_user.allow_tags = True
     get_user.short_description = _("user")
 
+    @property
+    def user(self):
+        return self.get_user()
+
     def from_http_request(self, request, response=None, commit=True):
         # Request infomation
         self.method = request.method
