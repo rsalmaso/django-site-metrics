@@ -28,16 +28,21 @@ from datetime import date, timedelta
 from functools import update_wrapper
 
 from django.contrib import admin
+from django.contrib.admin import widgets
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 
+from .fields import StringField
 from .models import Request
 from .plugins import plugins
 from .traffic import modules
 
 
 class RequestAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        StringField: {"widget": widgets.AdminTextInputWidget},
+    }
     list_display = ("time", "path", "response", "method", "request_from")
     fieldsets = (
         (_("Request"), {

@@ -31,6 +31,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 
 from . import settings as request_settings
+from .fields import StringField, URLField
 from .managers import RequestManager
 from .utils import HTTP_STATUS_CODES, browsers, engines
 
@@ -48,13 +49,11 @@ class Request(models.Model):
     )
 
     # Request infomation
-    method = models.CharField(
-        max_length=7,
+    method = StringField(
         default="GET",
         verbose_name=_("method"),
     )
-    path = models.CharField(
-        max_length=255,
+    path = StringField(
         verbose_name=_("path"),
     )
     time = models.DateTimeField(
@@ -84,20 +83,17 @@ class Request(models.Model):
         on_delete=models.CASCADE,
         verbose_name=_("user"),
     )
-    referer = models.URLField(
-        max_length=255,
+    referer = URLField(
         blank=True,
         null=True,
         verbose_name=_("referer"),
     )
-    user_agent = models.CharField(
-        max_length=255,
+    user_agent = StringField(
         blank=True,
         null=True,
         verbose_name=_("user agent"),
     )
-    language = models.CharField(
-        max_length=255,
+    language = StringField(
         blank=True,
         null=True,
         verbose_name=_("language"),
@@ -117,16 +113,16 @@ class Request(models.Model):
     def from_http_request(self, request, response=None, commit=True):
         # Request infomation
         self.method = request.method
-        self.path = request.path[:255]
 
+        self.path = request.path
         self.is_secure = request.is_secure()
         self.is_ajax = request.is_ajax()
 
         # User infomation
         self.ip = request.META.get("REMOTE_ADDR", "")
-        self.referer = request.META.get("HTTP_REFERER", "")[:255]
-        self.user_agent = request.META.get("HTTP_USER_AGENT", "")[:255]
-        self.language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")[:255]
+        self.referer = request.META.get("HTTP_REFERER", "")
+        self.user_agent = request.META.get("HTTP_USER_AGENT", "")
+        self.language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
 
         if hasattr(request, "user") and hasattr(request.user, "is_authenticated"):
             is_authenticated = request.user.is_authenticated
