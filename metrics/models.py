@@ -25,10 +25,10 @@ from socket import gethostbyaddr
 
 import django
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth import get_user_model
 
 from . import settings as request_settings
 from .managers import RequestManager
@@ -38,29 +38,70 @@ AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 
 
 class Request(models.Model):
+    objects = RequestManager()
+
     # Response infomation
-    response = models.SmallIntegerField(_("response"), choices=HTTP_STATUS_CODES, default=200)
+    response = models.SmallIntegerField(
+        choices=HTTP_STATUS_CODES,
+        default=200,
+        verbose_name=_("response"),
+    )
 
     # Request infomation
-    method = models.CharField(_("method"), default="GET", max_length=7)
-    path = models.CharField(_("path"), max_length=255)
-    time = models.DateTimeField(_("time"), default=timezone.now, db_index=True)
+    method = models.CharField(
+        max_length=7,
+        default="GET",
+        verbose_name=_("method"),
+    )
+    path = models.CharField(
+        max_length=255,
+        verbose_name=_("path"),
+    )
+    time = models.DateTimeField(
+        default=timezone.now,
+        db_index=True,
+        verbose_name=_("time"),
+    )
 
-    is_secure = models.BooleanField(_("is secure"), default=False)
-    is_ajax = models.BooleanField(
-        _("is ajax"),
+    is_secure = models.BooleanField(
         default=False,
+        verbose_name=_("is secure"),
+    )
+    is_ajax = models.BooleanField(
+        default=False,
+        verbose_name=_("is ajax"),
         help_text=_("Wheather this request was used via javascript."),
     )
 
     # User infomation
-    ip = models.GenericIPAddressField(_("ip address"))
-    user = models.ForeignKey(AUTH_USER_MODEL, blank=True, null=True, verbose_name=_("user"), on_delete=models.CASCADE)
-    referer = models.URLField(_("referer"), max_length=255, blank=True, null=True)
-    user_agent = models.CharField(_("user agent"), max_length=255, blank=True, null=True)
-    language = models.CharField(_("language"), max_length=255, blank=True, null=True)
-
-    objects = RequestManager()
+    ip = models.GenericIPAddressField(
+        verbose_name=_("ip address"),
+    )
+    user = models.ForeignKey(
+        AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        verbose_name=_("user"),
+    )
+    referer = models.URLField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name=_("referer"),
+    )
+    user_agent = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name=_("user agent"),
+    )
+    language = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name=_("language"),
+    )
 
     class Meta:
         ordering = ["-time"]
