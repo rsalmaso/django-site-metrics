@@ -52,10 +52,9 @@ class RequestAdmin(admin.ModelAdmin):
             "fields": ("response",)
         }),
         (_("User info"), {
-            "fields": ("referer", "user_agent", "ip", "user", "language")
+            "fields": ("referer", "user_agent", "ip", "user_id", "language")
         })
     )
-    raw_id_fields = ("user",)
     readonly_fields = ("time",)
 
     def lookup_allowed(self, key, value):
