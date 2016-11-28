@@ -46,7 +46,7 @@ class RequestAdmin(admin.ModelAdmin):
     list_display = ("time", "path", "response", "method", "request_from")
     fieldsets = (
         (_("Request"), {
-            "fields": ("method", "path", "full_path", "_query_string", "time", "is_secure", "is_ajax")
+            "fields": ("method", "path", "full_path", "_query_string", "time", "is_secure", "is_ajax", "_headers")
         }),
         (_("Response"), {
             "fields": ("response",)
@@ -62,6 +62,9 @@ class RequestAdmin(admin.ModelAdmin):
 
     def _query_string(self, obj):
         return json.dumps(obj.query_string, indent=2)
+
+    def _headers(self, obj):
+        return json.dumps(obj.headers, indent=2)
 
     def _user(self, obj):
         user = obj.get_user()
