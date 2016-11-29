@@ -39,3 +39,6 @@ __authors__ = [
     'krisje8 <krisje8@gmail.com>',
     'Mariusz Felisiak <felisiak.mariusz@gmail.com>',
 ]
+
+
+default_app_config = "metrics.apps.MetricsConfig"
