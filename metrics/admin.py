@@ -26,6 +26,7 @@
 import json
 from datetime import date, timedelta
 from functools import update_wrapper
+from urllib.parse import urlencode
 
 from django.contrib import admin
 from django.contrib.admin import widgets
@@ -43,7 +44,7 @@ class RequestAdmin(admin.ModelAdmin):
     formfield_overrides = {
         StringField: {"widget": widgets.AdminTextInputWidget},
     }
-    list_display = ("time", "path", "response", "method", "request_from")
+    list_display = ("time", "_path", "response", "method", "request_from")
     fieldsets = (
         (_("Request"), {
             "fields": ("method", "path", "full_path", "_query_string", "time", "is_secure", "is_ajax", "_headers")
@@ -63,13 +64,20 @@ class RequestAdmin(admin.ModelAdmin):
     def _query_string(self, obj):
         return json.dumps(obj.query_string, indent=2)
 
+    def _path(self, obj):
+        return """<a href="?{url}" title="{path}">{path}</a>""".format(
+            url=urlencode({"path": obj.path}),
+            path=obj.path,
+        )
+    _path.short_description = _("Path")
+    _path.allow_tags = True
+
     def _headers(self, obj):
         return json.dumps(obj.headers, indent=2)
 
     def _user(self, obj):
         user = obj.get_user()
         return "{username} [{id}]".format(id=user.pk, username=user.username) if user else ""
-
 
     def request_from(self, obj):
         if obj.user_id:
