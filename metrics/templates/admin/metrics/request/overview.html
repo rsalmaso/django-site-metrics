@@ -3,7 +3,8 @@
 {{ block.super }}
 <!--[if IE]><script language="javascript" type="text/javascript" src="{% static "metrics/js/excanvas.min.js" %}"></script><![endif]-->
 <script type="text/javascript" src="{% static "metrics/js/jquery-3.1.1.min.js" %}"></script>
-<script type="text/javascript" src="{% static "metrics/js/jquery.flot.js" %}"></script>
+<script type="text/javascript" src="{% static "metrics/js/jquery.flot.min.js" %}"></script>
+<script type="text/javascript" src="{% static "metrics/js/jquery.flot.time.min.js" %}"></script>
 <script type="text/javascript" src="{% static "metrics/js/jquery.timeago.js" %}"></script>
 <script type="text/javascript" src="{% static "metrics/js/request.js" %}"></script>
     {% if request and request.user %}
