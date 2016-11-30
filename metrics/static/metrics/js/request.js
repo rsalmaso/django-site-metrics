@@ -2,6 +2,14 @@ var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
 
 $(document).ready(function() {
     $("abbr.timeago").timeago();
+
+    $(".btn-graph").on("click", function() {
+      var days = $(this).data("days");
+      if (days) {
+        loadTrafficGraph(days);
+      }
+      return false;
+    });
 });
 
 function showTooltip(x, y, contents) {
