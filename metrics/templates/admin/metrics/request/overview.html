@@ -22,7 +22,7 @@
         }
 
         $(document).ready(function(){
-            loadTrafficGraph();
+            loadTrafficGraph({% if request.GET.graph %}{{ request.GET.graph }}{% endif %});
         });
         </script>
     {% endif %}
