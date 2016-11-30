@@ -6,6 +6,7 @@ $(document).ready(function() {
     $(".btn-graph").on("click", function() {
       var days = $(this).data("days");
       if (days) {
+        history.pushState(null, null, "?graph=" + days);
         loadTrafficGraph(days);
       }
       return false;
