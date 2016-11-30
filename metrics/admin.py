@@ -24,7 +24,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import json
-from datetime import date, timedelta
+from datetime import timedelta
 from functools import update_wrapper
 from urllib.parse import urlencode
 
@@ -33,6 +33,7 @@ from django.contrib.admin import widgets
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 
 from .fields import StringField
 from .models import Request
@@ -135,7 +136,7 @@ class RequestAdmin(admin.ModelAdmin):
         else:
             days_step = 30
 
-        days = [date.today() - timedelta(day) for day in range(0, days_count, days_step)]
+        days = [timezone.now().today() - timedelta(day) for day in range(0, days_count, days_step)]
         days_qs = [(day, Request.objects.day(date=day)) for day in days]
         return HttpResponse(json.dumps(modules.graph(days_qs)), content_type="text/javascript")
 
