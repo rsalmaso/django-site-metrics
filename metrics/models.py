@@ -135,7 +135,7 @@ class Request(models.Model):
         self.method = request.method
         self.path = request.path
         self.full_path = request.get_full_path()
-        self.headers = {k: v for k, v in request.META.items() if k.startswith("HTTP") or k.startswith("CONTENT")}
+        self.headers = {k: v for k, v in request.META.items() if (k.startswith("HTTP") or k.startswith("CONTENT")) and k != "HTTP_COOKIE"}
         self.query_string = request.GET
         self.is_secure = request.is_secure()
         self.is_ajax = request.is_ajax()
