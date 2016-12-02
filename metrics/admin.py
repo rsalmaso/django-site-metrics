@@ -38,6 +38,7 @@ from django.utils import timezone
 from .fields import StringField
 from .models import Request
 from .plugins import plugins
+from .serializers import JSONEncoder
 from .traffic import modules
 
 
@@ -138,6 +139,7 @@ class RequestAdmin(admin.ModelAdmin):
 
         days = [timezone.now().today() - timedelta(day) for day in range(0, days_count, days_step)]
         days_qs = [(day, Request.objects.day(date=day)) for day in days]
-        return HttpResponse(json.dumps(modules.graph(days_qs)), content_type="text/javascript")
+        dump = json.dumps(modules.graph(days_qs), cls=JSONEncoder, indent=2)
+        return HttpResponse(dump, content_type="text/javascript")
 
 admin.site.register(Request, RequestAdmin)
