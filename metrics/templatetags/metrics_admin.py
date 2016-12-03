@@ -23,9 +23,17 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from django.conf.urls import url
-from django.contrib import admin
+from django import template
+from django.utils.http import urlquote
 
-urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-]
+register = template.Library()
+
+
+@register.simple_tag
+def pie_chart(items, width=440, height=190):
+    return '//chart.googleapis.com/chart?cht=p3&chd=t:{0}&chs={1}x{2}&chl={3}'.format(
+        urlquote(','.join([str(item[1]) for item in items])),
+        width,
+        height,
+        urlquote('|'.join([str(item[0]) for item in items])),
+    )

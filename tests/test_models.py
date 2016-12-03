@@ -1,4 +1,28 @@
 # -*- coding: utf-8 -*-
+
+# Copyright (C) 2016, Raffaele Salmaso <raffaele@salmaso.org>
+# Copyright (C) 2009-2016, Kyle Fuller and Mariusz Felisiak
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY KYLE FULLER ''AS IS'' AND ANY
+# EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL KYLE FULLER BE LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 import socket
 from datetime import datetime
 
@@ -6,7 +30,7 @@ import mock
 from django.http import HttpRequest, HttpResponse
 from django.test import TestCase
 from request import settings
-from request.models import Request
+from metrics.models import Request
 
 try:
     from django.contrib.auth import get_user_model
@@ -89,13 +113,13 @@ class RequestTests(TestCase):
         )
         self.assertEqual(request.keywords, 'querykit core data')
 
-    @mock.patch('request.models.gethostbyaddr',
+    @mock.patch('metrics.models.gethostbyaddr',
                 return_value=('foo.net', [], ['1.2.3.4']))
     def test_hostname(self, *mocks):
         request = Request(ip='1.2.3.4')
         self.assertEqual(request.hostname, 'foo.net')
 
-    @mock.patch('request.models.gethostbyaddr',
+    @mock.patch('metrics.models.gethostbyaddr',
                 side_effect=socket.herror(2, 'Host name lookup failure'))
     def test_hostname_invalid(self, *mocks):
         request = Request(ip='1.2.3.4')
@@ -105,21 +129,21 @@ class RequestTests(TestCase):
         request = Request(ip='1.2.3.4')
         request.save()
 
-    @mock.patch('request.models.request_settings.LOG_IP',
+    @mock.patch('metrics.models.request_settings.LOG_IP',
                 False)
     def test_save_not_log_ip(self):
         request = Request(ip='1.2.3.4')
         request.save()
         self.assertEqual(settings.IP_DUMMY, request.ip)
 
-    @mock.patch('request.models.request_settings.ANONYMOUS_IP',
+    @mock.patch('metrics.models.request_settings.ANONYMOUS_IP',
                 True)
     def test_save_anonymous_ip(self):
         request = Request(ip='1.2.3.4')
         request.save()
         self.assertTrue(request.ip.endswith('.1'))
 
-    @mock.patch('request.models.request_settings.LOG_USER',
+    @mock.patch('metrics.models.request_settings.LOG_USER',
                 False)
     def test_save_not_log_user(self):
         user = User.objects.create(username='foo')

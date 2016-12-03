@@ -1,12 +1,36 @@
 # -*- coding: utf-8 -*-
+
+# Copyright (C) 2016, Raffaele Salmaso <raffaele@salmaso.org>
+# Copyright (C) 2009-2016, Kyle Fuller and Mariusz Felisiak
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY KYLE FULLER ''AS IS'' AND ANY
+# EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL KYLE FULLER BE LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 from unittest import skipIf
 
 import django
 import mock
 from django.http import HttpResponse
 from django.test import RequestFactory, TestCase
-from request.middleware import RequestMiddleware
-from request.models import Request
+from metrics.middleware import RequestMiddleware
+from metrics.models import Request
 
 try:
     from django.contrib.auth import get_user_model
@@ -29,7 +53,7 @@ class RequestMiddlewareTest(TestCase):
 
     @mock.patch('django.conf.settings.MIDDLEWARE', [
         'django.contrib.sessions.middleware.SessionMiddleware',
-        'request.middleware.RequestMiddleware',
+        'metrics.middleware.RequestMiddleware',
         'django.contrib.auth.middleware.AuthenticationMiddleware',
     ])
     @mock.patch('django.conf.settings.MIDDLEWARE_CLASSES', None)
@@ -41,7 +65,7 @@ class RequestMiddlewareTest(TestCase):
         request = self.factory.get('/foo')
         RequestMiddleware(request)
 
-    @mock.patch('request.settings.VALID_METHOD_NAMES',
+    @mock.patch('metrics.settings.VALID_METHOD_NAMES',
                 ('get',))
     def test_dont_record_unvalid_method_name(self):
         request = self.factory.post('/foo')
@@ -49,7 +73,7 @@ class RequestMiddlewareTest(TestCase):
         self.middleware.process_response(request, response)
         self.assertEqual(0, Request.objects.count())
 
-    @mock.patch('request.middleware.settings.VALID_METHOD_NAMES',
+    @mock.patch('metrics.middleware.settings.VALID_METHOD_NAMES',
                 ('get',))
     def test_record_valid_method_name(self):
         request = self.factory.get('/foo')
@@ -57,7 +81,7 @@ class RequestMiddlewareTest(TestCase):
         self.middleware.process_response(request, response)
         self.assertEqual(1, Request.objects.count())
 
-    @mock.patch('request.middleware.settings.ONLY_ERRORS',
+    @mock.patch('metrics.middleware.settings.ONLY_ERRORS',
                 False)
     def test_dont_record_only_error(self):
         request = self.factory.get('/foo')
@@ -70,7 +94,7 @@ class RequestMiddlewareTest(TestCase):
 
         self.assertEqual(2, Request.objects.count())
 
-    @mock.patch('request.middleware.settings.ONLY_ERRORS',
+    @mock.patch('metrics.middleware.settings.ONLY_ERRORS',
                 True)
     def test_record_only_error(self):
         request = self.factory.get('/foo')
@@ -83,7 +107,7 @@ class RequestMiddlewareTest(TestCase):
 
         self.assertEqual(1, Request.objects.count())
 
-    @mock.patch('request.middleware.settings.IGNORE_PATHS',
+    @mock.patch('metrics.middleware.settings.IGNORE_PATHS',
                 (r'^foo',))
     def test_dont_record_ignored_paths(self):
         request = self.factory.get('/foo')
@@ -96,7 +120,7 @@ class RequestMiddlewareTest(TestCase):
 
         self.assertEqual(1, Request.objects.count())
 
-    @mock.patch('request.middleware.settings.IGNORE_AJAX',
+    @mock.patch('metrics.middleware.settings.IGNORE_AJAX',
                 True)
     def test_dont_record_ajax(self):
         request = self.factory.get('/foo')
@@ -109,7 +133,7 @@ class RequestMiddlewareTest(TestCase):
 
         self.assertEqual(1, Request.objects.count())
 
-    @mock.patch('request.middleware.settings.IGNORE_AJAX',
+    @mock.patch('metrics.middleware.settings.IGNORE_AJAX',
                 False)
     def test_record_ajax(self):
         request = self.factory.get('/foo')
@@ -122,7 +146,7 @@ class RequestMiddlewareTest(TestCase):
 
         self.assertEqual(2, Request.objects.count())
 
-    @mock.patch('request.middleware.settings.IGNORE_IP',
+    @mock.patch('metrics.middleware.settings.IGNORE_IP',
                 ('1.2.3.4',))
     def test_dont_record_ignored_ips(self):
         request = self.factory.get('/foo')
@@ -136,7 +160,7 @@ class RequestMiddlewareTest(TestCase):
 
         self.assertEqual(1, Request.objects.count())
 
-    @mock.patch('request.middleware.settings.IGNORE_USER_AGENTS',
+    @mock.patch('metrics.middleware.settings.IGNORE_USER_AGENTS',
                 (r'^.*Foo.*$',))
     def test_dont_record_ignored_user_agents(self):
         request = self.factory.get('/foo')
@@ -154,7 +178,7 @@ class RequestMiddlewareTest(TestCase):
 
         self.assertEqual(2, Request.objects.count())
 
-    @mock.patch('request.middleware.settings.IGNORE_USERNAME',
+    @mock.patch('metrics.middleware.settings.IGNORE_USERNAME',
                 ('foo',))
     def test_dont_record_ignored_user_names(self):
         request = self.factory.get('/foo')

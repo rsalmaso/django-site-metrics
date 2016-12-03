@@ -1,0 +1,5 @@
+{% extends "metrics/plugins/base.html" %}
+{% block plugin %}
+    {% load metrics_admin %}
+    <img src="{% pie_chart browsers 440 150 %}" alt=""/>
+{% endblock %}

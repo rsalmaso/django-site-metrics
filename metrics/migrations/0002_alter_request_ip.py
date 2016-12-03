@@ -23,9 +23,21 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from django.conf.urls import url
-from django.contrib import admin
+from __future__ import unicode_literals
 
-urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-]
+from django.db import models, migrations
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('request', '0001_initial'),
+    ]
+
+    operations = [
+        migrations.AlterField(
+            model_name='request',
+            name='ip',
+            field=models.GenericIPAddressField(verbose_name='ip address'),
+        ),
+    ]

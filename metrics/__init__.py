@@ -23,9 +23,15 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from django.conf.urls import url
-from django.contrib import admin
-
-urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+__version__ = '0.1.0'
+__copyright__ = 'Copyright (C) 2009-2016, Raffaele Salmaso, Kyle Fuller, Mariusz Felisiak'
+__licence__ = 'BSD'
+__author__ = 'Raffaele Salmaso'
+__email__ = '<raffaele@salmaso.org>'
+__authors__ = [
+    'Raffaele Salmaso <raffaele@salmaso.org>',
+    'Kyle Fuller <kyle@fuller.li>',
+    'Jannis Leidel (jezdez)',
+    'krisje8 <krisje8@gmail.com>',
+    'Mariusz Felisiak <felisiak.mariusz@gmail.com>',
 ]

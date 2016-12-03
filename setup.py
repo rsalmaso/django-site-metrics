@@ -1,35 +1,35 @@
 #!/usr/bin/env python
-import request
+import metrics
 from setuptools import setup
 
 setup(
-    name='django-request',
-    version=request.__version__,
-    description=open('docs/description.txt').read(),
-    long_description=open('docs/long_description.txt').read(),
-    author='Kyle Fuller',
-    author_email='kyle@fuller.li',
-    url=request.__URL__,
-    download_url='https://github.com/django-request/django-request/archive/{0}.zip'.format(request.__version__),
+    name='django-site-metrics',
+    version=metrics.__version__,
+    description=open('docs/description.rst').read(),
+    long_description=open('docs/long_description.rst').read(),
+    author=metrics.__author__,
+    author_email=metrics.__email__,
+    url='https://bitbucket.org/rsalmaso/django-site-metrics/',
+    download_url='https://bitbucket.org/rsalmaso/django-site-metrics/get/{0}.tar.gz'.format(metrics.__version__),
     packages=[
-        'request',
-        'request.migrations',
-        'request.templatetags',
-        'request.management',
-        'request.management.commands',
+        'metrics',
+        'metrics.migrations',
+        'metrics.templatetags',
+        'metrics.management',
+        'metrics.management.commands',
     ],
-    package_data={'request': [
-        'templates/admin/request/*.html',
-        'templates/admin/request/request/*.html',
-        'templates/request/plugins/*.html',
-        'static/request/js/*.js',
+    package_data={'metrics': [
+        'templates/admin/metrics/*.html',
+        'templates/admin/metrics/metrics/*.html',
+        'templates/metrics/plugins/*.html',
+        'static/metrics/js/*.js',
         'locale/*/LC_MESSAGES/*.*',
     ]},
     install_requires=[
         'django >= 1.4',
         'python-dateutil',
     ],
-    license=request.__licence__,
+    license=metrics.__licence__,
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',

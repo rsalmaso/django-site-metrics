@@ -1,0 +1,28 @@
+syntax: glob
+__pycache__
+*.egg-info
+.coverage
+.tox
+.svnignore
+.DS_Store
+.svn
+Thumbs.db
+.directory
+*~
+*-
+*.pyc
+*.pyo
+*.swp
+*.kpf
+*.orig
+*.bak
+*.dist-info
+
+syntax: regexp
+\.git
+^build/
+^dist/
+^docs/_build/
+^log/
+^\.idea
+^.vagrant
