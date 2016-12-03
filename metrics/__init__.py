@@ -23,7 +23,11 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-__version__ = '0.1.0'
+from .version import get_version
+
+VERSION = (0, 1, 0, 'alpha', 0)
+
+__version__ = get_version(VERSION)
 __copyright__ = 'Copyright (C) 2009-2016, Raffaele Salmaso, Kyle Fuller, Mariusz Felisiak'
 __licence__ = 'BSD'
 __author__ = 'Raffaele Salmaso'
