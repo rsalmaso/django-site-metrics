@@ -1,12 +1,21 @@
 #!/usr/bin/env python
+import io
 import metrics
 from setuptools import setup
+
+
+def read(filename):
+    data = ""
+    with io.open(filename, "rU", encoding="utf-8") as fp:
+        data = fp.read()
+    return data
+
 
 setup(
     name='django-site-metrics',
     version=metrics.__version__,
-    description=open('docs/description.rst').read(),
-    long_description=open('docs/long_description.rst').read(),
+    description=read('docs/description.rst'),
+    long_description=read('docs/long_description.rst'),
     author=metrics.__author__,
     author_email=metrics.__email__,
     url='https://bitbucket.org/rsalmaso/django-site-metrics/',
