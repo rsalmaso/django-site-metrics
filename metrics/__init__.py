@@ -31,7 +31,7 @@ __version__ = get_version(VERSION)
 __copyright__ = 'Copyright (C) 2009-2016, Raffaele Salmaso, Kyle Fuller, Mariusz Felisiak'
 __licence__ = 'BSD'
 __author__ = 'Raffaele Salmaso'
-__email__ = '<raffaele@salmaso.org>'
+__email__ = 'raffaele@salmaso.org'
 __authors__ = [
     'Raffaele Salmaso <raffaele@salmaso.org>',
     'Kyle Fuller <kyle@fuller.li>',
