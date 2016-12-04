@@ -86,7 +86,7 @@ class RequestAdmin(admin.ModelAdmin):
         if obj.user_id:
             user = obj.get_user()
             return """<a href="?user__username={0}" title="{1}">{2}</a>""".format(
-                user.username,
+                Truncator(user.username).chars(35),
                 _("Show only requests from this user."),
                 user,
             )
