@@ -34,6 +34,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from django.utils.text import Truncator
 
 from .fields import StringField
 from .models import Request
@@ -69,7 +70,7 @@ class RequestAdmin(admin.ModelAdmin):
     def _path(self, obj):
         return """<a href="?{url}" title="{path}">{path}</a>""".format(
             url=urlencode({"path": obj.path}),
-            path=obj.path,
+            path=Truncator(obj.path).chars(72),
         )
     _path.short_description = _("Path")
     _path.allow_tags = True
