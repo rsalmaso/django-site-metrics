@@ -25,7 +25,7 @@
 
 from .version import get_version
 
-VERSION = (0, 1, 0, 'alpha', 0)
+VERSION = (0, 1, 0, 'alpha', 1)
 
 __version__ = get_version(VERSION)
 __copyright__ = 'Copyright (C) 2009-2016, Raffaele Salmaso, Kyle Fuller, Mariusz Felisiak'
