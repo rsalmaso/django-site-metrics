@@ -65,7 +65,7 @@ class RequestAdmin(admin.ModelAdmin):
         return key == "user__username" or super().lookup_allowed(key, value)
 
     def _query_string(self, obj):
-        return json.dumps(obj.query_string, indent=2)
+        return json.dumps(obj.query_string, cls=JSONEncoder, indent=2)
 
     def _path(self, obj):
         return """<a href="?{url}" title="{path}">{path}</a>""".format(
@@ -76,7 +76,7 @@ class RequestAdmin(admin.ModelAdmin):
     _path.allow_tags = True
 
     def _headers(self, obj):
-        return json.dumps(obj.headers, indent=2)
+        return json.dumps(obj.headers, cls=JSONEncoder, indent=2)
 
     def _user(self, obj):
         user = obj.get_user()
