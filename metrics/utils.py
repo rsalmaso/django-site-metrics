@@ -23,7 +23,7 @@
 
 from django.utils.translation import gettext_lazy as _
 
-from .router import patterns
+from .router import Patterns
 
 HTTP_STATUS_CODES = (
     # Infomational
@@ -92,7 +92,7 @@ HTTP_STATUS_CODES = (
 )
 
 
-browsers = patterns(
+browsers = Patterns(
     ("Unknown", {}),
     # Browsers
     (r"AOL (?P<version>[\d+\.\d+]+)", "AOL"),
@@ -156,7 +156,7 @@ browsers = patterns(
     (r"Python-urllib", "Python"),
 )
 
-engines = patterns(
+engines = Patterns(
     None,
     (r"^https?:\/\/([\.\w]+)?yahoo.*(?:&|\?)p=(?P<keywords>[\+-_\w]+)", "Yahoo"),
     (r"^https?:\/\/([\.\w]+)?google.*(?:&|\?)q=(?P<keywords>[\+-_\w]+)", "Google"),

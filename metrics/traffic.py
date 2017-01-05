@@ -24,6 +24,7 @@
 import re
 from time import mktime
 
+from django.core.exceptions import ImproperlyConfigured
 from django.db.models import Count
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import string_concat, gettext
@@ -50,32 +51,32 @@ class Modules:
         ``settings.TRAFFIC_MODULES``.
         """
         from importlib import import_module
-        from django.core import exceptions
 
-        self._modules = []
+        self._modules = ()
         for module_path in settings.TRAFFIC_MODULES:
             try:
                 dot = module_path.rindex(".")
             except ValueError:
-                raise exceptions.ImproperlyConfigured("{0} isn't a traffic module".format(module_path))
+                raise ImproperlyConfigured("{0} isn't a traffic module".format(module_path))
             traffic_module = module_path[:dot]
             traffic_classname = module_path[dot + 1:]
 
             try:
                 mod = import_module(traffic_module)
             except ImportError as err:
-                raise exceptions.ImproperlyConfigured("Error importing module {0}: '{1}'".format(traffic_module, err))
+                raise ImproperlyConfigured("Error importing module {0}: '{1}'".format(traffic_module, err))
 
             try:
                 traffic_class = getattr(mod, traffic_classname)
             except AttributeError:
-                raise exceptions.ImproperlyConfigured("Traffic module '{0}' does not define a '{1}' class".format(
+                raise ImproperlyConfigured("Traffic module '{0}' does not define a '{1}' class".format(
                     traffic_module,
                     traffic_classname,
                 ))
 
-            self._modules.append(traffic_class())
+            self._modules += (traffic_class(),)
 
+    @property
     def modules(self):
         """
         Get loaded modules, load them if isn"t already made.
@@ -83,27 +84,26 @@ class Modules:
         if not hasattr(self, "_modules"):
             self.load()
         return self._modules
-    modules = property(modules)
 
     def table(self, queries):
         """
         Get a list of modules" counters.
         """
-        return [
+        return tuple([
             (module.verbose_name_plural, [module.count(qs) for qs in queries])
             for module in self.modules
-        ]
+        ])
 
     def graph(self, days):
         """
         Get a list of modules" counters for all the given days.
         """
-        return [
+        return tuple([
             {"data": [(mktime(day.timetuple()) * 1000, module.count(qs))
                       for day, qs in days],
              'label': gettext(module.verbose_name_plural)}
             for module in self.modules
-        ]
+        ])
 
 modules = Modules()
 
@@ -192,8 +192,9 @@ class UniqueVisit(Module):
     verbose_name_plural = _("Unique Visits")
 
     def count(self, qs):
-        return qs.exclude(referer__startswith=settings.BASE_URL)\
-            .count()
+        return qs.exclude(
+            referer__startswith=settings.BASE_URL,
+        ).count()
 
 
 class UniqueVisitor(Module):

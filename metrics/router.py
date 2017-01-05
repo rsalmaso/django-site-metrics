@@ -37,16 +37,16 @@ class RegexPattern:
             return self.name, match.groupdict()
 
 
-class patterns:
+class Patterns:
     def __init__(self, unknown, *args):
-        self.patterns = []
+        self.patterns = ()
         self.unknown = unknown
 
         for pattern in args:
             if isinstance(pattern, string_types):
-                self.patterns.append(RegexPattern(pattern))
+                self.patterns += (RegexPattern(pattern),)
             else:
-                self.patterns.append(RegexPattern(*pattern))
+                self.patterns += (RegexPattern(*pattern),)
 
     def resolve(self, name):
         for pattern in self.patterns:
