@@ -21,7 +21,6 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import re
 from time import mktime
 
 from django.core.exceptions import ImproperlyConfigured
@@ -30,15 +29,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.translation import string_concat, gettext
 
 from . import settings
-
-
-def get_verbose_name(class_name):
-    """
-    Calculate the verbose_name by converting from InitialCaps to
-    "lowercase with spaces".
-    """
-    return re.sub("(((?<=[a-z])[A-Z])|([A-Z](?![A-Z]|$)))", " \\1",
-                  class_name).strip()
+from .utils import get_verbose_name
 
 
 class Modules:
