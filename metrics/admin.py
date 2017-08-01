@@ -30,6 +30,7 @@ from urllib.parse import urlencode
 
 from django.contrib import admin
 from django.contrib.admin import widgets
+from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.html import format_html
@@ -42,6 +43,8 @@ from .models import Request
 from .plugins import plugins
 from .serializers import JSONEncoder
 from .traffic import modules
+
+User = get_user_model()
 
 
 class RequestAdmin(admin.ModelAdmin):
@@ -63,7 +66,7 @@ class RequestAdmin(admin.ModelAdmin):
     readonly_fields = ("method", "path", "full_path", "_query_string", "time", "is_secure", "is_ajax", "_headers", "response", "referer", "user_agent", "ip", "_user", "language")
 
     def lookup_allowed(self, key, value):
-        return key == "user__username" or super().lookup_allowed(key, value)
+        return key == "user__%s" % User.USERNAME_FIELD or super().lookup_allowed(key, value)
 
     def _query_string(self, obj):
         return json.dumps(obj.query_string, cls=JSONEncoder, indent=2)
@@ -81,15 +84,16 @@ class RequestAdmin(admin.ModelAdmin):
 
     def _user(self, obj):
         user = obj.get_user()
-        return "{username} [{id}]".format(id=user.pk, username=user.username) if user else ""
+        return "{username} [{id}]".format(id=user.pk, username=user.get_username()) if user else ""
 
     def request_from(self, obj):
         if obj.user_id:
             user = obj.get_user()
-            return format_html("""<a href="?user__username={0}" title="{1}">{2}</a>""".format(
-                Truncator(user.username).chars(35),
-                _("Show only requests from this user."),
-                user,
+            return format_html("""<a href="?user__{field}={username}" title="{title}">{user}</a>""".format(
+                field=User.USERNAME_FIELD,
+                username=Truncator(user.get_username()).chars(35),
+                title=_("Show only requests from this user."),
+                user=user,
             ))
         return format_html("""<a href="?ip={0}" title="{1}">{0}</a>""".format(
             obj.ip,

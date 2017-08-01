@@ -72,6 +72,11 @@ class TrafficTest(TestCase):
         self.admin = RequestAdmin(Request, site)
         self.factory = RequestFactory()
 
+    def test_changelist(self):
+        url = reverse('admin:request_request_changelist')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
     def test_traffic(self):
         request = self.factory.get('/foo')
         self.admin.traffic(request)
