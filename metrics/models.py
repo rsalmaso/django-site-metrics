@@ -23,7 +23,6 @@
 
 from socket import gethostbyaddr
 
-import django
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.postgres.fields import JSONField
@@ -147,10 +146,7 @@ class Request(models.Model):
         self.language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
 
         if hasattr(request, "user") and hasattr(request.user, "is_authenticated"):
-            is_authenticated = request.user.is_authenticated
-            if django.VERSION < (1, 10):
-                is_authenticated = is_authenticated()
-            if is_authenticated:
+            if request.user.is_authenticated:
                 self.user_id = request.user.pk
 
         if response:
