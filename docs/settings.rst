@@ -88,15 +88,15 @@ Example:
 ``METRICS_TRAFFIC_MODULES``
 =================================
 
-Default: 
+Default:
 
 .. code-block:: python
 
-	(
-    	'metrics.traffic.UniqueVisitor',
-    	'metrics.traffic.UniqueVisit',
-    	'metrics.traffic.Hit',
-	)
+    (
+        'metrics.traffic.UniqueVisitor',
+        'metrics.traffic.UniqueVisit',
+        'metrics.traffic.Hit',
+    )
 
 These are all the items in the traffic graph and table on the overview page. If you wish to remove or add a item you can override this setting and set what you want to see. There are also many more options you can add from the following list;
 
@@ -116,19 +116,19 @@ These are all the items in the traffic graph and table on the overview page. If 
 ``METRICS_PLUGINS``
 ===================
 
-Default: 
+Default:
 
 .. code-block:: python
 
-	(
-	    'metrics.plugins.TrafficInformation',
-	    'metrics.plugins.LatestRequests',
-	    'metrics.plugins.TopPaths',
-	    'metrics.plugins.TopErrorPaths',
-	    'metrics.plugins.TopReferrers',
-	    'metrics.plugins.TopSearchPhrases',
-	    'metrics.plugins.TopBrowsers',
-	)
+    (
+        'metrics.plugins.TrafficInformation',
+        'metrics.plugins.LatestRequests',
+        'metrics.plugins.TopPaths',
+        'metrics.plugins.TopErrorPaths',
+        'metrics.plugins.TopReferrers',
+        'metrics.plugins.TopSearchPhrases',
+        'metrics.plugins.TopBrowsers',
+    )
 
 These are all the plugins you can see on the overview page. If you wish to remove or add a plugin you can override this setting and set what you want to see. Here is a list of all the plugins and what they do;
 
