@@ -36,6 +36,7 @@ You can use the following command to clone the hg repository:
 
     In the last command you will need to change <PYTHONPATH> to a path in your PYTHONPATH, a path which Python has recognized to have python modules within.
 
+
 Via git repository
 ==================
 
@@ -48,9 +49,11 @@ You can use the following command to clone the git repository:
     $ git clone git://github.com/rsalmaso/django-site-metrics.git
     $ ln -s django-site-metrics/metrics <PYTHONPATH>
 
-.. note:
+.. note::
 
-    In the last command you will need to change <PYTHONPATH> to a path in your PYTHONPATH, a path which Python has recognized to have python modules within.
+    In the last command you will need to change ``<PYTHONPATH>`` to a path in
+    your ``PYTHONPATH``, a path which Python has recognized to have python
+    modules within.
 
 Using a package-management tool
 ===============================
@@ -69,11 +72,14 @@ pip is one of the more popular package-management systems for python. You can fi
 easy_install
 ------------
 
-Another option is to use easy_install, first you need to install easy_install. You can find documentation and how to install `easy_install here`_. Once you have easy_install up and running, just type:
+Another option is to use ``easy_install``, first you need to install
+``easy_install``. You can find documentation and how to install
+`easy_install here`_. Once you have ``easy_install`` up and running, just
+type:
 
 .. code-block:: bash
 
     $ easy_install django-site-metrics
 
-.. _pip itself here: http://pypi.python.org/pypi/pip/
+.. _pip itself here: https://pypi.org/project/pip/
 .. _easy_install here: http://peak.telecommunity.com/DevCenter/EasyInstall
