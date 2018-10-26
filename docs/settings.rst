@@ -9,14 +9,16 @@ Settings
 
 Default: ``False``
 
-If this is set to True, then ajax requests will be ignored and not added to the database. To determine if a request was ajax, we use HttpRequest.is_ajax(), see Django documentation for more information.
+If this is set to ``True``, then ajax requests will not be recorded. To
+determine if a request was ajax, we use ``HttpRequest.is_ajax()``, see
+Django documentation for more information.
 
 ``METRICS_IGNORE_IP``
 =====================
 
 Default: ``None``
 
-Any requests from a IP Address in this list will be ignored.
+Any requests from a IP Address in this list will not be recorded.
 
 ``METRICS_LOG_IP``
 =====================
@@ -51,14 +53,15 @@ If set to False, user are not logged (set to None).
 
 Default: ``None``
 
-Any requests from users in this list will be ignored.
+Any requests from users in this list will not be recorded.
 
 ``METRICS_IGNORE_PATHS``
 ===========================
 
 Default: ``None``
 
-Any requests which match these paths will be ignored. This setting should be a tuple filled with regex paths.
+Any requests which match these paths will not be recorded. This setting should
+be a tuple filled with regex paths.
 
 Example:
 
@@ -73,14 +76,15 @@ Example:
 
 Default: ``None``
 
-Any request with a user agent that matches any pattern in this list will be ignored.
+Any request with a user agent that matches any pattern in this list will not be
+recorded.
 
 Example:
 
 .. code-block:: python
 
     METRICS_IGNORE_USER_AGENTS = (
-        r'^$', # ignore requests with no user agent string set
+        r'^$',  # don't record requests with no user agent string set.
         r'Googlebot',
         r'Baiduspider',
     )
@@ -139,7 +143,9 @@ These are all the plugins you can see on the overview page. If you wish to remov
 - ``'metrics.plugins.TopReferrers'``: Shows a list of top referrals to your site.
 - ``'metrics.plugins.TopSearchPhrases'``: Shows a list of all the search phrases used to find your site.
 - ``'metrics.plugins.TopBrowsers'``: Shows a graph of the top browsers accessing your site.
-- ``'metrics.plugins.ActiveUsers'``: Show a list of active users in the last 5 minutes. This may not be a good idea to use on a large website with lots of active users as it will generate a long list.
+- ``'metrics.plugins.ActiveUsers'``: Shows a list of active users in the last
+  5 minutes. This may not be a good idea to use on a large website with lots of
+  active users as it will generate a long list.
 
 ``METRICS_BASE_URL``
 ====================
@@ -160,4 +166,4 @@ If this is set to True, django-site-metrics will ONLY store error returning requ
 
 Default: ('get', 'post', 'put', 'delete', 'head', 'options', 'trace')
 
-Any request which is not in this tuple/list will be ignored.
+Any request which is not in this tuple/list will not be recorded.
