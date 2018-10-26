@@ -41,10 +41,10 @@ AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 class Request(models.Model):
     objects = RequestManager()
 
-    # Response infomation
+    # Response information.
     response = models.SmallIntegerField(choices=HTTP_STATUS_CODES, default=200, verbose_name=_("response"),)
 
-    # Request infomation
+    # Response information.
     method = StringField(default="GET", verbose_name=_("method"),)
     path = StringField(verbose_name=_("path"),)
     full_path = StringField(verbose_name=_("full path"),)
@@ -57,7 +57,7 @@ class Request(models.Model):
         default=False, verbose_name=_("is ajax"), help_text=_("Wheather this request was used via javascript."),
     )
 
-    # User infomation
+    # User information.
     ip = models.GenericIPAddressField(verbose_name=_("ip address"),)
     user_id = models.IntegerField(blank=True, null=True, verbose_name=_("user"),)
     referer = URLField(blank=True, null=True, verbose_name=_("referer"),)
@@ -85,7 +85,7 @@ class Request(models.Model):
         return self.get_user()
 
     def from_http_request(self, request, response=None, commit=True):
-        # Request infomation
+        # Request information.
         self.method = request.method
         self.path = request.path
         self.full_path = request.get_full_path()
@@ -98,7 +98,7 @@ class Request(models.Model):
         self.is_secure = request.is_secure()
         self.is_ajax = request.is_ajax()
 
-        # User infomation
+        # User information.
         self.ip = request.META.get("HTTP_X_FORWARDED_FOR", request.META.get("REMOTE_ADDR", "")).split(",")[0]
         self.referer = request.META.get("HTTP_REFERER", "")
         self.user_agent = request.META.get("HTTP_USER_AGENT", "")
