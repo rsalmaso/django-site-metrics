@@ -91,7 +91,7 @@ class Modules:
             [
                 {
                     "data": [(mktime(day.timetuple()) * 1000, module.count(qs)) for day, qs in days],
-                    "label": gettext(module.verbose_name_plural),
+                    "label": str(gettext(module.verbose_name_plural)),
                 }
                 for module in self.modules
             ]

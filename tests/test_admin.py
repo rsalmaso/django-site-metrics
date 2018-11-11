@@ -27,6 +27,8 @@ from django.contrib.admin import site
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.test import RequestFactory, TestCase
+from django.test.utils import override_settings
+from django.utils.translation import _trans
 from metrics.admin import RequestAdmin
 from metrics.models import Request
 
@@ -78,6 +80,12 @@ class TrafficTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_traffic(self):
+        request = self.factory.get("/foo")
+        self.admin.traffic(request)
+
+    @override_settings(USE_I18N=False)
+    def test_traffic_without_i18n(self):
+        del _trans.gettext
         request = self.factory.get("/foo")
         self.admin.traffic(request)
 
