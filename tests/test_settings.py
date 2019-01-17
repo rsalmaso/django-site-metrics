@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.staticfiles",
+    "django.contrib.messages",
     "django.contrib.sessions",
     "django.contrib.admin",
     "tests",
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
 MIDDLEWARE_CLASSES = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
 ]
 
 if django.VERSION >= (1, 7):
@@ -73,6 +75,7 @@ TEMPLATES = [
                 "django.template.context_processors.i18n",
                 "django.template.context_processors.request",
                 "django.template.context_processors.static",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
