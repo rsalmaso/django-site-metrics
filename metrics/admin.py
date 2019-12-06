@@ -31,10 +31,10 @@ from django.contrib.admin import widgets
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.utils.html import format_html
-from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from django.utils.html import format_html
 from django.utils.text import Truncator
+from django.utils.translation import gettext_lazy as _
 
 from .fields import StringField
 from .models import Request
@@ -137,7 +137,7 @@ class RequestAdmin(admin.ModelAdmin):
         return render(
             request,
             "admin/metrics/request/overview.html",
-            {"title": _("Request overview"), "plugins": plugins.plugins,},
+            {"title": _("Request overview"), "plugins": plugins.plugins},
         )
 
     def traffic(self, request):

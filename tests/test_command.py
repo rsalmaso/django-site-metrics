@@ -22,14 +22,14 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from datetime import timedelta
+from io import StringIO
 
 import mock
 from django.core.management.base import CommandError
 from django.test import TestCase
-from io import StringIO
 from django.utils.timezone import now
-from metrics.management.commands.purgerequests import Command as PurgeRequest
 from metrics.management.commands.purgerequests import DURATION_OPTIONS
+from metrics.management.commands.purgerequests import Command as PurgeRequest
 from metrics.models import Request
 
 

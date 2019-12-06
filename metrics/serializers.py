@@ -21,11 +21,12 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import datetime
+
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models.query import QuerySet
 from django.utils.encoding import force_text
 from django.utils.functional import Promise
-import datetime
 
 
 class JSONEncoder(DjangoJSONEncoder):

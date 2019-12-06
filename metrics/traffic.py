@@ -26,8 +26,8 @@ from time import mktime
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import Count
 from django.utils.text import format_lazy
-from django.utils.translation import gettext_lazy as _
 from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
 
 from . import settings
 from .utils import get_verbose_name
