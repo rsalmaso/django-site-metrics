@@ -19,7 +19,7 @@ setup(
     author=metrics.__author__,
     author_email=metrics.__email__,
     url='https://bitbucket.org/rsalmaso/django-site-metrics/',
-    download_url='https://bitbucket.org/rsalmaso/django-site-metrics/get/{0}.tar.gz'.format(metrics.__version__),
+    download_url='https://pypi.org/project/django-site-metrics/',
     packages=[
         "metrics",
         "metrics.migrations",
