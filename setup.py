@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import io
-import metrics
+
 from setuptools import setup
+
+import metrics
 
 
 def read(filename):
@@ -16,6 +18,7 @@ setup(
     version=metrics.__version__,
     description=read("docs/description.rst"),
     long_description=read("docs/long_description.rst"),
+    long_description_content_type="text/x-rst",
     author=metrics.__author__,
     author_email=metrics.__email__,
     url="https://bitbucket.org/rsalmaso/django-site-metrics/",
@@ -36,7 +39,7 @@ setup(
             "locale/*/LC_MESSAGES/*.*",
         ]
     },
-    install_requires=["django >= 1.8", "python-dateutil",],
+    install_requires=["django >= 2.2", "python-dateutil"],
     license=metrics.__licence__,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -47,7 +50,14 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: Implementation :: CPython",
+        "Programming Language :: Python :: Implementation :: PyPy",
+        'Framework :: Django',
+        'Framework :: Django :: 2.2',
+        'Framework :: Django :: 3.0',
     ],
 )
