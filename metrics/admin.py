@@ -53,7 +53,7 @@ class RequestAdmin(admin.ModelAdmin):
     fieldsets = (
         (
             _("Request"),
-            {"fields": ("method", "path", "full_path", "_query_string", "time", "is_secure", "is_ajax", "_headers")},
+            {"fields": ("method", "path", "full_path", "_query_string", "time", "is_secure", "_headers")},
         ),
         (_("Response"), {"fields": ("response",)}),
         (_("User info"), {"fields": ("referer", "user_agent", "ip", "_user", "language")}),
@@ -65,7 +65,6 @@ class RequestAdmin(admin.ModelAdmin):
         "_query_string",
         "time",
         "is_secure",
-        "is_ajax",
         "_headers",
         "response",
         "referer",

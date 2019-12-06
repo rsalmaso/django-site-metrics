@@ -119,21 +119,6 @@ class Module:
         raise NotImplementedError("'count' isn't defined.")
 
 
-class Ajax(Module):
-    verbose_name_plural = _("Ajax")
-
-    def count(self, qs):
-        return qs.filter(is_ajax=True).count()
-
-
-class NotAjax(Module):
-    verbose_name = _("Not Ajax")
-    verbose_name_plural = _("Not Ajax")
-
-    def count(self, qs):
-        return qs.filter(is_ajax=False).count()
-
-
 class Error(Module):
     verbose_name = _("Error")
     verbose_name_plural = _("Errors")

@@ -28,7 +28,6 @@ VALID_METHOD_NAMES = getattr(
 )
 
 ONLY_ERRORS = getattr(settings, "METRICS_ONLY_ERRORS", False)
-IGNORE_AJAX = getattr(settings, "METRICS_IGNORE_AJAX", False)
 IGNORE_IP = getattr(settings, "METRICS_IGNORE_IP", tuple())
 LOG_IP = getattr(settings, "METRICS_LOG_IP", True)
 IP_DUMMY = getattr(settings, "METRICS_IP_DUMMY", "1.1.1.1")

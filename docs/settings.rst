@@ -4,15 +4,6 @@
 Settings
 ========
 
-``METRICS_IGNORE_AJAX``
-=======================
-
-Default: ``False``
-
-If this is set to ``True``, then ajax requests will not be recorded. To
-determine if a request was ajax, we use ``HttpRequest.is_ajax()``, see
-Django documentation for more information.
-
 ``METRICS_IGNORE_IP``
 =====================
 
