@@ -23,8 +23,6 @@
 
 import re
 
-from django.utils.six import string_types
-
 
 class RegexPattern:
     def __init__(self, regex, name=""):
@@ -43,7 +41,7 @@ class Patterns:
         self.unknown = unknown
 
         for pattern in args:
-            if isinstance(pattern, string_types):
+            if isinstance(pattern, str):
                 self.patterns += (RegexPattern(pattern),)
             else:
                 self.patterns += (RegexPattern(*pattern),)

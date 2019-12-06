@@ -26,7 +26,7 @@ from datetime import timedelta
 import mock
 from django.core.management.base import CommandError
 from django.test import TestCase
-from django.utils.six import StringIO
+from io import StringIO
 from django.utils.timezone import now
 from metrics.management.commands.purgerequests import Command as PurgeRequest
 from metrics.management.commands.purgerequests import DURATION_OPTIONS
