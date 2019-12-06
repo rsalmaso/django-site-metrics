@@ -1,4 +1,4 @@
-# Copyright (C) 2016-2018, Raffaele Salmaso <raffaele@salmaso.org>
+# Copyright (C) 2016-2019, Raffaele Salmaso <raffaele@salmaso.org>
 # Copyright (C) 2009-2016, Kyle Fuller and Mariusz Felisiak
 # All rights reserved.
 #
