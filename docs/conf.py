@@ -6,12 +6,12 @@ sys.path.insert(0, PATH)
 
 import metrics
 
-source_suffix = '.rst'
-master_doc = 'contents'
-project = 'django-site-metrics'
-copyright = 'Raffaele Salmaso'
+source_suffix = ".rst"
+master_doc = "contents"
+project = "django-site-metrics"
+copyright = "Raffaele Salmaso"
 version = metrics.__version__
 release = version
-today_fmt = '%B %d, %Y'
+today_fmt = "%B %d, %Y"
 add_function_parentheses = True
 add_module_names = False

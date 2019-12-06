@@ -43,8 +43,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            "amount",
-            type=int,
+            "amount", type=int,
         )
         parser.add_argument("duration")
         parser.add_argument(
@@ -52,7 +51,7 @@ class Command(BaseCommand):
             action="store_false",
             dest="interactive",
             default=True,
-            help="Tells Django to NOT prompt the user for input of any kind."
+            help="Tells Django to NOT prompt the user for input of any kind.",
         )
 
     def handle(self, *args, **options):
@@ -76,14 +75,18 @@ class Command(BaseCommand):
             return
 
         if options.get("interactive"):
-            confirm = input("""
+            confirm = input(
+                """
 You have requested a database reset.
 This will IRREVERSIBLY DESTROY any
 requests created before {0} {1} ago.
 That is a total of {2} requests.
 Are you sure you want to do this?
 
-Type 'yes' to continue, or 'no' to cancel:""".format(amount, duration, count))
+Type 'yes' to continue, or 'no' to cancel:""".format(
+                    amount, duration, count
+                )
+            )
         else:
             confirm = "yes"
 

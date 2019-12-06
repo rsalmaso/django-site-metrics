@@ -12,14 +12,14 @@ def read(filename):
 
 
 setup(
-    name='django-site-metrics',
+    name="django-site-metrics",
     version=metrics.__version__,
-    description=read('docs/description.rst'),
-    long_description=read('docs/long_description.rst'),
+    description=read("docs/description.rst"),
+    long_description=read("docs/long_description.rst"),
     author=metrics.__author__,
     author_email=metrics.__email__,
-    url='https://bitbucket.org/rsalmaso/django-site-metrics/',
-    download_url='https://pypi.org/project/django-site-metrics/',
+    url="https://bitbucket.org/rsalmaso/django-site-metrics/",
+    download_url="https://pypi.org/project/django-site-metrics/",
     packages=[
         "metrics",
         "metrics.migrations",
@@ -27,17 +27,16 @@ setup(
         "metrics.management",
         "metrics.management.commands",
     ],
-    package_data={"metrics": [
-        "templates/admin/metrics/*.html",
-        "templates/admin/metrics/metrics/*.html",
-        "templates/metrics/plugins/*.html",
-        "static/metrics/js/*.js",
-        "locale/*/LC_MESSAGES/*.*",
-    ]},
-    install_requires=[
-        "django >= 1.8",
-        "python-dateutil",
-    ],
+    package_data={
+        "metrics": [
+            "templates/admin/metrics/*.html",
+            "templates/admin/metrics/metrics/*.html",
+            "templates/metrics/plugins/*.html",
+            "static/metrics/js/*.js",
+            "locale/*/LC_MESSAGES/*.*",
+        ]
+    },
+    install_requires=["django >= 1.8", "python-dateutil",],
     license=metrics.__licence__,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -50,5 +49,5 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
-    ]
+    ],
 )

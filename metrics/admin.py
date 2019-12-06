@@ -51,17 +51,29 @@ class RequestAdmin(admin.ModelAdmin):
     }
     list_display = ("time", "_path", "response", "method", "request_from")
     fieldsets = (
-        (_("Request"), {
-            "fields": ("method", "path", "full_path", "_query_string", "time", "is_secure", "is_ajax", "_headers")
-        }),
-        (_("Response"), {
-            "fields": ("response",)
-        }),
-        (_("User info"), {
-            "fields": ("referer", "user_agent", "ip", "_user", "language")
-        })
+        (
+            _("Request"),
+            {"fields": ("method", "path", "full_path", "_query_string", "time", "is_secure", "is_ajax", "_headers")},
+        ),
+        (_("Response"), {"fields": ("response",)}),
+        (_("User info"), {"fields": ("referer", "user_agent", "ip", "_user", "language")}),
     )
-    readonly_fields = ("method", "path", "full_path", "_query_string", "time", "is_secure", "is_ajax", "_headers", "response", "referer", "user_agent", "ip", "_user", "language")
+    readonly_fields = (
+        "method",
+        "path",
+        "full_path",
+        "_query_string",
+        "time",
+        "is_secure",
+        "is_ajax",
+        "_headers",
+        "response",
+        "referer",
+        "user_agent",
+        "ip",
+        "_user",
+        "language",
+    )
 
     def lookup_allowed(self, key, value):
         return key == "user__%s" % User.USERNAME_FIELD or super().lookup_allowed(key, value)
@@ -71,9 +83,9 @@ class RequestAdmin(admin.ModelAdmin):
 
     def _path(self, obj):
         return """<a href="?{url}" title="{path}">{path}</a>""".format(
-            url=urlencode({"path": obj.path}),
-            path=Truncator(obj.path).chars(72),
+            url=urlencode({"path": obj.path}), path=Truncator(obj.path).chars(72),
         )
+
     _path.short_description = _("Path")
     _path.allow_tags = True
 
@@ -87,16 +99,18 @@ class RequestAdmin(admin.ModelAdmin):
     def request_from(self, obj):
         if obj.user_id:
             user = obj.get_user()
-            return format_html("""<a href="?user__{field}={username}" title="{title}">{user}</a>""".format(
-                field=User.USERNAME_FIELD,
-                username=Truncator(user.get_username()).chars(35),
-                title=_("Show only requests from this user."),
-                user=user,
-            ))
-        return format_html("""<a href="?ip={0}" title="{1}">{0}</a>""".format(
-            obj.ip,
-            _("Show only requests from this IP address."),
-        ))
+            return format_html(
+                """<a href="?user__{field}={username}" title="{title}">{user}</a>""".format(
+                    field=User.USERNAME_FIELD,
+                    username=Truncator(user.get_username()).chars(35),
+                    title=_("Show only requests from this user."),
+                    user=user,
+                )
+            )
+        return format_html(
+            """<a href="?ip={0}" title="{1}">{0}</a>""".format(obj.ip, _("Show only requests from this IP address."),)
+        )
+
     request_from.short_description = "From"
     request_from.allow_tags = True
 
@@ -106,6 +120,7 @@ class RequestAdmin(admin.ModelAdmin):
         def wrap(view):
             def wrapper(*args, **kwargs):
                 return self.admin_site.admin_view(view)(*args, **kwargs)
+
             return update_wrapper(wrapper, view)
 
         info = (self.model._meta.app_label, self.model._meta.model_name)
@@ -121,11 +136,8 @@ class RequestAdmin(admin.ModelAdmin):
 
         return render(
             request,
-            'admin/metrics/request/overview.html',
-            {
-                "title": _("Request overview"),
-                "plugins": plugins.plugins,
-            }
+            "admin/metrics/request/overview.html",
+            {"title": _("Request overview"), "plugins": plugins.plugins,},
         )
 
     def traffic(self, request):
@@ -145,5 +157,6 @@ class RequestAdmin(admin.ModelAdmin):
         days_qs = [(day, Request.objects.day(date=day)) for day in days]
         dump = json.dumps(modules.graph(days_qs), cls=JSONEncoder, indent=2)
         return HttpResponse(dump, content_type="text/javascript")
+
 
 admin.site.register(Request, RequestAdmin)

@@ -37,6 +37,7 @@ class Modules:
     """
     Set of :class:`.Module`.
     """
+
     def load(self):
         """
         Import and instanciate modules defined in
@@ -51,7 +52,7 @@ class Modules:
             except ValueError:
                 raise ImproperlyConfigured("{0} isn't a traffic module".format(module_path))
             traffic_module = module_path[:dot]
-            traffic_classname = module_path[dot + 1:]
+            traffic_classname = module_path[dot + 1 :]
 
             try:
                 mod = import_module(traffic_module)
@@ -61,10 +62,9 @@ class Modules:
             try:
                 traffic_class = getattr(mod, traffic_classname)
             except AttributeError:
-                raise ImproperlyConfigured("Traffic module '{0}' does not define a '{1}' class".format(
-                    traffic_module,
-                    traffic_classname,
-                ))
+                raise ImproperlyConfigured(
+                    "Traffic module '{0}' does not define a '{1}' class".format(traffic_module, traffic_classname,)
+                )
 
             self._modules += (traffic_class(),)
 
@@ -81,21 +81,22 @@ class Modules:
         """
         Get a list of modules" counters.
         """
-        return tuple([
-            (module.verbose_name_plural, [module.count(qs) for qs in queries])
-            for module in self.modules
-        ])
+        return tuple([(module.verbose_name_plural, [module.count(qs) for qs in queries]) for module in self.modules])
 
     def graph(self, days):
         """
         Get a list of modules" counters for all the given days.
         """
-        return tuple([
-            {"data": [(mktime(day.timetuple()) * 1000, module.count(qs))
-                      for day, qs in days],
-             'label': gettext(module.verbose_name_plural)}
-            for module in self.modules
-        ])
+        return tuple(
+            [
+                {
+                    "data": [(mktime(day.timetuple()) * 1000, module.count(qs)) for day, qs in days],
+                    "label": gettext(module.verbose_name_plural),
+                }
+                for module in self.modules
+            ]
+        )
+
 
 modules = Modules()
 
@@ -104,6 +105,7 @@ class Module:
     """
     Base module class.
     """
+
     def __init__(self):
         self.module_name = self.__class__.__name__
 
@@ -111,7 +113,7 @@ class Module:
             self.verbose_name = get_verbose_name(self.module_name)
 
         if not hasattr(self, "verbose_name_plural"):
-            self.verbose_name_plural = format_lazy('{}{}', self.verbose_name, 's')
+            self.verbose_name_plural = format_lazy("{}{}", self.verbose_name, "s")
 
     def count(self, qs):
         raise NotImplementedError("'count' isn't defined.")
@@ -185,9 +187,7 @@ class UniqueVisit(Module):
     verbose_name_plural = _("Unique Visits")
 
     def count(self, qs):
-        return qs.exclude(
-            referer__startswith=settings.BASE_URL,
-        ).count()
+        return qs.exclude(referer__startswith=settings.BASE_URL,).count()
 
 
 class UniqueVisitor(Module):

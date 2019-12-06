@@ -42,73 +42,27 @@ class Request(models.Model):
     objects = RequestManager()
 
     # Response infomation
-    response = models.SmallIntegerField(
-        choices=HTTP_STATUS_CODES,
-        default=200,
-        verbose_name=_("response"),
-    )
+    response = models.SmallIntegerField(choices=HTTP_STATUS_CODES, default=200, verbose_name=_("response"),)
 
     # Request infomation
-    method = StringField(
-        default="GET",
-        verbose_name=_("method"),
-    )
-    path = StringField(
-        verbose_name=_("path"),
-    )
-    full_path = StringField(
-        verbose_name=_("full path"),
-    )
-    query_string = JSONField(
-        blank=True,
-        null=True,
-        verbose_name=_("query string"),
-    )
-    headers = JSONField(
-        blank=True,
-        null=True,
-        verbose_name=_("headers"),
-    )
-    time = models.DateTimeField(
-        default=timezone.now,
-        db_index=True,
-        verbose_name=_("time"),
-    )
+    method = StringField(default="GET", verbose_name=_("method"),)
+    path = StringField(verbose_name=_("path"),)
+    full_path = StringField(verbose_name=_("full path"),)
+    query_string = JSONField(blank=True, null=True, verbose_name=_("query string"),)
+    headers = JSONField(blank=True, null=True, verbose_name=_("headers"),)
+    time = models.DateTimeField(default=timezone.now, db_index=True, verbose_name=_("time"),)
 
-    is_secure = models.BooleanField(
-        default=False,
-        verbose_name=_("is secure"),
-    )
+    is_secure = models.BooleanField(default=False, verbose_name=_("is secure"),)
     is_ajax = models.BooleanField(
-        default=False,
-        verbose_name=_("is ajax"),
-        help_text=_("Wheather this request was used via javascript."),
+        default=False, verbose_name=_("is ajax"), help_text=_("Wheather this request was used via javascript."),
     )
 
     # User infomation
-    ip = models.GenericIPAddressField(
-        verbose_name=_("ip address"),
-    )
-    user_id = models.IntegerField(
-        blank=True,
-        null=True,
-        verbose_name=_("user"),
-    )
-    referer = URLField(
-        blank=True,
-        null=True,
-        verbose_name=_("referer"),
-    )
-    user_agent = StringField(
-        blank=True,
-        null=True,
-        verbose_name=_("user agent"),
-    )
-    language = StringField(
-        blank=True,
-        null=True,
-        verbose_name=_("language"),
-    )
+    ip = models.GenericIPAddressField(verbose_name=_("ip address"),)
+    user_id = models.IntegerField(blank=True, null=True, verbose_name=_("user"),)
+    referer = URLField(blank=True, null=True, verbose_name=_("referer"),)
+    user_agent = StringField(blank=True, null=True, verbose_name=_("user agent"),)
+    language = StringField(blank=True, null=True, verbose_name=_("language"),)
 
     class Meta:
         ordering = ["-time"]
@@ -122,6 +76,7 @@ class Request(models.Model):
         if self.user_id:
             return get_user_model().objects.get(pk=self.user_id)
         return None
+
     get_user.allow_tags = True
     get_user.short_description = _("user")
 
@@ -134,7 +89,11 @@ class Request(models.Model):
         self.method = request.method
         self.path = request.path
         self.full_path = request.get_full_path()
-        self.headers = {k: v for k, v in request.META.items() if (k.startswith("HTTP") or k.startswith("CONTENT")) and k != "HTTP_COOKIE"}
+        self.headers = {
+            k: v
+            for k, v in request.META.items()
+            if (k.startswith("HTTP") or k.startswith("CONTENT")) and k != "HTTP_COOKIE"
+        }
         self.query_string = request.GET
         self.is_secure = request.is_secure()
         self.is_ajax = request.is_ajax()

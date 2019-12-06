@@ -23,19 +23,19 @@
 
 from .version import get_version
 
-VERSION = (0, 1, 0, 'alpha', 1)
+VERSION = (0, 1, 0, "alpha", 1)
 
 __version__ = get_version(VERSION)
-__copyright__ = 'Copyright (C) 2009-2019, Raffaele Salmaso, Kyle Fuller, Mariusz Felisiak'
-__licence__ = 'BSD'
-__author__ = 'Raffaele Salmaso'
-__email__ = 'raffaele@salmaso.org'
+__copyright__ = "Copyright (C) 2009-2019, Raffaele Salmaso, Kyle Fuller, Mariusz Felisiak"
+__licence__ = "BSD"
+__author__ = "Raffaele Salmaso"
+__email__ = "raffaele@salmaso.org"
 __authors__ = [
-    'Raffaele Salmaso <raffaele@salmaso.org>',
-    'Kyle Fuller <kyle@fuller.li>',
-    'Jannis Leidel (jezdez)',
-    'krisje8 <krisje8@gmail.com>',
-    'Mariusz Felisiak <felisiak.mariusz@gmail.com>',
+    "Raffaele Salmaso <raffaele@salmaso.org>",
+    "Kyle Fuller <kyle@fuller.li>",
+    "Jannis Leidel (jezdez)",
+    "krisje8 <krisje8@gmail.com>",
+    "Mariusz Felisiak <felisiak.mariusz@gmail.com>",
 ]
 
 

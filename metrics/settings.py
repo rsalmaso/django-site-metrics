@@ -24,9 +24,7 @@
 from django.conf import settings
 
 VALID_METHOD_NAMES = getattr(
-    settings,
-    "METRICS_VALID_METHOD_NAMES",
-    ("get", "post", "put", "delete", "head", "options", "trace"),
+    settings, "METRICS_VALID_METHOD_NAMES", ("get", "post", "put", "delete", "head", "options", "trace"),
 )
 
 ONLY_ERRORS = getattr(settings, "METRICS_ONLY_ERRORS", False)
@@ -40,25 +38,30 @@ IGNORE_USERNAME = getattr(settings, "METRICS_IGNORE_USERNAME", tuple())
 IGNORE_PATHS = getattr(settings, "METRICS_IGNORE_PATHS", tuple())
 IGNORE_USER_AGENTS = getattr(settings, "METRICS_IGNORE_USER_AGENTS", tuple())
 
-TRAFFIC_MODULES = getattr(settings, "METRICS_TRAFFIC_MODULES", (
-    "metrics.traffic.UniqueVisitor",
-    "metrics.traffic.UniqueVisit",
-    "metrics.traffic.Hit",
-))
+TRAFFIC_MODULES = getattr(
+    settings,
+    "METRICS_TRAFFIC_MODULES",
+    ("metrics.traffic.UniqueVisitor", "metrics.traffic.UniqueVisit", "metrics.traffic.Hit",),
+)
 
-PLUGINS = getattr(settings, "METRICS_PLUGINS", (
-    "metrics.plugins.TrafficInformation",
-    "metrics.plugins.LatestRequests",
-    "metrics.plugins.TopPaths",
-    "metrics.plugins.TopErrorPaths",
-    "metrics.plugins.TopReferrers",
-    "metrics.plugins.TopSearchPhrases",
-    "metrics.plugins.TopBrowsers",
-))
+PLUGINS = getattr(
+    settings,
+    "METRICS_PLUGINS",
+    (
+        "metrics.plugins.TrafficInformation",
+        "metrics.plugins.LatestRequests",
+        "metrics.plugins.TopPaths",
+        "metrics.plugins.TopErrorPaths",
+        "metrics.plugins.TopReferrers",
+        "metrics.plugins.TopSearchPhrases",
+        "metrics.plugins.TopBrowsers",
+    ),
+)
 
 try:
     from django.http import HttpRequest
     from django.contrib.sites.shortcuts import get_current_site
+
     BASE_URL = getattr(settings, "METRICS_BASE_URL", "http://{0}".format(get_current_site(HttpRequest()).domain))
 except Exception:
     BASE_URL = getattr(settings, "METRICS_BASE_URL", "http://127.0.0.1")

@@ -65,8 +65,8 @@ class Plugins:
             try:
                 dot = module_path.rindex(".")
             except ValueError:
-                raise exceptions.ImproperlyConfigured("{0} isn\"t a plugin".format(module_path))
-            plugin, plugin_classname = module_path[:dot], module_path[dot + 1:]
+                raise exceptions.ImproperlyConfigured('{0} isn"t a plugin'.format(module_path))
+            plugin, plugin_classname = module_path[:dot], module_path[dot + 1 :]
 
             try:
                 mod = import_module(plugin)
@@ -76,10 +76,9 @@ class Plugins:
             try:
                 plugin_class = getattr(mod, plugin_classname)
             except AttributeError:
-                raise exceptions.ImproperlyConfigured("Plugin '{0}' does not define a '{1}' class".format(
-                    plugin,
-                    plugin_classname,
-                ))
+                raise exceptions.ImproperlyConfigured(
+                    "Plugin '{0}' does not define a '{1}' class".format(plugin, plugin_classname,)
+                )
 
             self._plugins.append(plugin_class())
 
@@ -87,7 +86,9 @@ class Plugins:
         if not hasattr(self, "_plugins"):
             self.load()
         return self._plugins
+
     plugins = property(plugins)
+
 
 plugins = Plugins()
 
@@ -104,8 +105,8 @@ class Plugin:
 
     def render(self):
         templates = [
-            'metrics/plugins/{0}.html'.format(self.__class__.__name__.lower()),
-            'metrics/plugins/base.html',
+            "metrics/plugins/{0}.html".format(self.__class__.__name__.lower()),
+            "metrics/plugins/base.html",
         ]
 
         if hasattr(self, "template"):
@@ -127,9 +128,7 @@ class TrafficInformation(Plugin):
         INFO_TABLE = ("today", "this_week", "this_month", "this_year", "all")
         INFO_TABLE_QUERIES = [getattr(Request.objects, query, None)() for query in INFO_TABLE]
 
-        return {
-            "traffic": modules.table(INFO_TABLE_QUERIES)
-        }
+        return {"traffic": modules.table(INFO_TABLE_QUERIES)}
 
 
 class TopPaths(Plugin):
@@ -137,13 +136,11 @@ class TopPaths(Plugin):
         return self.qs.filter(response__lt=400)
 
     def template_context(self):
-        return {
-            "paths": self.queryset().values("path").annotate(Count("path")).order_by("-path__count")[:10]
-        }
+        return {"paths": self.queryset().values("path").annotate(Count("path")).order_by("-path__count")[:10]}
 
 
 class TopErrorPaths(TopPaths):
-    template = 'metrics/plugins/toppaths.html'
+    template = "metrics/plugins/toppaths.html"
 
     def queryset(self):
         return self.qs.filter(response__gte=400)
@@ -161,16 +158,12 @@ class TopReferrers(Plugin):
 
 class TopSearchPhrases(Plugin):
     def template_context(self):
-        return {
-            "phrases": set_count(self.qs.search().only("referer").attr_list("keywords"))[:10]
-        }
+        return {"phrases": set_count(self.qs.search().only("referer").attr_list("keywords"))[:10]}
 
 
 class TopBrowsers(Plugin):
     def template_context(self):
-        return {
-            "browsers": set_count(self.qs.only("user_agent").attr_list("browser"))[:5]
-        }
+        return {"browsers": set_count(self.qs.only("user_agent").attr_list("browser"))[:5]}
 
 
 class ActiveUsers(Plugin):
