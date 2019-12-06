@@ -4,6 +4,7 @@ target-version = ['py35']
 exclude = '''
 /(
   | __pycache__
+  | .tox
 )/
 '''
 safe = true
