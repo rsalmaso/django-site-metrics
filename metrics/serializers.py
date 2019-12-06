@@ -46,7 +46,4 @@ class JSONEncoder(DjangoJSONEncoder):
                 pass
         elif hasattr(obj, "__iter__"):
             return tuple(item for item in obj)
-        elif isinstance(obj, Promise):
-            # added in django 1.10
-            return force_text(obj)
         return super().default(obj)

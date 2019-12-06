@@ -25,12 +25,8 @@ from . import settings
 from .models import Request
 from .router import Patterns
 
-try:
-    # needed to support Django >= 1.10 MIDDLEWARE
-    from django.utils.deprecation import MiddlewareMixin
-except ImportError:
-    # needed to keep Django <= 1.9 MIDDLEWARE_CLASSES
-    MiddlewareMixin = object
+# needed to support Django >= 1.10 MIDDLEWARE
+from django.utils.deprecation import MiddlewareMixin
 
 
 class RequestMiddleware(MiddlewareMixin):
