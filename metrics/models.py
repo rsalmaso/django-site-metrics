@@ -24,13 +24,12 @@
 from socket import gethostbyaddr
 
 from django.contrib.auth import get_user_model
-from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from . import settings as request_settings
-from .fields import StringField, URLField
+from .fields import JSONField, StringField, URLField
 from .managers import RequestManager
 from .utils import HTTP_STATUS_CODES, browsers, engines
 
