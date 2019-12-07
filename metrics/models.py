@@ -44,8 +44,8 @@ class Request(models.Model):
     method = StringField(default="GET", verbose_name=_("method"))
     path = StringField(verbose_name=_("path"))
     full_path = StringField(verbose_name=_("full path"))
-    query_string = JSONField(blank=True, null=True, verbose_name=_("query string"))
-    headers = JSONField(blank=True, null=True, verbose_name=_("headers"))
+    query_string = JSONField(default=dict, verbose_name=_("query string"))
+    headers = JSONField(default=dict, verbose_name=_("headers"))
     time = models.DateTimeField(default=timezone.now, db_index=True, verbose_name=_("time"))
 
     is_secure = models.BooleanField(default=False, verbose_name=_("is secure"))
@@ -53,9 +53,9 @@ class Request(models.Model):
     # User information.
     ip = models.GenericIPAddressField(verbose_name=_("ip address"))
     user_id = models.IntegerField(blank=True, null=True, verbose_name=_("user"))
-    referer = URLField(blank=True, null=True, verbose_name=_("referer"))
-    user_agent = StringField(blank=True, null=True, verbose_name=_("user agent"))
-    language = StringField(blank=True, null=True, verbose_name=_("language"))
+    referer = URLField(blank=True, verbose_name=_("referer"))
+    user_agent = StringField(blank=True, verbose_name=_("user agent"))
+    language = StringField(blank=True, verbose_name=_("language"))
 
     class Meta:
         ordering = ["-time"]
