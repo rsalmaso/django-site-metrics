@@ -121,11 +121,6 @@ class RequestQuerySet(models.QuerySet):
 
 
 class RequestManager(models.Manager.from_queryset(RequestQuerySet)):
-    def __getattr__(self, attr, *args, **kwargs):
-        if attr in QUERYSET_PROXY_METHODS:
-            return getattr(self.get_query_set(), attr, None)
-        super().__getattr__(*args, **kwargs)
-
     def active_users(self, **options):
         """
         Returns a list of active users.
