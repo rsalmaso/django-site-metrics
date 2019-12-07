@@ -32,6 +32,7 @@ HTTP_STATUS_CODES = (
     (100, _("Continue")),
     (101, _("Switching Protocols")),
     (102, _("Processing (WebDAV)")),
+    (103, _("Early Hints")),
     # Success
     (200, _("OK")),
     (201, _("Created")),
@@ -41,6 +42,8 @@ HTTP_STATUS_CODES = (
     (205, _("Reset Content")),
     (206, _("Partial Content")),
     (207, _("Multi-Status (WebDAV)")),
+    (208, _("Already Reported (WebDAV)")),
+    (226, _("IM Used (HTTP Delta encoding)")),
     # Redirection
     (300, _("Multiple Choices")),
     (301, _("Moved Permanently")),
@@ -50,6 +53,7 @@ HTTP_STATUS_CODES = (
     (305, _("Use Proxy")),
     (306, _("Switch Proxy")),  # No longer used
     (307, _("Temporary Redirect")),
+    (308, _("Permanent Redirect")),
     # Client Error
     (400, _("Bad Request")),
     (401, _("Unauthorized")),
@@ -70,12 +74,17 @@ HTTP_STATUS_CODES = (
     (416, _("Requested Range Not Satisfiable")),
     (417, _("Expectation Failed")),
     (418, _('I"m a teapot')),  # April Fools
+    (421, _("Misdirected Request")),
     (422, _("Unprocessable Entity (WebDAV)")),
     (423, _("Locked (WebDAV)")),
     (424, _("Failed Dependency (WebDAV)")),
     (425, _("Unordered Collection")),
     (426, _("Upgrade Required")),
+    (428, _("Precondition Required")),
+    (429, _("Too Many Requests")),
+    (431, _("Request Header Fields Too Large")),
     (449, _("Retry With")),
+    (451, _("Unavailable For Legal Reasons")),
     # Server Error
     (500, _("Internal Server Error")),
     (501, _("Not Implemented")),
@@ -87,6 +96,7 @@ HTTP_STATUS_CODES = (
     (507, _("Insufficient Storage (WebDAV)")),
     (509, _("Bandwidth Limit Exceeded")),
     (510, _("Not Extended")),
+    (511, _("Network Authentication Required")),
 )
 
 
