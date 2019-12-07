@@ -22,9 +22,18 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from django import forms
+from django.contrib.postgres import fields as pg_fields
 from django.core import validators
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+from .serializers import JSONEncoder
+
+
+class JSONField(pg_fields.JSONField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('encoder', JSONEncoder)
+        super().__init__(*args, **kwargs)
 
 
 class StringField(models.TextField):
