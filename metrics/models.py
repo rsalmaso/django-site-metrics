@@ -104,7 +104,7 @@ class Request(models.Model):
         if response:
             self.response = response.status_code
 
-            if (response.status_code == 301) or (response.status_code == 302):
+            if response.status_code in [301, 302, 307, 308]:
                 self.redirect = response["Location"]
 
         if commit:
