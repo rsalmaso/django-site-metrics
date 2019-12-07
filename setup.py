@@ -33,7 +33,7 @@ setup(
     package_data={
         "metrics": [
             "templates/admin/metrics/*.html",
-            "templates/admin/metrics/metrics/*.html",
+            "templates/admin/metrics/request/*.html",
             "templates/metrics/plugins/*.html",
             "static/metrics/js/*.js",
             "locale/*/LC_MESSAGES/*.*",
