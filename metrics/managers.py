@@ -24,6 +24,7 @@
 import datetime
 import time
 
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
@@ -133,12 +134,14 @@ class RequestManager(models.Manager.from_queryset(RequestQuerySet)):
         [<User: kylef>, <User: krisje8>]
         """
 
-        qs = self.filter(user__isnull=False)
+        qs = self.exclude(user_id=None)
 
         if options:
             time = timezone.now() - datetime.timedelta(**options)
             qs = qs.filter(time__gte=time)
 
-        requests = qs.select_related("user").only("user")
+        user_ids = qs.values_list("user_id", flat=True).order_by("user_id").distinct()
 
-        return set([request.user for request in requests])
+        return get_user_model().objects.filter(
+            pk__in=list(user_ids),  # explicit cast to list, otherwise django will join between unrelated databases
+        )
