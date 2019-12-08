@@ -21,12 +21,11 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from django.utils.deprecation import MiddlewareMixin
+
 from . import settings
 from .models import Request
 from .router import Patterns
-
-# needed to support Django >= 1.10 MIDDLEWARE
-from django.utils.deprecation import MiddlewareMixin
 
 
 class RequestMiddleware(MiddlewareMixin):
