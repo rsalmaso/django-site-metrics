@@ -112,7 +112,7 @@ class Request(models.Model):
     @property
     def browser(self):
         if not self.user_agent:
-            return
+            return None
 
         if not hasattr(self, "_browser"):
             self._browser = browsers.resolve(self.user_agent)
@@ -121,12 +121,13 @@ class Request(models.Model):
     @property
     def keywords(self):
         if not self.referer:
-            return
+            return None
 
         if not hasattr(self, "_keywords"):
             self._keywords = engines.resolve(self.referer)
         if self._keywords:
             return " ".join(self._keywords[1]["keywords"].split("+"))
+        return None
 
     @property
     def hostname(self):
