@@ -28,7 +28,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from . import settings as request_settings
+from . import settings
 from .fields import JSONField, StringField, URLField
 from .managers import RequestManager
 from .utils import HTTP_STATUS_CODES, browsers, engines
@@ -136,13 +136,13 @@ class Request(models.Model):
             return self.ip
 
     def save(self, *args, **kwargs):
-        if not request_settings.LOG_IP:
-            self.ip = request_settings.IP_DUMMY
-        elif request_settings.ANONYMOUS_IP:
+        if not settings.LOG_IP:
+            self.ip = settings.IP_DUMMY
+        elif settings.ANONYMOUS_IP:
             parts = self.ip.split(".")[0:-1]
             parts.append("1")
             self.ip = ".".join(parts)
-        if not request_settings.LOG_USER:
+        if not settings.LOG_USER:
             self.user_id = None
 
         super().save(*args, **kwargs)
