@@ -1,3 +1,4 @@
+include LICENSE
 include README.md
 include docs/description.rst
 include docs/long_description.rst
