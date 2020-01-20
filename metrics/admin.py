@@ -81,8 +81,10 @@ class RequestAdmin(admin.ModelAdmin):
         return json.dumps(obj.query_string, cls=JSONEncoder, indent=2)
 
     def _path(self, obj):
-        return """<a href="?{url}" title="{path}">{path}</a>""".format(
-            url=urlencode({"path": obj.path}), path=Truncator(obj.path).chars(72),
+        return format_html(
+            """<a href="?{url}" title="{path}">{path}</a>""",
+            url=urlencode({"path": obj.path}),
+            path=Truncator(obj.path).chars(72),
         )
 
     _path.short_description = _("Path")
@@ -107,7 +109,9 @@ class RequestAdmin(admin.ModelAdmin):
                 )
             )
         return format_html(
-            """<a href="?ip={0}" title="{1}">{0}</a>""".format(obj.ip, _("Show only requests from this IP address."),)
+            """<a href="?ip={ip}" title="{title}">{ip}</a>""",
+            ip=obj.ip,
+            title=_("Show only requests from this IP address."),
         )
 
     request_from.short_description = "From"
