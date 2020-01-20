@@ -59,6 +59,7 @@ class RequestAdmin(admin.ModelAdmin):
         (_("Response"), {"fields": ("status_code",)}),
         (_("User info"), {"fields": ("referer", "user_agent", "ip", "_user", "language")}),
     )
+    ordering = ["-timestamp"]
     readonly_fields = (
         "method",
         "path",
@@ -132,7 +133,7 @@ class RequestAdmin(admin.ModelAdmin):
         ] + super().get_urls()
 
     def overview(self, request):
-        qs = Request.objects.this_month()
+        qs = Request.objects.this_month().order_by("timestamp")
         for plugin in plugins.plugins:
             plugin.qs = qs
 
@@ -156,6 +157,6 @@ class RequestAdmin(admin.ModelAdmin):
             days_step = 30
 
         days = [timezone.now().today() - timedelta(day) for day in range(0, days_count + 1, days_step)]
-        days_qs = [(day, Request.objects.day(date=day)) for day in days]
+        days_qs = [(day, Request.objects.day(date=day).order_by("timestamp")) for day in days]
         dump = json.dumps(modules.graph(days_qs), cls=JSONEncoder, indent=2)
         return HttpResponse(dump, content_type="text/javascript")

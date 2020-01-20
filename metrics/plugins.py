@@ -120,7 +120,7 @@ class Plugin:
 
 class LatestRequests(Plugin):
     def template_context(self):
-        return {"requests": Request.objects.all()[:5]}
+        return {"requests": Request.objects.order_by("-timestamp").all()[:5]}
 
 
 class TrafficInformation(Plugin):

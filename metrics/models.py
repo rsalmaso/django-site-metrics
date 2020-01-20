@@ -58,7 +58,6 @@ class Request(models.Model):
     language = StringField(blank=True, verbose_name=_("language"))
 
     class Meta:
-        ordering = ["-timestamp"]
         verbose_name = _("request")
         verbose_name_plural = _("requests")
 
