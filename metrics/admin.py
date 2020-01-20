@@ -45,6 +45,7 @@ from .traffic import modules
 User = get_user_model()
 
 
+@admin.register(Request)
 class RequestAdmin(admin.ModelAdmin):
     formfield_overrides = {
         StringField: {"widget": widgets.AdminTextInputWidget},
@@ -158,6 +159,3 @@ class RequestAdmin(admin.ModelAdmin):
         days_qs = [(day, Request.objects.day(date=day)) for day in days]
         dump = json.dumps(modules.graph(days_qs), cls=JSONEncoder, indent=2)
         return HttpResponse(dump, content_type="text/javascript")
-
-
-admin.site.register(Request, RequestAdmin)
