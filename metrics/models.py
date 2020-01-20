@@ -65,17 +65,15 @@ class Request(models.Model):
     def __str__(self):
         return "[{0}] {1} {2} {3}".format(self.timestamp, self.method, self.path, self.response)
 
-    def get_user(self):
+    @property
+    def user(self):
         if self.user_id:
             return get_user_model().objects.get(pk=self.user_id)
         return None
 
-    get_user.allow_tags = True
-    get_user.short_description = _("user")
-
-    @property
-    def user(self):
-        return self.get_user()
+    @user.setter
+    def user(self, user):
+        self.user_id = user.pk
 
     def from_http_request(self, request, response=None, commit=True):
         # Request information.

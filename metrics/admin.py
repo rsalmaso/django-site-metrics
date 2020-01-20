@@ -94,12 +94,12 @@ class RequestAdmin(admin.ModelAdmin):
         return json.dumps(obj.headers, cls=JSONEncoder, indent=2)
 
     def _user(self, obj):
-        user = obj.get_user()
+        user = obj.user
         return "{username} [{id}]".format(id=user.pk, username=user.get_username()) if user else ""
 
     def request_from(self, obj):
         if obj.user_id:
-            user = obj.get_user()
+            user = obj.user
             return format_html(
                 """<a href="?user__{field}={username}" title="{title}">{user}</a>""".format(
                     field=User.USERNAME_FIELD,
