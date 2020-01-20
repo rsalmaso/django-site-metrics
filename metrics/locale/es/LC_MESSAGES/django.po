@@ -38,8 +38,8 @@ msgid "Request overview"
 msgstr "Visión general de solicitudes"
 
 #: models.py:13
-msgid "response"
-msgstr "respuesta"
+msgid "status code"
+msgstr ""
 
 #: models.py:16
 msgid "method"

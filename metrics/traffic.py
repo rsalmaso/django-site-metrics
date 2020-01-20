@@ -124,7 +124,7 @@ class Error(Module):
     verbose_name_plural = _("Errors")
 
     def count(self, qs):
-        return qs.filter(response__gte=400).count()
+        return qs.filter(status_code__gte=400).count()
 
 
 class Error404(Module):
@@ -132,7 +132,7 @@ class Error404(Module):
     verbose_name_plural = _("Errors 404")
 
     def count(self, qs):
-        return qs.filter(response=404).count()
+        return qs.filter(status_code=404).count()
 
 
 class Hit(Module):

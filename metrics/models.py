@@ -38,7 +38,7 @@ class Request(models.Model):
     objects = RequestManager()
 
     # Response information.
-    response = models.SmallIntegerField(choices=HTTP_STATUS_CODES, default=200, verbose_name=_("response"))
+    status_code = models.SmallIntegerField(choices=HTTP_STATUS_CODES, default=200, verbose_name=_("status code"))
 
     # Response information.
     method = StringField(default="GET", verbose_name=_("method"))
@@ -63,7 +63,7 @@ class Request(models.Model):
         verbose_name_plural = _("requests")
 
     def __str__(self):
-        return "[{0}] {1} {2} {3}".format(self.timestamp, self.method, self.path, self.response)
+        return "[{0}] {1} {2} {3}".format(self.timestamp, self.method, self.path, self.status_code)
 
     @property
     def user(self):
@@ -99,7 +99,7 @@ class Request(models.Model):
                 self.user_id = request.user.pk
 
         if response:
-            self.response = response.status_code
+            self.status_code = response.status_code
 
             if response.status_code in [301, 302, 307, 308]:
                 self.redirect = response["Location"]

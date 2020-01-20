@@ -42,7 +42,7 @@ msgid "Request overview"
 msgstr ""
 
 #: models.py:13
-msgid "response"
+msgid "status code"
 msgstr ""
 
 #: models.py:16

@@ -42,8 +42,8 @@ msgid "Request overview"
 msgstr "Vue d'ensemble des requêtes"
 
 #: models.py:21
-msgid "response"
-msgstr "réponse"
+msgid "status code"
+msgstr ""
 
 #: models.py:24
 msgid "method"

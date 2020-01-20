@@ -133,7 +133,7 @@ class TrafficInformation(Plugin):
 
 class TopPaths(Plugin):
     def queryset(self):
-        return self.qs.filter(response__lt=400)
+        return self.qs.filter(status_code__lt=400)
 
     def template_context(self):
         return {"paths": self.queryset().values("path").annotate(Count("path")).order_by("-path__count")[:10]}
@@ -143,7 +143,7 @@ class TopErrorPaths(TopPaths):
     template = "metrics/plugins/toppaths.html"
 
     def queryset(self):
-        return self.qs.filter(response__gte=400)
+        return self.qs.filter(status_code__gte=400)
 
 
 class TopReferrers(Plugin):
