@@ -88,7 +88,6 @@ class RequestAdmin(admin.ModelAdmin):
         )
 
     _path.short_description = _("Path")
-    _path.allow_tags = True
 
     def _headers(self, obj):
         return json.dumps(obj.headers, cls=JSONEncoder, indent=2)
@@ -115,7 +114,6 @@ class RequestAdmin(admin.ModelAdmin):
         )
 
     request_from.short_description = "From"
-    request_from.allow_tags = True
 
     def get_urls(self):
         from django.conf.urls import url
