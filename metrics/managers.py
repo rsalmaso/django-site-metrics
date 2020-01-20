@@ -48,7 +48,7 @@ QUERYSET_PROXY_METHODS = (
 
 class RequestQuerySet(models.QuerySet):
     def year(self, year):
-        return self.filter(time__year=year)
+        return self.filter(timestamp__year=year)
 
     def month(self, year=None, month=None, month_format="%b", date=None):
         if not date:
@@ -66,7 +66,7 @@ class RequestQuerySet(models.QuerySet):
         if isinstance(date, datetime.datetime):
             date = date.date()
 
-        return self.filter(time__year=date.year, time__month=date.month)
+        return self.filter(timestamp__year=date.year, timestamp__month=date.month)
 
     def week(self, year, week):
         try:
@@ -78,8 +78,8 @@ class RequestQuerySet(models.QuerySet):
         first_day = date
         last_day = date + datetime.timedelta(days=7)
         lookup_kwargs = {
-            "time__gte": first_day,
-            "time__lt": last_day,
+            "timestamp__gte": first_day,
+            "timestamp__lt": last_day,
         }
 
         return self.filter(**lookup_kwargs)
@@ -96,7 +96,7 @@ class RequestQuerySet(models.QuerySet):
             except ValueError:
                 return
 
-        return self.filter(time__date=date)
+        return self.filter(timestamp__date=date)
 
     def today(self):
         return self.day(date=datetime.date.today())
@@ -137,8 +137,8 @@ class RequestManager(models.Manager.from_queryset(RequestQuerySet)):
         qs = self.exclude(user_id=None)
 
         if options:
-            time = timezone.now() - datetime.timedelta(**options)
-            qs = qs.filter(time__gte=time)
+            timestamp = timezone.now() - datetime.timedelta(**options)
+            qs = qs.filter(timestamp__gte=timestamp)
 
         user_ids = qs.values_list("user_id", flat=True).order_by("user_id").distinct()
 

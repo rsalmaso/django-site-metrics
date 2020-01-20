@@ -46,7 +46,7 @@ class Request(models.Model):
     full_path = StringField(verbose_name=_("full path"))
     query_string = JSONField(default=dict, verbose_name=_("query string"))
     headers = JSONField(default=dict, verbose_name=_("headers"))
-    time = models.DateTimeField(default=timezone.now, db_index=True, verbose_name=_("time"))
+    timestamp = models.DateTimeField(default=timezone.now, db_index=True, verbose_name=_("timestamp"))
 
     is_secure = models.BooleanField(default=False, verbose_name=_("is secure"))
 
@@ -58,12 +58,12 @@ class Request(models.Model):
     language = StringField(blank=True, verbose_name=_("language"))
 
     class Meta:
-        ordering = ["-time"]
+        ordering = ["-timestamp"]
         verbose_name = _("request")
         verbose_name_plural = _("requests")
 
     def __str__(self):
-        return "[{0}] {1} {2} {3}".format(self.time, self.method, self.path, self.response)
+        return "[{0}] {1} {2} {3}".format(self.timestamp, self.method, self.path, self.response)
 
     def get_user(self):
         if self.user_id:

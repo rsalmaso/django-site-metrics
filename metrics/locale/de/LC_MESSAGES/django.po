@@ -50,8 +50,8 @@ msgid "path"
 msgstr "Pfad"
 
 #: models.py:18
-msgid "time"
-msgstr "Zeit"
+msgid "timestamp"
+msgstr "Zeitstempel"
 
 #: models.py:20
 msgid "is secure"

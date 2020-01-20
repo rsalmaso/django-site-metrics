@@ -13,7 +13,7 @@
             <td>{% firstof request.get_user request.ip %}</td>
             <td>{{ request.get_response_display }}</td>
             <td><a href="{% url "admin:metrics_request_change" request.id %}">
-                <abbr class="timeago" title="{{ request.time|date:"c" }}">{{ request.time|date:"D M d H:i:s O Y" }}</abbr>
+                <abbr class="timeago" title="{{ request.timestamp|date:"c" }}">{{ request.timestamp|date:"D M d H:i:s O Y" }}</abbr>
             </a></td>
         </tr>
     {% endfor %}

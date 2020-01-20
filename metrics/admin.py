@@ -49,11 +49,11 @@ class RequestAdmin(admin.ModelAdmin):
     formfield_overrides = {
         StringField: {"widget": widgets.AdminTextInputWidget},
     }
-    list_display = ("time", "_path", "response", "method", "request_from")
+    list_display = ("timestamp", "_path", "response", "method", "request_from")
     fieldsets = (
         (
             _("Request"),
-            {"fields": ("method", "path", "full_path", "_query_string", "time", "is_secure", "_headers")},
+            {"fields": ("method", "path", "full_path", "_query_string", "timestamp", "is_secure", "_headers")},
         ),
         (_("Response"), {"fields": ("response",)}),
         (_("User info"), {"fields": ("referer", "user_agent", "ip", "_user", "language")}),
@@ -63,7 +63,7 @@ class RequestAdmin(admin.ModelAdmin):
         "path",
         "full_path",
         "_query_string",
-        "time",
+        "timestamp",
         "is_secure",
         "_headers",
         "response",

@@ -50,8 +50,8 @@ msgid "path"
 msgstr "ruta"
 
 #: models.py:18
-msgid "time"
-msgstr "hora"
+msgid "timestamp"
+msgstr "marca de tiempo"
 
 #: models.py:20
 msgid "is secure"

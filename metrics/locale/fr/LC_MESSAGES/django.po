@@ -54,8 +54,8 @@ msgid "path"
 msgstr "chemin"
 
 #: models.py:26
-msgid "time"
-msgstr "heure"
+msgid "timestamp"
+msgstr "horodatage"
 
 #: models.py:28
 msgid "is secure"

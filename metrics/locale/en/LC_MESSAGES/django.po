@@ -54,7 +54,7 @@ msgid "path"
 msgstr ""
 
 #: models.py:18
-msgid "time"
+msgid "timestamp"
 msgstr ""
 
 #: models.py:20

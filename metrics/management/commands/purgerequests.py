@@ -66,7 +66,7 @@ class Command(BaseCommand):
         if duration_plural not in DURATION_OPTIONS:
             raise CommandError("Amount must be {0}".format(", ".join(DURATION_OPTIONS)))
 
-        qs = Request.objects.filter(time__lte=DURATION_OPTIONS[duration_plural](amount))
+        qs = Request.objects.filter(timestamp__lte=DURATION_OPTIONS[duration_plural](amount))
         count = qs.count()
 
         if count == 0:
