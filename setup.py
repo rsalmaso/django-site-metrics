@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 import io
 
-from setuptools import setup
-
 import metrics
+from setuptools import setup
 
 
 def read(filename):

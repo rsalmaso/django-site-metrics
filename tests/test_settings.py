@@ -23,7 +23,7 @@
 
 import django
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3",}, "other": {"ENGINE": "django.db.backends.sqlite3",}}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3"}, "other": {"ENGINE": "django.db.backends.sqlite3"}}
 
 SECRET_KEY = "django_metricss_tests_secret_key"
 

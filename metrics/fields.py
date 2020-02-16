@@ -32,7 +32,7 @@ from .serializers import JSONEncoder
 
 class JSONField(pg_fields.JSONField):
     def __init__(self, *args, **kwargs):
-        kwargs.setdefault('encoder', JSONEncoder)
+        kwargs.setdefault("encoder", JSONEncoder)
         super().__init__(*args, **kwargs)
 
 

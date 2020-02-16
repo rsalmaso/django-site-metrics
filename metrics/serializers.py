@@ -25,8 +25,6 @@ import datetime
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models.query import QuerySet
-from django.utils.encoding import force_text
-from django.utils.functional import Promise
 
 
 class JSONEncoder(DjangoJSONEncoder):
@@ -42,7 +40,7 @@ class JSONEncoder(DjangoJSONEncoder):
         elif hasattr(obj, "__getitem__"):
             try:
                 return dict(obj)
-            except:
+            except Exception:
                 pass
         elif hasattr(obj, "__iter__"):
             return tuple(item for item in obj)
