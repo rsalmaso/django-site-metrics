@@ -26,7 +26,7 @@ from unittest import skipIf
 import django
 import mock
 from django.contrib.auth import get_user_model
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseServerError
 from django.test import RequestFactory, TestCase
 from metrics.middleware import RequestMiddleware
 from metrics.models import Request
@@ -34,15 +34,22 @@ from metrics.models import Request
 User = get_user_model()
 
 
+def get_response_empty(request):
+    return HttpResponse()
+
+
+def get_response_server_error(request):
+    return HttpResponseServerError()
+
+
 class RequestMiddlewareTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
-        self.middleware = RequestMiddleware()
+        self.middleware = RequestMiddleware(get_response_empty)
 
     def test_record(self):
         request = self.factory.get("/foo")
-        response = HttpResponse()
-        self.middleware.process_response(request, response)
+        self.middleware(request)
         self.assertEqual(1, Request.objects.count())
 
     @mock.patch(
@@ -65,94 +72,78 @@ class RequestMiddlewareTest(TestCase):
     @mock.patch("metrics.settings.VALID_METHOD_NAMES", ("get",))
     def test_dont_record_unvalid_method_name(self):
         request = self.factory.post("/foo")
-        response = HttpResponse()
-        self.middleware.process_response(request, response)
+        self.middleware(request)
         self.assertEqual(0, Request.objects.count())
 
     @mock.patch("metrics.middleware.settings.VALID_METHOD_NAMES", ("get",))
     def test_record_valid_method_name(self):
         request = self.factory.get("/foo")
-        response = HttpResponse()
-        self.middleware.process_response(request, response)
+        self.middleware(request)
         self.assertEqual(1, Request.objects.count())
 
     @mock.patch("metrics.middleware.settings.ONLY_ERRORS", False)
     def test_dont_record_only_error(self):
         request = self.factory.get("/foo")
         # Errored
-        response = HttpResponse(status=500)
-        self.middleware.process_response(request, response)
+        RequestMiddleware(get_response_server_error)(request)
         # Succeed
-        response = HttpResponse(status=200)
-        self.middleware.process_response(request, response)
-
+        self.middleware(request)
         self.assertEqual(2, Request.objects.count())
 
     @mock.patch("metrics.middleware.settings.ONLY_ERRORS", True)
     def test_record_only_error(self):
         request = self.factory.get("/foo")
         # Errored
-        response = HttpResponse(status=500)
-        self.middleware.process_response(request, response)
+        RequestMiddleware(get_response_server_error)(request)
         # Succeed
-        response = HttpResponse(status=200)
-        self.middleware.process_response(request, response)
-
+        self.middleware(request)
         self.assertEqual(1, Request.objects.count())
 
     @mock.patch("metrics.middleware.settings.IGNORE_PATHS", (r"^foo",))
     def test_dont_record_ignored_paths(self):
         request = self.factory.get("/foo")
-        response = HttpResponse()
         # Ignored path
-        self.middleware.process_response(request, response)
+        self.middleware(request)
         # Recorded
         request = self.factory.get("/bar")
-        self.middleware.process_response(request, response)
-
+        self.middleware(request)
         self.assertEqual(1, Request.objects.count())
 
     @mock.patch("metrics.middleware.settings.IGNORE_IP", ("1.2.3.4",))
     def test_dont_record_ignored_ips(self):
         request = self.factory.get("/foo")
-        response = HttpResponse()
         # Ignored IP
         request.META["REMOTE_ADDR"] = "1.2.3.4"
-        self.middleware.process_response(request, response)
+        self.middleware(request)
         # Recorded
         request.META["REMOTE_ADDR"] = "5.6.7.8"
-        self.middleware.process_response(request, response)
-
+        self.middleware(request)
         self.assertEqual(1, Request.objects.count())
 
     @mock.patch("metrics.middleware.settings.IGNORE_USER_AGENTS", (r"^.*Foo.*$",))
     def test_dont_record_ignored_user_agents(self):
         request = self.factory.get("/foo")
-        response = HttpResponse()
         # Ignored
         request.META["HTTP_USER_AGENT"] = "Foo"
-        self.middleware.process_response(request, response)
+        self.middleware(request)
         request.META["HTTP_USER_AGENT"] = "FooV2"
-        self.middleware.process_response(request, response)
+        self.middleware(request)
         # Recorded
         request.META["HTTP_USER_AGENT"] = "Bar"
-        self.middleware.process_response(request, response)
+        self.middleware(request)
         request.META["HTTP_USER_AGENT"] = "BarV2"
-        self.middleware.process_response(request, response)
-
+        self.middleware(request)
         self.assertEqual(2, Request.objects.count())
 
     @mock.patch("metrics.middleware.settings.IGNORE_USERNAME", ("foo",))
     def test_dont_record_ignored_user_names(self):
         request = self.factory.get("/foo")
-        response = HttpResponse()
         # Anonymous
-        self.middleware.process_response(request, response)
+        self.middleware(request)
         # Ignored
         request.user = User.objects.create(username="foo")
-        self.middleware.process_response(request, response)
+        self.middleware(request)
         # Recorded
         request.user = User.objects.create(username="bar")
-        self.middleware.process_response(request, response)
-
+        self.middleware(request)
         self.assertEqual(2, Request.objects.count())
