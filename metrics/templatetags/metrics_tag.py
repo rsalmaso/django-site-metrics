@@ -71,7 +71,7 @@ def active_users(parser, token):
         {% active_users %}
 
     Example usage::
-        {% load request_tag %}
+        {% load metrics_tag %}
         {% active_users in 10 minutes as user_list %}
         {% for user in user_list %}
             {{ user.get_username }}
