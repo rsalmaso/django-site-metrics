@@ -1,18 +1,43 @@
-sudo: false
+os: linux
+dist: xenial
 language: python
-env:
-  - TOXENV=py34-django18-test
-  - TOXENV=py34-django19-test
-  - TOXENV=py34-django110-test
-  - TOXENV=py34-djangomaster-test
-  - TOXENV=py34-isort
-  - TOXENV=py34-flake
-matrix:
+jobs:
+  include:
+  - python: '3.6'
+    env: TOXENV=py36-django22-test
+  - python: '3.6'
+    env: TOXENV=py36-django30-test
+  - python: '3.6'
+    env: TOXENV=py36-django31-test
+  - python: '3.6'
+    env: TOXENV=py36-djangomaster-test
+  - python: '3.7'
+    env: TOXENV=py37-django22-test
+  - python: '3.7'
+    env: TOXENV=py37-django30-test
+  - python: '3.7'
+    env: TOXENV=py37-django31-test
+  - python: '3.7'
+    env: TOXENV=py37-djangomaster-test
+  - python: '3.8'
+    env: TOXENV=py38-django22-test
+  - python: '3.8'
+    env: TOXENV=py38-django30-test
+  - python: '3.8'
+    env: TOXENV=py38-django31-test
+  - python: '3.8'
+    env: TOXENV=py38-djangomaster-test
+  - python: '3.8'
+    env: TOXENV=py38-isort
+  - python: '3.8'
+    env: TOXENV=py38-flake
   allow_failures:
-    - env: TOXENV=py34-djangomaster-test
+  - env: TOXENV=py36-djangomaster-test
+  - env: TOXENV=py37-djangomaster-test
+  - env: TOXENV=py38-djangomaster-test
 install:
-  - pip install coveralls tox>=2.1
+- pip install coveralls tox>=2.1
 script:
-  - tox
+- tox
 after_script:
-  - coveralls
+- coveralls
