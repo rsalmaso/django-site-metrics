@@ -26,7 +26,7 @@ from .version import get_version
 VERSION = (0, 1, 1, "final", 0)
 
 __version__ = get_version(VERSION)
-__copyright__ = "Copyright (C) 2009-2019 Raffaele Salmaso, Kyle Fuller, Mariusz Felisiak"
+__copyright__ = "Copyright (C) 2009-2020 Raffaele Salmaso, Kyle Fuller, Mariusz Felisiak"
 __licence__ = "BSD"
 __author__ = "Raffaele Salmaso"
 __email__ = "raffaele@salmaso.org"
