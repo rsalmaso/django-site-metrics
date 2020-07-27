@@ -1,6 +1,6 @@
 .. include:: description.rst
 
-.. image:: https://bitbucket.org/rsalmaso/django-site-metrics/raw/default/docs/graph.png
+.. image:: https://github.com/rsalmaso/django-site-metrics/raw/master/docs/graph.png
 
 As well as a site statistics module, with the active_users template tag and manager method you can also use django-site-metrics to show who is online in a certain time.
 
