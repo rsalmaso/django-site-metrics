@@ -99,7 +99,10 @@ class RequestQuerySet(models.QuerySet):
             except ValueError:
                 return
 
-        return self.filter(timestamp__date=date)
+        return self.filter(time__range=(
+            datetime.datetime.combine(date, datetime.time.min),
+            datetime.datetime.combine(date, datetime.time.max),
+        ))
 
     def today(self):
         return self.day(date=datetime.date.today())
