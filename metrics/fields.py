@@ -22,15 +22,19 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from django import forms
-from django.contrib.postgres import fields as pg_fields
 from django.core import validators
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from .serializers import JSONEncoder
 
+try:
+    from django.db.models import JSONField as DjangoJSONField
+except ImportError:
+    from django.contrib.postgres.fields import JSONField as DjangoJSONField
 
-class JSONField(pg_fields.JSONField):
+
+class JSONField(DjangoJSONField):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("encoder", JSONEncoder)
         super().__init__(*args, **kwargs)
