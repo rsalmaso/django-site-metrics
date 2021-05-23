@@ -21,11 +21,19 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from django.apps import AppConfig
-from django.utils.translation import gettext_lazy as _
+from django.db import migrations, models
 
 
-class MetricsConfig(AppConfig):
-    default_auto_field = "django.db.models.BigAutoField"
-    name = "metrics"
-    verbose_name = _("Metrics")
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('metrics', '0007_resync'),
+    ]
+
+    operations = [
+        migrations.AlterField(
+            model_name='request',
+            name='id',
+            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+        ),
+    ]

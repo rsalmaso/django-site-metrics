@@ -7,3 +7,4 @@
 * Add support for django >= 3.1 native JSONField
 * Update isort and flake8 rules, reformat code with recent black (21.5b) and update code style.
 * Remove deprecated django.utils.http.quote import
+* Switch Request.id to BigAutoField
