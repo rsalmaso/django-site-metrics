@@ -21,9 +21,6 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from unittest import skipIf
-
-import django
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse, HttpResponseServerError
 from django.test import RequestFactory, TestCase
@@ -62,7 +59,6 @@ class RequestMiddlewareTest(TestCase):
         ],
     )
     @mock.patch("django.conf.settings.MIDDLEWARE_CLASSES", None)
-    @skipIf(django.VERSION < (1, 10), "Django >= 1.10 specific test")
     def test_middleware_functions_supported(self):
         """
         Test support of a middleware factory that was introduced in Django == 1.10
