@@ -21,8 +21,9 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from urllib.parse import quote
+
 from django import template
-from django.utils.http import quote
 
 register = template.Library()
 
