@@ -1,5 +1,5 @@
-# Copyright (C) 2016-2020, Raffaele Salmaso <raffaele@salmaso.org>
-# Copyright (C) 2009-2019, Kyle Fuller and Mariusz Felisiak
+# Copyright (C) 2016-2021, Raffaele Salmaso <raffaele@salmaso.org>
+# Copyright (C) 2009-2021, Kyle Fuller and Mariusz Felisiak
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@ from .version import get_version
 VERSION = (0, 1, 2, "final", 0)
 
 __version__ = get_version(VERSION)
-__copyright__ = "Copyright (C) 2009-2020 Raffaele Salmaso, Kyle Fuller, Mariusz Felisiak"
+__copyright__ = "Copyright (C) 2009-2021 Raffaele Salmaso, Kyle Fuller, Mariusz Felisiak"
 __licence__ = "BSD"
 __author__ = "Raffaele Salmaso"
 __email__ = "raffaele@salmaso.org"
