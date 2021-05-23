@@ -1,6 +1,6 @@
 # Changelog for django-site-metrics
 
-## dev
+## 0.1.3
 
 * Fixes handling naive datetimes in the admin's requests overview.
 * Fixed url() deprecation warnings for Django >= 3.1.
