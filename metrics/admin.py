@@ -31,6 +31,7 @@ from django.contrib.admin import widgets
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.urls import path
 from django.utils import timezone
 from django.utils.html import format_html
 from django.utils.text import Truncator
@@ -118,8 +119,6 @@ class RequestAdmin(admin.ModelAdmin):
     request_from.short_description = "From"
 
     def get_urls(self):
-        from django.conf.urls import url
-
         def wrap(view):
             def wrapper(*args, **kwargs):
                 return self.admin_site.admin_view(view)(*args, **kwargs)
@@ -128,8 +127,8 @@ class RequestAdmin(admin.ModelAdmin):
 
         info = (self.model._meta.app_label, self.model._meta.model_name)
         return [
-            url(r"^overview/$", wrap(self.overview), name="{0}_{1}_overview".format(*info)),
-            url(r"^overview/traffic/$", wrap(self.traffic), name="{0}_{1}_traffic".format(*info)),
+            path("overview/", wrap(self.overview), name="{0}_{1}_overview".format(*info)),
+            path("overview/traffic/", wrap(self.traffic), name="{0}_{1}_traffic".format(*info)),
         ] + super().get_urls()
 
     def overview(self, request):

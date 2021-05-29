@@ -21,9 +21,9 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from django.conf.urls import url
 from django.contrib import admin
+from django.urls import path
 
 urlpatterns = [
-    url(r"^admin/", admin.site.urls),
+    path("admin/", admin.site.urls),
 ]
