@@ -24,13 +24,13 @@
 import datetime
 import time
 
-from dateutil.relativedelta import relativedelta
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
 
 from . import settings
+from .utils import handle_naive_datetime
 
 QUERYSET_PROXY_METHODS = (
     "year",
@@ -65,11 +65,12 @@ class RequestQuerySet(models.QuerySet):
         if isinstance(date, datetime.datetime):
             date = date.date()
 
-        # Calculate first and last day of month, for use in a date-range
-        # lookup.
-        first_day = date.replace(day=1)
-        last_day = first_day + relativedelta(months=1)
-        return self.filter(time__gte=first_day, time__lt=last_day)
+        first_day = datetime.datetime.combine(date, datetime.time.min)
+        last_day = first_day + datetime.timedelta(days=7)
+        return self.filter(
+            time__gte=handle_naive_datetime(first_day),
+            time__lt=handle_naive_datetime(last_day),
+        )
 
     def week(self, year, week):
         try:
@@ -99,10 +100,12 @@ class RequestQuerySet(models.QuerySet):
             except ValueError:
                 return
 
-        return self.filter(time__range=(
-            datetime.datetime.combine(date, datetime.time.min),
-            datetime.datetime.combine(date, datetime.time.max),
-        ))
+        return self.filter(
+            time__range=(
+                handle_naive_datetime(datetime.datetime.combine(date, datetime.time.min)),
+                handle_naive_datetime(datetime.datetime.combine(date, datetime.time.max)),
+            )
+        )
 
     def today(self):
         return self.day(date=datetime.date.today())

@@ -23,6 +23,8 @@
 
 import re
 
+from django.conf import settings
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from .router import Patterns
@@ -173,3 +175,9 @@ def get_verbose_name(class_name):
     "lowercase with spaces".
     """
     return re.sub("(((?<=[a-z])[A-Z])|([A-Z](?![A-Z]|$)))", " \\1", class_name,).strip()
+
+
+def handle_naive_datetime(value):
+    if settings.USE_TZ and timezone.is_naive(value):
+        return timezone.make_aware(value)
+    return value
