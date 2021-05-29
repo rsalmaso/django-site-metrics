@@ -31,12 +31,10 @@ from django.utils.translation import gettext_lazy as _
 from . import settings
 from .fields import JSONField, StringField, URLField
 from .managers import RequestManager
-from .utils import HTTP_STATUS_CODES, browsers, engines
+from .utils import browsers, engines, HTTP_STATUS_CODES
 
 
 class Request(models.Model):
-    objects = RequestManager()
-
     # Response information.
     status_code = models.SmallIntegerField(choices=HTTP_STATUS_CODES, default=200, verbose_name=_("status code"))
 
@@ -57,12 +55,26 @@ class Request(models.Model):
     user_agent = StringField(blank=True, verbose_name=_("user agent"))
     language = StringField(blank=True, verbose_name=_("language"))
 
+    objects = RequestManager()
+
     class Meta:
         verbose_name = _("request")
         verbose_name_plural = _("requests")
 
     def __str__(self):
-        return "[{0}] {1} {2} {3}".format(self.timestamp, self.method, self.path, self.status_code)
+        return f"[{self.timestamp}] {self.method} {self.path} {self.status_code}"
+
+    def save(self, *args, **kwargs):
+        if not settings.LOG_IP:
+            self.ip = settings.IP_DUMMY
+        elif settings.ANONYMOUS_IP:
+            parts = self.ip.split(".")[0:-1]
+            parts.append("1")
+            self.ip = ".".join(parts)
+        if not settings.LOG_USER:
+            self.user_id = None
+
+        super().save(*args, **kwargs)
 
     @property
     def user(self):
@@ -132,15 +144,3 @@ class Request(models.Model):
             return gethostbyaddr(self.ip)[0]
         except Exception:  # socket.gaierror, socket.herror, etc
             return self.ip
-
-    def save(self, *args, **kwargs):
-        if not settings.LOG_IP:
-            self.ip = settings.IP_DUMMY
-        elif settings.ANONYMOUS_IP:
-            parts = self.ip.split(".")[0:-1]
-            parts.append("1")
-            self.ip = ".".join(parts)
-        if not settings.LOG_USER:
-            self.user_id = None
-
-        super().save(*args, **kwargs)

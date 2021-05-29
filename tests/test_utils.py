@@ -26,7 +26,6 @@ import datetime
 from django.test import SimpleTestCase
 from django.test.utils import override_settings
 from django.utils import timezone
-
 from request.utils import handle_naive_datetime
 
 EAT = timezone.get_fixed_timezone(180)  # Africa/Nairobi

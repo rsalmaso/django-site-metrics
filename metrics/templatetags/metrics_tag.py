@@ -36,14 +36,14 @@ class ActiveUserNode(template.Node):
         self.as_varname = "user_list"
 
         if len(tokens) not in (5, 2, 0):
-            raise template.TemplateSyntaxError("Incorrect amount of arguments in the tag {0!r}".format(tag_name))
+            raise template.TemplateSyntaxError(f"Incorrect amount of arguments in the tag {tag_name!r}")
 
         if len(tokens) == 5 and tokens[0] == "in":
             tokens.pop(0)  # pop "in" of tokens
             try:
                 self.kwargs[str(tokens.pop(0))] = int(tokens.pop(0))
             except ValueError:
-                raise template.TemplateSyntaxError("Invalid arguments for {0!r} template tag.".format(tag_name))
+                raise template.TemplateSyntaxError(f"Invalid arguments for {tag_name!r} template tag.")
         else:
             self.kwargs["minutes"] = 15
 

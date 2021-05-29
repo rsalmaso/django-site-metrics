@@ -26,7 +26,8 @@ from time import mktime
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import Count
 from django.utils.text import format_lazy
-from django.utils.translation import gettext, gettext_lazy as _
+from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
 
 from . import settings
 from .utils import get_verbose_name
@@ -49,20 +50,20 @@ class Modules:
             try:
                 dot = module_path.rindex(".")
             except ValueError:
-                raise ImproperlyConfigured("{0} isn't a traffic module".format(module_path))
+                raise ImproperlyConfigured(f"{module_path} isn't a traffic module")
             traffic_module = module_path[:dot]
             traffic_classname = module_path[dot + 1 :]
 
             try:
                 mod = import_module(traffic_module)
             except ImportError as err:
-                raise ImproperlyConfigured("Error importing module {0}: '{1}'".format(traffic_module, err))
+                raise ImproperlyConfigured(f"Error importing module {traffic_module}: '{err}'")
 
             try:
                 traffic_class = getattr(mod, traffic_classname)
             except AttributeError:
                 raise ImproperlyConfigured(
-                    "Traffic module '{0}' does not define a '{1}' class".format(traffic_module, traffic_classname,)
+                    f"Traffic module '{traffic_module}' does not define a '{traffic_classname}' class"
                 )
 
             self._modules += (traffic_class(),)
@@ -171,7 +172,7 @@ class UniqueVisit(Module):
     verbose_name_plural = _("Unique Visits")
 
     def count(self, qs):
-        return qs.exclude(referer__startswith=settings.BASE_URL,).count()
+        return qs.exclude(referer__startswith=settings.BASE_URL).count()
 
 
 class UniqueVisitor(Module):

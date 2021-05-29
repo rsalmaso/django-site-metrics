@@ -174,7 +174,11 @@ def get_verbose_name(class_name):
     Calculate the verbose_name by converting from InitialCaps to
     "lowercase with spaces".
     """
-    return re.sub("(((?<=[a-z])[A-Z])|([A-Z](?![A-Z]|$)))", " \\1", class_name,).strip()
+    return re.sub(
+        "(((?<=[a-z])[A-Z])|([A-Z](?![A-Z]|$)))",
+        " \\1",
+        class_name,
+    ).strip()
 
 
 def handle_naive_datetime(value):

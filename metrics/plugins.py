@@ -58,6 +58,7 @@ def set_count(items):
 class Plugins:
     def load(self):
         from importlib import import_module
+
         from django.core import exceptions
 
         self._plugins = []
@@ -65,20 +66,18 @@ class Plugins:
             try:
                 dot = module_path.rindex(".")
             except ValueError:
-                raise exceptions.ImproperlyConfigured('{0} isn"t a plugin'.format(module_path))
+                raise exceptions.ImproperlyConfigured(f"{module_path} isn't a plugin")
             plugin, plugin_classname = module_path[:dot], module_path[dot + 1 :]
 
             try:
                 mod = import_module(plugin)
             except ImportError as e:
-                raise exceptions.ImproperlyConfigured("Error importing plugin {0}: '{1}'".format(plugin, e))
+                raise exceptions.ImproperlyConfigured(f"Error importing plugin {plugin}: '{e}'")
 
             try:
                 plugin_class = getattr(mod, plugin_classname)
             except AttributeError:
-                raise exceptions.ImproperlyConfigured(
-                    "Plugin '{0}' does not define a '{1}' class".format(plugin, plugin_classname,)
-                )
+                raise exceptions.ImproperlyConfigured(f"Plugin '{plugin}' does not define a '{plugin_classname}' class")
 
             self._plugins.append(plugin_class())
 
@@ -105,7 +104,7 @@ class Plugin:
 
     def render(self):
         templates = [
-            "metrics/plugins/{0}.html".format(self.__class__.__name__.lower()),
+            f"metrics/plugins/{self.__class__.__name__.lower()}.html",
             "metrics/plugins/base.html",
         ]
 

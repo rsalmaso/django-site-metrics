@@ -24,10 +24,11 @@
 from unittest import skipIf
 
 import django
-import mock
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse, HttpResponseServerError
 from django.test import RequestFactory, TestCase
+import mock
+
 from metrics.middleware import RequestMiddleware
 from metrics.models import Request
 

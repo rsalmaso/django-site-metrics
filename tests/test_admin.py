@@ -29,6 +29,7 @@ from django.core.urlresolvers import reverse
 from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
 from django.utils.translation import _trans
+
 from metrics.admin import RequestAdmin
 from metrics.models import Request
 

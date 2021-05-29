@@ -1,10 +1,11 @@
-import os, sys
+import os
+import sys
 
 # PATH is the absolute path leading to parent directory
 PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 sys.path.insert(0, PATH)
 
-import metrics
+import metrics  # noqa: E402
 
 source_suffix = ".rst"
 master_doc = "contents"

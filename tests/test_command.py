@@ -24,11 +24,13 @@
 from datetime import timedelta
 from io import StringIO
 
-import mock
 from django.core.management.base import CommandError
 from django.test import TestCase
 from django.utils.timezone import now
-from metrics.management.commands.purgerequests import DURATION_OPTIONS, Command as PurgeRequest
+import mock
+
+from metrics.management.commands.purgerequests import Command as PurgeRequest
+from metrics.management.commands.purgerequests import DURATION_OPTIONS
 from metrics.models import Request
 
 

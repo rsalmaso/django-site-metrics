@@ -21,15 +21,16 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import socket
 from datetime import datetime
+import socket
 
-import mock
 from django.contrib.auth import get_user_model
 from django.http import HttpRequest, HttpResponse
 from django.test import TestCase
-from metrics.models import Request
+import mock
 from request import settings
+
+from metrics.models import Request
 
 User = get_user_model()
 

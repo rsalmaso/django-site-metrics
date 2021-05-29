@@ -23,8 +23,9 @@
 
 from django import template
 from django.test import TestCase
+
 from metrics.templatetags.metrics_admin import pie_chart
-from metrics.templatetags.metrics_tag import ActiveUserNode, active_users
+from metrics.templatetags.metrics_tag import active_users, ActiveUserNode
 
 
 class RequestAdminPieChart(TestCase):

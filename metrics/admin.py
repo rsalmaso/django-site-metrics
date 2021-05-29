@@ -21,9 +21,9 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import json
 from datetime import timedelta
 from functools import update_wrapper
+import json
 from urllib.parse import urlencode
 
 from django.contrib import admin
@@ -84,11 +84,9 @@ class RequestAdmin(admin.ModelAdmin):
         return json.dumps(obj.query_string, cls=JSONEncoder, indent=2)
 
     def _path(self, obj):
-        return format_html(
-            """<a href="?{url}" title="{path}">{path}</a>""",
-            url=urlencode({"path": obj.path}),
-            path=Truncator(obj.path).chars(72),
-        )
+        url = urlencode({"path": obj.path})
+        path = Truncator(obj.path).chars(72)
+        return format_html(f"""<a href="?{url}" title="{path}">{path}</a>""")
 
     _path.short_description = _("Path")
 
@@ -97,24 +95,18 @@ class RequestAdmin(admin.ModelAdmin):
 
     def _user(self, obj):
         user = obj.user
-        return "{username} [{id}]".format(id=user.pk, username=user.get_username()) if user else ""
+        return f"{user.get_username()} [{user.pk}]" if user else ""
 
     def request_from(self, obj):
         if obj.user_id:
             user = obj.user
-            return format_html(
-                """<a href="?user__{field}={username}" title="{title}">{user}</a>""".format(
-                    field=User.USERNAME_FIELD,
-                    username=Truncator(user.get_username()).chars(35),
-                    title=_("Show only requests from this user."),
-                    user=user,
-                )
-            )
-        return format_html(
-            """<a href="?ip={ip}" title="{title}">{ip}</a>""",
-            ip=obj.ip,
-            title=_("Show only requests from this IP address."),
-        )
+            field = User.USERNAME_FIELD
+            username = Truncator(user.get_username()).chars(35)
+            title = _("Show only requests from this user.")
+            return format_html(f"""<a href="?user__{field}={username}" title="{title}">{user}</a>""")
+        ip = obj.ip
+        title = _("Show only requests from this IP address.")
+        return format_html(f"""<a href="?ip={ip}" title="{title}">{ip}</a>""")
 
     request_from.short_description = "From"
 

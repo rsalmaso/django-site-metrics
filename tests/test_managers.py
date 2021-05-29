@@ -24,8 +24,9 @@
 from datetime import date, timedelta
 
 from django.contrib.auth import get_user_model
-from django.test import TestCase, override_settings
+from django.test import override_settings, TestCase
 from django.utils.timezone import now
+
 from metrics import settings
 from metrics.managers import QUERYSET_PROXY_METHODS, RequestQuerySet
 from metrics.models import Request
@@ -95,7 +96,11 @@ class RequestQuerySetTest(TestCase):
         self.assertEqual(qs.count(), 1)
         qs = Request.objects.all().month(year=None, month=None, date=date.today())
         self.assertEqual(qs.count(), 1)
-        qs = Request.objects.all().month(year=None, month=None, date=now() - timedelta(days=31),)
+        qs = Request.objects.all().month(
+            year=None,
+            month=None,
+            date=now() - timedelta(days=31),
+        )
         self.assertEqual(qs.count(), 0)
 
     def test_month_without_date(self):
@@ -155,7 +160,11 @@ class RequestQuerySetTest(TestCase):
         self.assertEqual(0, qs.count())
 
     def test_day_without_date(self):
-        qs = Request.objects.all().day(year=str(now().year), month=now().strftime("%b"), day=str(now().day),)
+        qs = Request.objects.all().day(
+            year=str(now().year),
+            month=now().strftime("%b"),
+            day=str(now().day),
+        )
         self.assertEqual(1, qs.count())
 
     def test_day_without_date_year_month_and_day(self):

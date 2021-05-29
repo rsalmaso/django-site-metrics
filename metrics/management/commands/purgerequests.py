@@ -26,6 +26,7 @@ from datetime import timedelta
 from dateutil.relativedelta import relativedelta
 from django.core.management.base import BaseCommand, CommandError
 from django.utils import timezone
+
 from metrics.models import Request
 
 DURATION_OPTIONS = {
@@ -41,9 +42,7 @@ class Command(BaseCommand):
     help = "Purge old requests."
 
     def add_arguments(self, parser):
-        parser.add_argument(
-            "amount", type=int,
-        )
+        parser.add_argument("amount", type=int)
         parser.add_argument("duration")
         parser.add_argument(
             "--noinput",

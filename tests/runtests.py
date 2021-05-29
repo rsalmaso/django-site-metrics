@@ -115,10 +115,10 @@ def get_test_modules():
 
 def setup(verbosity, test_labels, parallel):
     if verbosity >= 1:
-        msg = "Testing against django-site-metrics installed in '%s'" % os.path.dirname(metrics.__file__)
+        msg = f"Testing against django-site-metrics installed in '{os.path.dirname(metrics.__file__)}'"
         max_parallel = default_test_processes() if parallel == 0 else parallel
         if max_parallel > 1:
-            msg += " with up to %d processes" % max_parallel
+            msg += f" with up to {max_parallel} processes"
         print(msg)
 
     # Force declaring available_apps in TransactionTestCase for faster tests.
@@ -209,7 +209,7 @@ def setup(verbosity, test_labels, parallel):
 
         if module_found_in_labels and module_label not in installed_app_names:
             if verbosity >= 2:
-                print("Importing application %s" % module_name)
+                print(f"Importing application {module_name}")
             settings.INSTALLED_APPS.append(module_label)
 
     apps.set_installed_apps(settings.INSTALLED_APPS)
