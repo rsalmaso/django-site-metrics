@@ -21,7 +21,6 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import django.contrib.postgres.fields.jsonb
 import django.utils.timezone
 import metrics.fields
 from django.db import migrations, models
@@ -48,11 +47,11 @@ class Migration(migrations.Migration):
                 ("full_path", metrics.fields.StringField(verbose_name="full path")),
                 (
                     "query_string",
-                    django.contrib.postgres.fields.jsonb.JSONField(blank=True, null=True, verbose_name="query string"),
+                    models.JSONField(blank=True, null=True, verbose_name="query string"),
                 ),
                 (
                     "headers",
-                    django.contrib.postgres.fields.jsonb.JSONField(blank=True, null=True, verbose_name="headers"),
+                    models.JSONField(blank=True, null=True, verbose_name="headers"),
                 ),
                 ("time", models.DateTimeField(db_index=True, default=django.utils.timezone.now, verbose_name="time")),
                 ("is_secure", models.BooleanField(default=False, verbose_name="is secure")),

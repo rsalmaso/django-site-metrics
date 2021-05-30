@@ -35,8 +35,6 @@ from .utils import browsers, engines, HTTP_STATUS_CODES
 
 
 class Request(models.Model):
-    id = models.BigAutoField(verbose_name="ID", primary_key=True, auto_created=True)
-
     # Response information.
     status_code = models.SmallIntegerField(choices=HTTP_STATUS_CODES, default=200, verbose_name=_("status code"))
 

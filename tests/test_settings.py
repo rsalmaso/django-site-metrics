@@ -43,21 +43,12 @@ INSTALLED_APPS = [
     "metrics",
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "django.contrib.auth.middleware.SessionAuthenticationMiddleware",
 ]
-
-if django.VERSION >= (1, 7):
-    MIDDLEWARE_CLASSES += [
-        "django.contrib.auth.middleware.SessionAuthenticationMiddleware",
-    ]
-
-# Old-style middleware using settings.MIDDLEWARE_CLASSES is deprecated since django 1.10
-if django.VERSION >= (1, 10):
-    MIDDLEWARE = MIDDLEWARE_CLASSES
-    del MIDDLEWARE_CLASSES
 
 STATIC_URL = "/static/"
 
