@@ -9,6 +9,8 @@
 * Restore `Request.is_ajax`
 * Adds [htmx](https://htmx.org/) support to the ``REQUEST_IGNORE_AJAX``
   setting.
+* Don't ignore [boosted htmx requests](https://htmx.org/attributes/hx-boost/)
+  with ``REQUEST_IGNORE_AJAX``.
 
 ## 0.1.3
 
