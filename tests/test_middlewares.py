@@ -120,6 +120,16 @@ class RequestMiddlewareTest(TestCase):
 
         self.assertEqual(1, Request.objects.count())
 
+    @mock.patch("metrics.middleware.settings.IGNORE_AJAX", True)
+    def test_dont_record_htmx(self):
+        request = self.factory.get("/foo")
+        # Non-htmx
+        self.middleware(request)
+        # htmx
+        request.META["HTTP_HX_REQUEST"] = "true"
+        self.middleware(request)
+        self.assertEqual(Request.objects.count(), 1)
+
     @mock.patch("metrics.middleware.settings.IGNORE_AJAX", False)
     def test_record_ajax(self):
         request = self.factory.get("/foo")
@@ -131,6 +141,16 @@ class RequestMiddlewareTest(TestCase):
         self.middleware.process_response(request, response)
 
         self.assertEqual(2, Request.objects.count())
+
+    @mock.patch("metrics.middleware.settings.IGNORE_AJAX", False)
+    def test_record_htmx(self):
+        request = self.factory.get("/foo")
+        # Non-htmx
+        self.middleware(request)
+        # htmx
+        request.META["HTTP_HX_REQUEST"] = "true"
+        self.middleware(request)
+        self.assertEqual(Request.objects.count(), 2)
 
     @mock.patch("metrics.middleware.settings.IGNORE_IP", ("1.2.3.4",))
     def test_dont_record_ignored_ips(self):

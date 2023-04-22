@@ -7,6 +7,8 @@
 * Adds warning logging to middleware on invalid IP addresses in
   ``REMOTE_ADDR``.
 * Restore `Request.is_ajax`
+* Adds [htmx](https://htmx.org/) support to the ``REQUEST_IGNORE_AJAX``
+  setting.
 
 ## 0.1.3
 
