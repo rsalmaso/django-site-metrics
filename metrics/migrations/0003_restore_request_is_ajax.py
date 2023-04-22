@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
             model_name="request",
             name="is_ajax",
             field=models.BooleanField(
-                default=False, help_text="Wheather this request was used via javascript.", verbose_name="is ajax"
+                default=False, help_text="Whether this request was used via javascript.", verbose_name="is ajax"
             ),
         ),
     ]
