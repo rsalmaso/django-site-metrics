@@ -4,6 +4,8 @@
 
 * Drop support for Django < 3.2.
 * Fixes middleware crash on invalid IP addresses in ``REMOTE_ADDR``.
+* Adds warning logging to middleware on invalid IP addresses in
+  ``REMOTE_ADDR``.
 
 ## 0.1.3
 
