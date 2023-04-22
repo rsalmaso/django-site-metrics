@@ -46,6 +46,9 @@ class RequestMiddleware(MiddlewareMixin):
         if ignore.resolve(request.path[1:]):
             return response
 
+        if request.is_ajax() and settings.IGNORE_AJAX:
+            return response
+
         if request.META.get("REMOTE_ADDR") in settings.IGNORE_IP:
             return response
 

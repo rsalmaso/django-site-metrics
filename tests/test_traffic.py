@@ -96,6 +96,20 @@ class ModuleBaseTest(TestCase):
         self.assertEqual(module.verbose_name_plural, "Modules")
 
 
+class ModuleAjaxTest(TestCase):
+    def test_count(self):
+        module = traffic.Ajax()
+        queries = Request.objects.all()
+        module.count(queries)
+
+
+class ModuleNotAjaxTest(TestCase):
+    def test_count(self):
+        module = traffic.NotAjax()
+        queries = Request.objects.all()
+        module.count(queries)
+
+
 class ModuleErrorTest(TestCase):
     def test_count(self):
         module = traffic.Error()

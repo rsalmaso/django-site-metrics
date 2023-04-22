@@ -48,6 +48,11 @@ class Request(models.Model):
     timestamp = models.DateTimeField(default=timezone.now, db_index=True, verbose_name=_("timestamp"))
 
     is_secure = models.BooleanField(default=False, verbose_name=_("is secure"))
+    is_ajax = models.BooleanField(
+        default=False,
+        verbose_name=_("is ajax"),
+        help_text=_("Wheather this request was used via javascript."),
+    )
 
     # User information.
     ip = models.GenericIPAddressField(verbose_name=_("ip address"))
@@ -99,6 +104,7 @@ class Request(models.Model):
         }
         self.query_string = request.GET
         self.is_secure = request.is_secure()
+        self.is_ajax = request.is_ajax()
 
         # User information.
         self.ip = request.META.get("HTTP_X_FORWARDED_FOR", request.META.get("REMOTE_ADDR", "")).split(",")[0]

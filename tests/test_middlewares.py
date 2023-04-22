@@ -108,6 +108,30 @@ class RequestMiddlewareTest(TestCase):
         self.middleware(request)
         self.assertEqual(1, Request.objects.count())
 
+    @mock.patch("metrics.middleware.settings.IGNORE_AJAX", True)
+    def test_dont_record_ajax(self):
+        request = self.factory.get("/foo")
+        response = HttpResponse()
+        # Non-Ajax
+        self.middleware.process_response(request, response)
+        # Ajax
+        request.META["HTTP_X_REQUESTED_WITH"] = "XMLHttpRequest"
+        self.middleware.process_response(request, response)
+
+        self.assertEqual(1, Request.objects.count())
+
+    @mock.patch("metrics.middleware.settings.IGNORE_AJAX", False)
+    def test_record_ajax(self):
+        request = self.factory.get("/foo")
+        response = HttpResponse()
+        # Non-Ajax
+        self.middleware.process_response(request, response)
+        # Ajax
+        request.META["HTTP_X_REQUESTED_WITH"] = "XMLHttpRequest"
+        self.middleware.process_response(request, response)
+
+        self.assertEqual(2, Request.objects.count())
+
     @mock.patch("metrics.middleware.settings.IGNORE_IP", ("1.2.3.4",))
     def test_dont_record_ignored_ips(self):
         request = self.factory.get("/foo")

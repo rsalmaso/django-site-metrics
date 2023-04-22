@@ -6,6 +6,7 @@
 * Fixes middleware crash on invalid IP addresses in ``REMOTE_ADDR``.
 * Adds warning logging to middleware on invalid IP addresses in
   ``REMOTE_ADDR``.
+* Restore `Request.is_ajax`
 
 ## 0.1.3
 
