@@ -24,11 +24,11 @@
 
 from datetime import datetime
 import socket
+from unittest import mock
 
 from django.contrib.auth import get_user_model
 from django.http import HttpRequest, HttpResponse
 from django.test import TestCase
-import mock
 
 from metrics import settings
 from metrics.models import Request

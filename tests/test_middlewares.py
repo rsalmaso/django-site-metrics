@@ -22,10 +22,11 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 # THE POSSIBILITY OF SUCH DAMAGE.
 
+from unittest import mock
+
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse, HttpResponseServerError
 from django.test import RequestFactory, TestCase
-import mock
 
 from metrics.middleware import RequestMiddleware
 from metrics.models import Request
