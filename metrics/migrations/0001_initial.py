@@ -1,5 +1,5 @@
 # Copyright (C) Raffaele Salmaso <raffaele@salmaso.org>
-# Copyright (C) 2009-2021, Kyle Fuller and Mariusz Felisiak
+# Copyright (C) 2009-2023, Kyle Fuller and Mariusz Felisiak
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
