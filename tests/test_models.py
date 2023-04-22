@@ -29,8 +29,8 @@ from django.contrib.auth import get_user_model
 from django.http import HttpRequest, HttpResponse
 from django.test import TestCase
 import mock
-from request import settings
 
+from metrics import settings
 from metrics.models import Request
 
 User = get_user_model()
