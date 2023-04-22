@@ -96,12 +96,11 @@ class RequestAdmin(admin.ModelAdmin):
     def _query_string(self, obj):
         return json.dumps(obj.query_string, cls=JSONEncoder, indent=2)
 
+    @admin.display(description=_("Path"))
     def _path(self, obj):
         url = urlencode({"path": obj.path})
         path = Truncator(obj.path).chars(72)
         return format_html(f"""<a href="?{url}" title="{path}">{path}</a>""")
-
-    _path.short_description = _("Path")
 
     def _headers(self, obj):
         return json.dumps(obj.headers, cls=JSONEncoder, indent=2)
@@ -110,6 +109,7 @@ class RequestAdmin(admin.ModelAdmin):
         user = obj.user
         return f"{user.get_username()} [{user.pk}]" if user else ""
 
+    @admin.display(description="From")
     def request_from(self, obj):
         if obj.user_id:
             user = obj.user
@@ -120,8 +120,6 @@ class RequestAdmin(admin.ModelAdmin):
         ip = obj.ip
         title = _("Show only requests from this IP address.")
         return format_html(f"""<a href="?ip={ip}" title="{title}">{ip}</a>""")
-
-    request_from.short_description = "From"
 
     def get_urls(self):
         def wrap(view):
