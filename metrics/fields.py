@@ -24,14 +24,10 @@
 from django import forms
 from django.core import validators
 from django.db import models
+from django.db.models import JSONField as DjangoJSONField
 from django.utils.translation import gettext_lazy as _
 
 from .serializers import JSONEncoder
-
-try:
-    from django.db.models import JSONField as DjangoJSONField
-except ImportError:
-    from django.contrib.postgres.fields import JSONField as DjangoJSONField
 
 
 class JSONField(DjangoJSONField):
