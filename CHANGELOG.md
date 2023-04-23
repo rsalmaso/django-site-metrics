@@ -11,6 +11,7 @@
   setting.
 * Don't ignore [boosted htmx requests](https://htmx.org/attributes/hx-boost/)
   with ``REQUEST_IGNORE_AJAX``.
+* Fix `format_html` call in `Request` admin
 
 ## 0.1.3
 

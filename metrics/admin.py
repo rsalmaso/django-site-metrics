@@ -100,7 +100,7 @@ class RequestAdmin(admin.ModelAdmin):
     def _path(self, obj):
         url = urlencode({"path": obj.path})
         path = Truncator(obj.path).chars(72)
-        return format_html(f"""<a href="?{url}" title="{path}">{path}</a>""")
+        return format_html("""<a href="?{url}" title="{path}">{path}</a>""", url=url, path=path)
 
     def _headers(self, obj):
         return json.dumps(obj.headers, cls=JSONEncoder, indent=2)
@@ -116,10 +116,10 @@ class RequestAdmin(admin.ModelAdmin):
             field = User.USERNAME_FIELD
             username = Truncator(user.get_username()).chars(35)
             title = _("Show only requests from this user.")
-            return format_html(f"""<a href="?user__{field}={username}" title="{title}">{user}</a>""")
+            return format_html("""<a href="?user__{field}={username}" title="{title}">{user}</a>""", field=field, username=username, title=title, user=user,)
         ip = obj.ip
         title = _("Show only requests from this IP address.")
-        return format_html(f"""<a href="?ip={ip}" title="{title}">{ip}</a>""")
+        return format_html("""<a href="?ip={ip}" title="{title}">{ip}</a>""", ip=ip, title=title)
 
     def get_urls(self):
         def wrap(view):
