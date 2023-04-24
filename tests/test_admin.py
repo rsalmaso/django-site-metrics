@@ -26,9 +26,9 @@ import json
 
 from django.contrib.admin import site
 from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse
 from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
+from django.urls import reverse
 from django.utils.translation import _trans
 
 from metrics.admin import RequestAdmin
