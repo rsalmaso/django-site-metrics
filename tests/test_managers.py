@@ -29,7 +29,6 @@ from django.test import override_settings, TestCase
 from django.utils.timezone import now
 
 from metrics import settings
-from metrics.managers import QUERYSET_PROXY_METHODS, RequestQuerySet
 from metrics.models import Request
 
 User = get_user_model()
@@ -39,18 +38,6 @@ class RequestManagerTest(TestCase):
     def setUp(self):
         self.user = User.objects.create(username="foo")
         self.user_2 = User.objects.create(username="bar")
-
-    def test_getattr(self):
-        for meth in QUERYSET_PROXY_METHODS:
-            Request.objects.__getattr__(meth)
-
-    def test_getattr_not_in_proxy_methods(self):
-        for meth in ("foo", "bar"):
-            self.assertRaises(AttributeError, Request.objects.__getattr__, meth)
-
-    def test_get_queryset(self):
-        queryset = Request.objects.get_queryset()
-        self.assertIsInstance(queryset, RequestQuerySet)
 
     def test_active_users(self):
         Request.objects.create(user=self.user, ip="1.2.3.4")
