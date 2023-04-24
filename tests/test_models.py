@@ -145,4 +145,4 @@ class RequestTests(TestCase):
     def test_get_user(self):
         user = User.objects.create(username="foo")
         request = Request.objects.create(ip="1.2.3.4", user=user)
-        self.assertEqual(request.get_user(), user)
+        self.assertEqual(request.user, user)
