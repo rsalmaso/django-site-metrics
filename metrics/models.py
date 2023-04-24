@@ -97,7 +97,7 @@ class Request(models.Model):
         self.method = request.method
         self.path = request.path
         self.full_path = request.get_full_path()
-        self.query_string = request.GET
+        self.query_string = dict(request.GET)
         self.headers = dict(request.headers)
         try:
             del self.headers["Cookie"]

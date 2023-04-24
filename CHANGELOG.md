@@ -12,6 +12,7 @@
 * Don't ignore [boosted htmx requests](https://htmx.org/attributes/hx-boost/)
   with ``REQUEST_IGNORE_AJAX``.
 * Fix `format_html` call in `Request` admin
+* Fix `Request.query_string` initialization from request.GET to preserve list parameters
 
 ## 0.1.3
 
