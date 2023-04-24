@@ -123,19 +123,19 @@ class RequestTests(TestCase):
         request = Request(ip="1.2.3.4")
         request.save()
 
-    @mock.patch("metrics.models.request_settings.LOG_IP", False)
+    @mock.patch("metrics.models.settings.LOG_IP", False)
     def test_save_not_log_ip(self):
         request = Request(ip="1.2.3.4")
         request.save()
         self.assertEqual(settings.IP_DUMMY, request.ip)
 
-    @mock.patch("metrics.models.request_settings.ANONYMOUS_IP", True)
+    @mock.patch("metrics.models.settings.ANONYMOUS_IP", True)
     def test_save_anonymous_ip(self):
         request = Request(ip="1.2.3.4")
         request.save()
         self.assertTrue(request.ip.endswith(".1"))
 
-    @mock.patch("metrics.models.request_settings.LOG_USER", False)
+    @mock.patch("metrics.models.settings.LOG_USER", False)
     def test_save_not_log_user(self):
         user = User.objects.create(username="foo")
         request = Request(ip="1.2.3.4", user=user)
