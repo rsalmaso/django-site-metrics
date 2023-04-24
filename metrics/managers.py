@@ -33,20 +33,6 @@ from django.utils import timezone
 from . import settings
 from .utils import handle_naive_datetime
 
-QUERYSET_PROXY_METHODS = (
-    "year",
-    "month",
-    "week",
-    "day",
-    "today",
-    "this_week",
-    "this_month",
-    "this_year",
-    "unique_visits",
-    "attr_list",
-    "search",
-)
-
 
 class RequestQuerySet(models.QuerySet):
     def year(self, year):
