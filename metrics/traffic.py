@@ -204,7 +204,7 @@ class User(Module):
     verbose_name_plural = _("User")
 
     def count(self, qs):
-        return qs.exclude(user__isnull=False).count()
+        return qs.exclude(user_id__isnull=False).count()
 
 
 class UniqueUser(Module):
@@ -212,4 +212,4 @@ class UniqueUser(Module):
     verbose_name_plural = _("Unique User")
 
     def count(self, qs):
-        return qs.aggregate(Count("user", distinct=True))["user__count"]
+        return qs.aggregate(Count("user_id", distinct=True))["user_id__count"]
