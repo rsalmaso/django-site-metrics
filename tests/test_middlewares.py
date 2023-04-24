@@ -74,11 +74,7 @@ class RequestMiddlewareTest(TestCase):
             "django.contrib.auth.middleware.AuthenticationMiddleware",
         ],
     )
-    @mock.patch("django.conf.settings.MIDDLEWARE_CLASSES", None)
     def test_middleware_functions_supported(self):
-        """
-        Test support of a middleware factory that was introduced in Django == 1.10
-        """
         request = self.factory.get("/foo")
         RequestMiddleware(request)
 
