@@ -86,8 +86,8 @@ class RequestTests(TestCase):
 
     def test_str_conversion(self):
         request = Request(method="PATCH", path="/", response=204)
-        request.time = datetime.now()
-        self.assertEqual(str(request), "[{}] PATCH / 204".format(request.time))
+        request.timestamp = datetime.now()
+        self.assertEqual(str(request), "[{}] PATCH / 204".format(request.timestamp))
 
     def test_browser_detection_with_no_ua(self):
         request = Request(method="GET", path="/", response=200)

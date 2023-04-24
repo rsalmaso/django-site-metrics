@@ -39,7 +39,7 @@ class PurgeRequestsTest(TestCase):
     def setUp(self):
         Request.objects.create(ip="1.2.3.4")
         request = Request.objects.create(ip="1.2.3.4")
-        request.time = now() - timedelta(days=31)
+        request.timestamp = now() - timedelta(days=31)
         request.save()
 
     def test_duration_options(self, *mock):

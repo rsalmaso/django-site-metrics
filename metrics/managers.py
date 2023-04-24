@@ -69,8 +69,8 @@ class RequestQuerySet(models.QuerySet):
         first_day = datetime.datetime.combine(date, datetime.time.min)
         last_day = first_day + datetime.timedelta(days=7)
         return self.filter(
-            time__gte=handle_naive_datetime(first_day),
-            time__lt=handle_naive_datetime(last_day),
+            timestamp__gte=handle_naive_datetime(first_day),
+            timestamp__lt=handle_naive_datetime(last_day),
         )
 
     def week(self, year, week):
@@ -102,7 +102,7 @@ class RequestQuerySet(models.QuerySet):
                 return
 
         return self.filter(
-            time__range=(
+            timestamp__range=(
                 handle_naive_datetime(datetime.datetime.combine(date, datetime.time.min)),
                 handle_naive_datetime(datetime.datetime.combine(date, datetime.time.max)),
             )
