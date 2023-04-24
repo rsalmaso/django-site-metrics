@@ -54,7 +54,7 @@ class RequestMiddleware(MiddlewareMixin):
             return response
 
         ignore = Patterns(False, *settings.IGNORE_USER_AGENTS)
-        if ignore.resolve(request.META.get("HTTP_USER_AGENT", "")):
+        if ignore.resolve(request.headers.get("user-agent", "")):
             return response
 
         if getattr(request, "user", False):

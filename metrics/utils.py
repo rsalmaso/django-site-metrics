@@ -184,11 +184,11 @@ def get_verbose_name(class_name):
 
 def request_is_ajax(request):
     return (
-        request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
         # Htmx.
         or (
-            request.META.get("HTTP_HX_REQUEST") == "true"
-            and request.META.get("HTTP_HX_BOOSTED") != "true"  # Do not ignore boosted htmx requests.
+            request.headers.get("hx-request") == "true"
+            and request.headers.get("hx-boosted") != "true"  # Do not ignore boosted htmx requests.
         )
     )
 

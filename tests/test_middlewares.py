@@ -42,6 +42,20 @@ def get_response_server_error(request):
     return HttpResponseServerError()
 
 
+def set_request_meta(request, header, value):
+    request.META[header] = value
+    try:
+        # invalidate request.headers cached_property, so can be rebuilt
+        del request.headers
+    except AttributeError:
+        pass
+
+
+def set_request_header(request, header, value):
+    header = "HTTP_{}".format(header.upper().replace("-", "_"))
+    set_request_meta(request, header, value)
+
+
 class RequestMiddlewareTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
@@ -115,7 +129,7 @@ class RequestMiddlewareTest(TestCase):
         # Non-Ajax
         self.middleware.process_response(request, response)
         # Ajax
-        request.META["HTTP_X_REQUESTED_WITH"] = "XMLHttpRequest"
+        set_request_header(request, "x-requested-with", "XMLHttpRequest")
         self.middleware.process_response(request, response)
 
         self.assertEqual(1, Request.objects.count())
@@ -126,7 +140,7 @@ class RequestMiddlewareTest(TestCase):
         # Non-htmx
         self.middleware(request)
         # htmx
-        request.META["HTTP_HX_REQUEST"] = "true"
+        set_request_header(request, "hx-request", "true")
         self.middleware(request)
         self.assertEqual(Request.objects.count(), 1)
 
@@ -134,8 +148,8 @@ class RequestMiddlewareTest(TestCase):
     def test_record_boosted_html(self):
         self.assertEqual(Request.objects.count(), 0)
         request = self.factory.get("/foo")
-        request.META["HTTP_HX_REQUEST"] = "true"
-        request.META["HTTP_HX_BOOSTED"] = "true"
+        set_request_header(request, "hx-request", "true")
+        set_request_header(request, "hx-boosted", "true")
         self.middleware(request)
         self.assertEqual(Request.objects.count(), 1)
 
@@ -146,7 +160,7 @@ class RequestMiddlewareTest(TestCase):
         # Non-Ajax
         self.middleware.process_response(request, response)
         # Ajax
-        request.META["HTTP_X_REQUESTED_WITH"] = "XMLHttpRequest"
+        set_request_header(request, "x-requested-with", "XMLHttpRequest")
         self.middleware.process_response(request, response)
 
         self.assertEqual(2, Request.objects.count())
@@ -157,7 +171,7 @@ class RequestMiddlewareTest(TestCase):
         # Non-htmx
         self.middleware(request)
         # htmx
-        request.META["HTTP_HX_REQUEST"] = "true"
+        set_request_header(request, "hx-request", "true")
         self.middleware(request)
         self.assertEqual(Request.objects.count(), 2)
 
@@ -165,16 +179,16 @@ class RequestMiddlewareTest(TestCase):
     def test_dont_record_ignored_ips(self):
         request = self.factory.get("/foo")
         # Ignored IP
-        request.META["REMOTE_ADDR"] = "1.2.3.4"
+        set_request_meta(request, "REMOTE_ADDR", "1.2.3.4")
         self.middleware(request)
         # Recorded
-        request.META["REMOTE_ADDR"] = "5.6.7.8"
+        set_request_meta(request, "REMOTE_ADDR", "5.6.7.8")
         self.middleware(request)
         self.assertEqual(1, Request.objects.count())
 
     def test_invalid_addr(self):
         request = self.factory.get("/foo")
-        request.META["REMOTE_ADDR"] = "invalid-addr"
+        set_request_meta(request, "REMOTE_ADDR", "invalid-addr")
         with self.assertLogs("metrics.security.middleware", "WARNING") as cm:
             self.middleware(request)
         self.assertIn(
@@ -187,14 +201,14 @@ class RequestMiddlewareTest(TestCase):
     def test_dont_record_ignored_user_agents(self):
         request = self.factory.get("/foo")
         # Ignored
-        request.META["HTTP_USER_AGENT"] = "Foo"
+        set_request_header(request, "user-agent", "Foo")
         self.middleware(request)
-        request.META["HTTP_USER_AGENT"] = "FooV2"
+        set_request_header(request, "user-agent", "FooV2")
         self.middleware(request)
         # Recorded
-        request.META["HTTP_USER_AGENT"] = "Bar"
+        set_request_header(request, "user-agent", "Bar")
         self.middleware(request)
-        request.META["HTTP_USER_AGENT"] = "BarV2"
+        set_request_header(request, "user-agent", "BarV2")
         self.middleware(request)
         self.assertEqual(2, Request.objects.count())
 

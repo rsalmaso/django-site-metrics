@@ -97,20 +97,20 @@ class Request(models.Model):
         self.method = request.method
         self.path = request.path
         self.full_path = request.get_full_path()
-        self.headers = {
-            k: v
-            for k, v in request.META.items()
-            if (k.startswith("HTTP") or k.startswith("CONTENT")) and k != "HTTP_COOKIE"
-        }
         self.query_string = request.GET
+        self.headers = dict(request.headers)
+        try:
+            del self.headers["Cookie"]
+        except KeyError:
+            pass
         self.is_secure = request.is_secure()
         self.is_ajax = request_is_ajax(request)
 
         # User information.
-        self.ip = request.META.get("HTTP_X_FORWARDED_FOR", request.META.get("REMOTE_ADDR", "")).split(",")[0]
-        self.referer = request.META.get("HTTP_REFERER", "")
-        self.user_agent = request.META.get("HTTP_USER_AGENT", "")
-        self.language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
+        self.ip = request.headers.get("x-forwarded-for", request.META.get("REMOTE_ADDR", "")).split(",")[0]
+        self.referer = request.headers.get("referer", "")
+        self.user_agent = request.headers.get("user-agent", "")
+        self.language = request.headers.get("accept-language", "")
 
         if hasattr(request, "user") and hasattr(request.user, "is_authenticated"):
             if request.user.is_authenticated:
