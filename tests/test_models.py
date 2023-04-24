@@ -53,7 +53,7 @@ class RequestTests(TestCase):
         self.assertEqual(request.path, "/kylef")
         self.assertEqual(request.method, "PATCH")
         self.assertEqual(request.ip, "32.64.128.16")
-        self.assertEqual(request.response, 204)
+        self.assertEqual(request.status_code, 204)
         self.assertEqual(request.user_agent, "test user agent")
         self.assertEqual(request.referer, "https://fuller.li/")
 
@@ -85,12 +85,12 @@ class RequestTests(TestCase):
         self.assertIsNone(request.id)
 
     def test_str_conversion(self):
-        request = Request(method="PATCH", path="/", response=204)
+        request = Request(method="PATCH", path="/", status_code=204)
         request.timestamp = datetime.now()
         self.assertEqual(str(request), "[{}] PATCH / 204".format(request.timestamp))
 
     def test_browser_detection_with_no_ua(self):
-        request = Request(method="GET", path="/", response=200)
+        request = Request(method="GET", path="/", status_code=200)
         self.assertEqual(request.browser, None)
 
     def test_browser_detection_with_no_path(self):
