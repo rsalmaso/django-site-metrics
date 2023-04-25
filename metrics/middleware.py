@@ -61,10 +61,10 @@ class RequestMiddleware(MiddlewareMixin):
             if request.user.get_username() in settings.IGNORE_USERNAME:
                 return response
 
-        r = Request()
+        instance = Request()
         try:
-            r.from_http_request(request, response, commit=False)
-            r.full_clean()
+            instance.from_http_request(request, response, commit=False)
+            instance.full_clean()
         except ValidationError as exc:
             logger.warning(
                 "Bad request: %s",
@@ -73,5 +73,5 @@ class RequestMiddleware(MiddlewareMixin):
                 extra={"status_code": 400, "request": request},
             )
         else:
-            r.save()
+            instance.save()
         return response
