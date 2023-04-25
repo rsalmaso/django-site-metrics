@@ -17,6 +17,7 @@
 * Allow `Request` `query_string` and `headers` fields to be blank (to allow `{}`)
 * Breaking: rename `Request.query_string` to `Request.query_params`
 * Remove old (pre-squash) migrations
+* Set `Request.ip` as null by default
 
 ## 0.1.3
 

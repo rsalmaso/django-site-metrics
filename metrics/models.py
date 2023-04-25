@@ -55,7 +55,7 @@ class Request(models.Model):
     )
 
     # User information.
-    ip = models.GenericIPAddressField(verbose_name=_("ip address"))
+    ip = models.GenericIPAddressField(blank=True, null=True, verbose_name=_("ip address"))
     user_id = models.IntegerField(blank=True, null=True, verbose_name=_("user"))
     referer = URLField(blank=True, verbose_name=_("referer"))
     user_agent = StringField(blank=True, verbose_name=_("user agent"))

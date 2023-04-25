@@ -197,3 +197,5 @@ def handle_naive_datetime(value):
     if settings.USE_TZ and timezone.is_naive(value):
         return timezone.make_aware(value)
     return value
+
+
