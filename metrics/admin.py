@@ -61,7 +61,7 @@ class RequestAdmin(admin.ModelAdmin):
                     "method",
                     "path",
                     "full_path",
-                    "_query_string",
+                    "_query_params",
                     "timestamp",
                     "is_secure",
                     "is_ajax",
@@ -77,7 +77,7 @@ class RequestAdmin(admin.ModelAdmin):
         "method",
         "path",
         "full_path",
-        "_query_string",
+        "_query_params",
         "timestamp",
         "is_secure",
         "is_ajax",
@@ -93,8 +93,9 @@ class RequestAdmin(admin.ModelAdmin):
     def lookup_allowed(self, key, value):
         return key == "user__%s" % User.USERNAME_FIELD or super().lookup_allowed(key, value)
 
-    def _query_string(self, obj):
-        return json.dumps(obj.query_string, cls=JSONEncoder, indent=2)
+    @admin.display(description=_("query params"))
+    def _query_params(self, obj):
+        return json.dumps(obj.query_params, cls=JSONEncoder, indent=2)
 
     @admin.display(description=_("Path"))
     def _path(self, obj):

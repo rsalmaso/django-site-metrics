@@ -15,6 +15,7 @@
 * Fix `Request.query_string` initialization from request.GET to preserve list parameters
 * Fixed handling naive datetimes
 * Allow `Request` `query_string` and `headers` fields to be blank (to allow `{}`)
+* Breaking: rename `Request.query_string` to `Request.query_params`
 
 ## 0.1.3
 

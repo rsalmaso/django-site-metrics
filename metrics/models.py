@@ -43,7 +43,7 @@ class Request(models.Model):
     method = StringField(default="GET", verbose_name=_("method"))
     path = StringField(verbose_name=_("path"))
     full_path = StringField(verbose_name=_("full path"))
-    query_string = JSONField(blank=True, default=dict, verbose_name=_("query string"))
+    query_params = JSONField(blank=True, default=dict, verbose_name=_("query params"))
     headers = JSONField(blank=True, default=dict, verbose_name=_("headers"))
     timestamp = models.DateTimeField(default=timezone.now, db_index=True, verbose_name=_("timestamp"))
 
@@ -97,7 +97,7 @@ class Request(models.Model):
         self.method = request.method
         self.path = request.path
         self.full_path = request.get_full_path()
-        self.query_string = dict(request.GET)
+        self.query_params = dict(request.GET)
         self.headers = dict(request.headers)
         try:
             del self.headers["Cookie"]
