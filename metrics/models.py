@@ -43,8 +43,8 @@ class Request(models.Model):
     method = StringField(default="GET", verbose_name=_("method"))
     path = StringField(verbose_name=_("path"))
     full_path = StringField(verbose_name=_("full path"))
-    query_string = JSONField(default=dict, verbose_name=_("query string"))
-    headers = JSONField(default=dict, verbose_name=_("headers"))
+    query_string = JSONField(blank=True, default=dict, verbose_name=_("query string"))
+    headers = JSONField(blank=True, default=dict, verbose_name=_("headers"))
     timestamp = models.DateTimeField(default=timezone.now, db_index=True, verbose_name=_("timestamp"))
 
     is_secure = models.BooleanField(default=False, verbose_name=_("is secure"))

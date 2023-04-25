@@ -14,6 +14,7 @@
 * Fix `format_html` call in `Request` admin
 * Fix `Request.query_string` initialization from request.GET to preserve list parameters
 * Fixed handling naive datetimes
+* Allow `Request` `query_string` and `headers` fields to be blank (to allow `{}`)
 
 ## 0.1.3
 
