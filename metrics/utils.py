@@ -182,6 +182,10 @@ def get_verbose_name(class_name):
     ).strip()
 
 
+def request_is_ajax(request):
+    return request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
+
+
 def handle_naive_datetime(value):
     if settings.USE_TZ and timezone.is_naive(value):
         return timezone.make_aware(value)

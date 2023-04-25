@@ -30,6 +30,7 @@ from django.utils.deprecation import MiddlewareMixin
 from . import settings
 from .models import Request
 from .router import Patterns
+from .utils import request_is_ajax
 
 logger = logging.getLogger("metrics.security.middleware")
 
@@ -46,7 +47,7 @@ class RequestMiddleware(MiddlewareMixin):
         if ignore.resolve(request.path[1:]):
             return response
 
-        if request.is_ajax() and settings.IGNORE_AJAX:
+        if request_is_ajax(request) and settings.IGNORE_AJAX:
             return response
 
         if request.META.get("REMOTE_ADDR") in settings.IGNORE_IP:

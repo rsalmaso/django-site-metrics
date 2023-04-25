@@ -32,7 +32,7 @@ from django.utils.translation import gettext_lazy as _
 from . import settings
 from .fields import JSONField, StringField, URLField
 from .managers import RequestManager
-from .utils import browsers, engines, HTTP_STATUS_CODES
+from .utils import browsers, engines, HTTP_STATUS_CODES, request_is_ajax
 
 
 class Request(models.Model):
@@ -104,7 +104,7 @@ class Request(models.Model):
         }
         self.query_string = request.GET
         self.is_secure = request.is_secure()
-        self.is_ajax = request.is_ajax()
+        self.is_ajax = request_is_ajax(request)
 
         # User information.
         self.ip = request.META.get("HTTP_X_FORWARDED_FOR", request.META.get("REMOTE_ADDR", "")).split(",")[0]
