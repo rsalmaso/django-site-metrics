@@ -110,29 +110,29 @@ class RequestQuerySetTest(TestCase):
 
     def test_month_is_december(self):
         # setUp
-        december_date = date(2015, 12, 1)
-        self.request.timestamp = december_date
+        december_timestamp = now().replace(month=12)
+        self.request.timestamp = december_timestamp
         self.request.save()
         # Test
-        qs = Request.objects.all().month(date=december_date)
+        qs = Request.objects.all().month(date=december_timestamp.date())
         self.assertEqual(1, qs.count())
 
     def test_month_is_not_december(self):
         # setUp
-        november_date = date(2015, 11, 1)
-        self.request.timestamp = november_date
+        november_timestamp = now().replace(month=11)
+        self.request.timestamp = november_timestamp
         self.request.save()
         # Test
-        qs = Request.objects.all().month(date=november_date)
+        qs = Request.objects.all().month(date=november_timestamp.date())
         self.assertEqual(1, qs.count())
 
     def test_week(self):
         # setUp
-        january_date = date(2015, 1, 6)
-        self.request.timestamp = january_date
+        january_timestamp = now().replace(month=1, day=6)
+        self.request.timestamp = january_timestamp
         self.request.save()
         # Test
-        qs = Request.objects.all().week(year="2015", week="1")
+        qs = Request.objects.all().week(year=str(january_timestamp.year), week="1")
         self.assertEqual(qs.count(), 1)
 
     def test_week_invalid_year_or_week(self):

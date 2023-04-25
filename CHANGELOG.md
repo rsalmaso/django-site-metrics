@@ -13,6 +13,7 @@
   with ``REQUEST_IGNORE_AJAX``.
 * Fix `format_html` call in `Request` admin
 * Fix `Request.query_string` initialization from request.GET to preserve list parameters
+* Fixed handling naive datetimes
 
 ## 0.1.3
 

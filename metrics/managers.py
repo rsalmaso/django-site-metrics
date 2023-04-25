@@ -25,6 +25,7 @@
 import datetime
 import time
 
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import Q
@@ -42,15 +43,27 @@ class RequestQuerySet(models.QuerySet):
         if not date:
             try:
                 if year and month:
-                    date = timezone.make_aware(datetime.datetime(*time.strptime(year + month, "%Y" + month_format)[:3]))
+                    date = datetime.date(*time.strptime(year + month, "%Y" + month_format)[:3])
                 else:
                     raise TypeError("Request.objects.month() takes exactly 2 arguments")
             except ValueError:
                 return
-
         # Truncate to date.
         if isinstance(date, datetime.datetime):
             date = date.date()
+
+        first_day = datetime.datetime.combine(date.replace(day=1), datetime.time.min)
+        last_day = first_day + relativedelta(months=1)
+        return self.filter(
+            timestamp__gte=handle_naive_datetime(first_day),
+            timestamp__lt=handle_naive_datetime(last_day),
+        )
+
+    def week(self, year, week):
+        try:
+            date = datetime.date(*time.strptime(year + "-0-" + week, "%Y-%w-%U")[:3])
+        except ValueError:
+            return
 
         first_day = datetime.datetime.combine(date, datetime.time.min)
         last_day = first_day + datetime.timedelta(days=7)
@@ -59,34 +72,15 @@ class RequestQuerySet(models.QuerySet):
             timestamp__lt=handle_naive_datetime(last_day),
         )
 
-    def week(self, year, week):
-        try:
-            date = timezone.make_aware(datetime.datetime(*time.strptime(year + "-0-" + week, "%Y-%w-%U")[:3]))
-        except ValueError:
-            return
-
-        # Calculate first and last day of week, for use in a date-range lookup.
-        first_day = date
-        last_day = date + datetime.timedelta(days=7)
-        lookup_kwargs = {
-            "timestamp__gte": first_day,
-            "timestamp__lt": last_day,
-        }
-
-        return self.filter(**lookup_kwargs)
-
     def day(self, year=None, month=None, day=None, month_format="%b", day_format="%d", date=None):
         if not date:
             try:
                 if year and month and day:
-                    date = timezone.make_aware(
-                        datetime.datetime(*time.strptime(year + month + day, "%Y" + month_format + day_format)[:3])
-                    )
+                    date = datetime.date(*time.strptime(year + month + day, "%Y" + month_format + day_format)[:3])
                 else:
                     raise TypeError("Request.objects.day() takes exactly 3 arguments")
             except ValueError:
                 return
-
         return self.filter(
             timestamp__range=(
                 handle_naive_datetime(datetime.datetime.combine(date, datetime.time.min)),
@@ -98,7 +92,7 @@ class RequestQuerySet(models.QuerySet):
         return self.day(date=datetime.date.today())
 
     def this_year(self):
-        return self.year(timezone.now().year)
+        return self.year(datetime.date.today().year)
 
     def this_month(self):
         return self.month(date=datetime.date.today())
