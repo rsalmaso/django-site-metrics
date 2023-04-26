@@ -53,12 +53,13 @@ def create_http_request(**kwargs):
 
 class RequestTests(TestCase):
     def test_from_http_request(self):
-        http_request = HttpRequest()
-        http_request.method = "PATCH"
-        http_request.path = "/kylef"
-        http_request.META["REMOTE_ADDR"] = "32.64.128.16"
-        http_request.META["HTTP_USER_AGENT"] = "test user agent"
-        http_request.META["HTTP_REFERER"] = "https://fuller.li/"
+        http_request = create_http_request(
+            method="PATCH",
+            path="/kylef",
+            ip="32.64.128.16",
+            user_agent="test user agent",
+            referer="https://fuller.li/",
+        )
 
         http_response = HttpResponse(status=204)
 
@@ -73,8 +74,7 @@ class RequestTests(TestCase):
         self.assertEqual(request.referer, "https://fuller.li/")
 
     def test_from_http_request_with_user(self):
-        http_request = HttpRequest()
-        http_request.method = "GET"
+        http_request = create_http_request(method="GET")
         http_request.user = User.objects.create(username="foo")
 
         request = Request()
@@ -82,8 +82,7 @@ class RequestTests(TestCase):
         self.assertEqual(request.user.id, http_request.user.id)
 
     def test_from_http_request_redirection(self):
-        http_request = HttpRequest()
-        http_request.method = "GET"
+        http_request = create_http_request(method="GET")
         http_response = HttpResponse(status=301)
         http_response["Location"] = "/foo"
 
@@ -92,8 +91,7 @@ class RequestTests(TestCase):
         self.assertEqual(request.redirect, "/foo")
 
     def test_from_http_request_not_commit(self):
-        http_request = HttpRequest()
-        http_request.method = "GET"
+        http_request = create_http_request(method="GET")
 
         request = Request()
         request.from_http_request(http_request, commit=False)
