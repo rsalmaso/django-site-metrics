@@ -117,7 +117,13 @@ class RequestAdmin(admin.ModelAdmin):
             field = User.USERNAME_FIELD
             username = Truncator(user.get_username()).chars(35)
             title = _("Show only requests from this user.")
-            return format_html("""<a href="?user__{field}={username}" title="{title}">{user}</a>""", field=field, username=username, title=title, user=user,)
+            return format_html(
+                """<a href="?user__{field}={username}" title="{title}">{user}</a>""",
+                field=field,
+                username=username,
+                title=title,
+                user=user,
+            )
         ip = obj.ip
         title = _("Show only requests from this IP address.")
         return format_html("""<a href="?ip={ip}" title="{title}">{ip}</a>""", ip=ip, title=title)
