@@ -22,9 +22,14 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 # THE POSSIBILITY OF SUCH DAMAGE.
 
-import django
-
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3"}, "other": {"ENGINE": "django.db.backends.sqlite3"}}
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+    },
+    "other": {
+        "ENGINE": "django.db.backends.sqlite3",
+    },
+}
 
 SECRET_KEY = "django_metricss_tests_secret_key"
 
@@ -32,6 +37,7 @@ SECRET_KEY = "django_metricss_tests_secret_key"
 PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.MD5PasswordHasher",
 ]
+USE_TZ = True
 
 INSTALLED_APPS = [
     "django.contrib.auth",
@@ -48,7 +54,6 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "django.contrib.auth.middleware.SessionAuthenticationMiddleware",
 ]
 
 STATIC_URL = "/static/"
