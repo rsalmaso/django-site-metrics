@@ -134,10 +134,6 @@ class RequestTests(TestCase):
         request = Request(ip="1.2.3.4")
         self.assertEqual(request.hostname, request.ip)
 
-    def test_save(self):
-        request = Request(ip="1.2.3.4")
-        request.save()
-
     @mock.patch(
         "metrics.models.settings.REQUEST_PIPELINE",
         settings.REQUEST_PIPELINE + ["metrics.pipeline.get_dummy_ip"],
@@ -192,25 +188,6 @@ class RequestTests(TestCase):
         http_request = create_http_request(method="GET", ip="1.2.3.4")
         request = Request(user=user)
         request.from_http_request(http_request, commit=True)
-        self.assertIsNone(request.user)
-
-    @mock.patch("metrics.models.settings.LOG_IP", False)
-    def test_save_not_log_ip(self):
-        request = Request(ip="1.2.3.4")
-        request.save()
-        self.assertEqual(settings.IP_DUMMY, request.ip)
-
-    @mock.patch("metrics.models.settings.ANONYMOUS_IP", True)
-    def test_save_anonymous_ip(self):
-        request = Request(ip="1.2.3.4")
-        request.save()
-        self.assertTrue(request.ip.endswith(".1"))
-
-    @mock.patch("metrics.models.settings.LOG_USER", False)
-    def test_save_not_log_user(self):
-        user = User.objects.create(username="foo")
-        request = Request(ip="1.2.3.4", user=user)
-        request.save()
         self.assertIsNone(request.user)
 
     def test_get_user(self):

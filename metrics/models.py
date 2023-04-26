@@ -70,18 +70,6 @@ class Request(models.Model):
     def __str__(self):
         return f"[{self.timestamp}] {self.method} {self.path} {self.status_code}"
 
-    def save(self, *args, **kwargs):
-        if not settings.LOG_IP:
-            self.ip = settings.IP_DUMMY
-        elif settings.ANONYMOUS_IP:
-            parts = self.ip.split(".")[0:-1]
-            parts.append("1")
-            self.ip = ".".join(parts)
-        if not settings.LOG_USER:
-            self.user_id = None
-
-        super().save(*args, **kwargs)
-
     @property
     def user(self):
         if self.user_id:

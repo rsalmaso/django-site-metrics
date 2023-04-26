@@ -21,6 +21,9 @@
 * Add `METRICS_REQUEST_PIPELINE` setting to customize a `Request` build from an
   `HttpRequest/HttpResponse` (as called from
   `metrics.middleware.RequestMiddleware.process_response`)
+* Breaking: `LOG_IP`, `ANONYMOUS_IP`, and `LOG_USER` settings and custom
+  `Request.save()` method are removed.
+  Use the pipeline for better control over recorder data from http request.
 
 ## 0.1.3
 
