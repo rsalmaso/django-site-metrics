@@ -1,4 +1,4 @@
-{% extends "admin/base_site.html" %}{% load admin_urls i18n metrics_admin static %}
+{% extends "admin/base_site.html" %}{% load admin_urls i18n metrics_admin metrics_plugin static %}
 {% block extrahead %}
 {{ block.super }}
 <!--[if IE]><script language="javascript" type="text/javascript" src="{% static "metrics/js/excanvas.min.js" %}"></script><![endif]-->
@@ -55,7 +55,7 @@
 
     {% for plugin in plugins %}
       <div class="module" style="float: left; width: 450px; {% cycle 'clear: both;' 'margin-left: 16px;' %}">
-         {{ plugin.render }}
+         {% render_plugin plugin %}
       </div>
     {% endfor %}
 </div>
