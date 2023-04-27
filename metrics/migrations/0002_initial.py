@@ -31,8 +31,6 @@ from metrics.utils import HTTP_STATUS_CODES
 
 class Migration(migrations.Migration):
 
-    replaces = [('metrics', '0001_initial'), ('metrics', '0002_remove_request_is_ajax'), ('metrics', '0003_update_defaults'), ('metrics', '0004_rename_time_to_timestamp'), ('metrics', '0005_rename_response_to_status_code'), ('metrics', '0006_remove_default_ordering'), ('metrics', '0007_resync'), ('metrics', '0008_switch_to_big_auto_field')]
-
     initial = True
 
     dependencies = [
