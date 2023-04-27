@@ -106,7 +106,7 @@ class Plugin:
     def template_context(self):
         return {}
 
-    def render(self):
+    def render(self, extra_context=None):
         templates = [
             f"metrics/plugins/{self.__class__.__name__.lower()}.html",
             "metrics/plugins/base.html",
@@ -116,6 +116,8 @@ class Plugin:
             templates.insert(0, self.template)
 
         kwargs = self.template_context()
+        if extra_context:
+            kwargs.update(extra_context)
         kwargs["verbose_name"] = self.verbose_name
         kwargs["plugin"] = self
         return render_to_string(templates, kwargs)
