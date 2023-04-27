@@ -1,12 +1,14 @@
 {% extends "admin/change_list.html" %}
-{% load i18n %}
+{% load admin_urls i18n %}
 
 {% block object-tools %}
   <ul class="object-tools">
-      <li><a href="{% url "admin:metrics_request_overview" %}">{% trans "Overview" %}</a></li>
+    {% url opts|admin_urlname:"overview" as overview_url %}
+    <li><a href="{{ overview_url }}">{% trans "Overview" %}</a></li>
     {% if has_add_permission %}
       <li>
-        <a href="{% url "admin:metrics_request_add" %}{% if is_popup %}?_popup=1{% endif %}" class="addlink">
+        {% url opts|admin_urlname:"add" as add_url %}
+        <a href="{{ add_url }}{% if is_popup %}?_popup=1{% endif %}" class="addlink">
           {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
         </a>
       </li>

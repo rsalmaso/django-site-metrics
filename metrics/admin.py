@@ -151,7 +151,11 @@ class RequestAdmin(admin.ModelAdmin):
         return render(
             request,
             "admin/metrics/request/overview.html",
-            {"title": _("Request overview"), "plugins": plugins.plugins},
+            {
+                "title": _("Request overview"),
+                "plugins": plugins.plugins,
+                "opts": self.opts,
+            },
         )
 
     def traffic(self, request):

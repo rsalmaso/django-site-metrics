@@ -1,5 +1,5 @@
 {% extends "metrics/plugins/table.html" %}
-{% load i18n %}
+{% load admin_urls i18n %}
 {% block table %}
     <tr>
         <th>{% trans "Path" %}</th>
@@ -9,10 +9,12 @@
     </tr>
     {% for request in requests %}
         <tr>
-            <td><a href="{% url "admin:metrics_request_changelist" %}?path={{ request.path }}" title="{{ request.path }}">{{ request.path|truncatechars:35 }}</a></td>
+            {% url opts|admin_urlname:"changelist" as changelist_url %}
+            <td><a href="{{ changelist_url }}?path={{ request.path }}" title="{{ request.path }}">{{ request.path|truncatechars:35 }}</a></td>
             <td>{% firstof request.user request.ip %}</td>
             <td>{{ request.get_status_code_display }}</td>
-            <td><a href="{% url "admin:metrics_request_change" request.id %}">
+            {% url opts|admin_urlname:"change" request.id as change_url %}
+            <td><a href="{{ change_url }}">
                 <abbr class="timeago" title="{{ request.timestamp|date:"c" }}">{{ request.timestamp|date:"D M d H:i:s O Y" }}</abbr>
             </a></td>
         </tr>

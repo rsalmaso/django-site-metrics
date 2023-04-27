@@ -1,4 +1,4 @@
-{% extends "admin/base_site.html" %}{% load i18n metrics_admin static %}
+{% extends "admin/base_site.html" %}{% load admin_urls i18n metrics_admin static %}
 {% block extrahead %}
 {{ block.super }}
 <!--[if IE]><script language="javascript" type="text/javascript" src="{% static "metrics/js/excanvas.min.js" %}"></script><![endif]-->
@@ -10,10 +10,11 @@
     {% if request and request.user %}
         <script type="text/javascript">
         function loadTrafficGraph(days) {
+            {% url opts|admin_urlname:"traffic" as traffic_url %}
             if (days == undefined) {
-                path = "{% url "admin:metrics_request_traffic" %}";
+                path = "{{ traffic_url }}";
             } else {
-                path = "{% url "admin:metrics_request_traffic" %}?days=" + days;
+                path = "{{ traffic_url }}?days=" + days;
             }
 
             $.getJSON(path, function(data) {
@@ -32,8 +33,9 @@
     {% if request and request.user %}
         <div class="breadcrumbs">
             <a href="{% url "admin:index" %}">{% trans "Home" %}</a> &rsaquo;
-            <a href="{% url "admin:app_list" "metrics" %}">{% trans "Request" %}</a> &rsaquo;
-            <a href="{% url "admin:metrics_request_changelist" %}">{% trans "Requests" %}</a> &rsaquo;
+            <a href="{% url "admin:app_list" opts.app_label %}">{% trans "Request" %}</a> &rsaquo;
+            {% url opts|admin_urlname:"changelist" as changelist_url %}
+            <a href="{{ changelist_url }}">{% trans "Requests" %}</a> &rsaquo;
             {% trans "Overview" %}
         </div>
     {% endif %}
@@ -45,12 +47,12 @@
         <table style="width: 100%;">
             <caption>{% trans "Traffic graph" %} ( <a href="#" class="btn-graph" data-days="7">{% trans "Week" %}</a> | <a href="#" class="btn-graph" data-days="30">{% trans "Month" %}</a> | <a href="#" class="btn-graph" data-days="365">{% trans "Year" %}</a> )</caption>
         </table>
-        
+
         <div style="padding: 15px;">
             <div id="trafficgraph" style="width: 900px; height: 250px;"></div>
         </div>
     </div>
-    
+
     {% for plugin in plugins %}
       <div class="module" style="float: left; width: 450px; {% cycle 'clear: both;' 'margin-left: 16px;' %}">
          {{ plugin.render }}
