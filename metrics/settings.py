@@ -41,6 +41,13 @@ IGNORE_USERNAME = getattr(settings, "METRICS_IGNORE_USERNAME", tuple())
 IGNORE_PATHS = getattr(settings, "METRICS_IGNORE_PATHS", tuple())
 IGNORE_USER_AGENTS = getattr(settings, "METRICS_IGNORE_USER_AGENTS", tuple())
 
+DEFAULT_REQUEST_PIPELINE = [
+    "metrics.pipeline.get_logged_user",
+    "metrics.pipeline.get_real_ip",
+]
+
+REQUEST_PIPELINE = getattr(settings, "METRICS_REQUEST_PIPELINE", DEFAULT_REQUEST_PIPELINE)
+
 TRAFFIC_MODULES = getattr(
     settings,
     "METRICS_TRAFFIC_MODULES",

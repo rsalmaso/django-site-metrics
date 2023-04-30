@@ -18,6 +18,9 @@
 * Breaking: rename `Request.query_string` to `Request.query_params`
 * Remove old (pre-squash) migrations
 * Set `Request.ip` as null by default
+* Add `METRICS_REQUEST_PIPELINE` setting to customize a `Request` build from an
+  `HttpRequest/HttpResponse` (as called from
+  `metrics.middleware.RequestMiddleware.process_response`)
 
 ## 0.1.3
 

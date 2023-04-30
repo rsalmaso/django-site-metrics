@@ -22,6 +22,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 # THE POSSIBILITY OF SUCH DAMAGE.
 
+from importlib import import_module
 import re
 
 from django.conf import settings
@@ -199,3 +200,7 @@ def handle_naive_datetime(value):
     return value
 
 
+def pipeline_import(name):
+    mod, member = name.rsplit(".", 1)
+    module = import_module(mod)
+    return getattr(module, member)

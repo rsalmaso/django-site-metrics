@@ -36,6 +36,21 @@ from metrics.models import Request
 User = get_user_model()
 
 
+def create_http_request(**kwargs):
+    # helper for HttpRequest creation
+    http_request = HttpRequest()
+
+    for option, value in kwargs.items():
+        if option in ["method", "path", "user"]:
+            setattr(http_request, option, value)
+        elif option == "ip":
+            http_request.META["REMOTE_ADDR"] = value
+        else:
+            http_request.META[f"HTTP_{option.upper()}"] = value
+
+    return http_request
+
+
 class RequestTests(TestCase):
     def test_from_http_request(self):
         http_request = HttpRequest()
@@ -122,6 +137,62 @@ class RequestTests(TestCase):
     def test_save(self):
         request = Request(ip="1.2.3.4")
         request.save()
+
+    @mock.patch(
+        "metrics.models.settings.REQUEST_PIPELINE",
+        settings.REQUEST_PIPELINE + ["metrics.pipeline.get_dummy_ip"],
+    )
+    def test_dummy_ip_pipeline(self):
+        user = User.objects.create(username="foo")
+        http_request = create_http_request(method="GET", ip="1.2.3.4", user=user)
+        request = Request()
+        request.from_http_request(http_request, commit=True)
+        self.assertEqual(settings.IP_DUMMY, request.ip)
+
+    @mock.patch(
+        "metrics.models.settings.REQUEST_PIPELINE",
+        settings.REQUEST_PIPELINE + ["metrics.pipeline.get_anonymized_ip"],
+    )
+    def test_anonymize_ip_pipeline(self):
+        user = User.objects.create(username="foo")
+        http_request = create_http_request(method="GET", ip="1.2.3.4", user=user)
+        request = Request()
+        request.from_http_request(http_request, commit=True)
+        self.assertEqual(request.ip, "1.2.3.1")
+
+    @mock.patch(
+        "metrics.models.settings.REQUEST_PIPELINE",
+        settings.REQUEST_PIPELINE + ["metrics.pipeline.unset_ip"],
+    )
+    def test_unset_ip_pipeline(self):
+        user = User.objects.create(username="foo")
+
+        http_request = create_http_request(method="GET", ip="1.2.3.4", user=user)
+        request = Request()
+        request.from_http_request(http_request, commit=True)
+        self.assertEqual(request.ip, None)
+
+        http_request = create_http_request(method="GET", user=user)
+        request = Request(ip="1.2.3.4")
+        request.from_http_request(http_request, commit=True)
+        self.assertEqual(request.ip, None)
+
+    @mock.patch(
+        "metrics.models.settings.REQUEST_PIPELINE",
+        settings.REQUEST_PIPELINE + ["metrics.pipeline.unset_user"],
+    )
+    def test_unset_user_pipeline(self):
+        user = User.objects.create(username="foo")
+
+        http_request = create_http_request(method="GET", ip="1.2.3.4", user=user)
+        request = Request()
+        request.from_http_request(http_request, commit=True)
+        self.assertIsNone(request.user)
+
+        http_request = create_http_request(method="GET", ip="1.2.3.4")
+        request = Request(user=user)
+        request.from_http_request(http_request, commit=True)
+        self.assertIsNone(request.user)
 
     @mock.patch("metrics.models.settings.LOG_IP", False)
     def test_save_not_log_ip(self):

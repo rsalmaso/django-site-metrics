@@ -32,7 +32,7 @@ from django.utils.translation import gettext_lazy as _
 from . import settings
 from .fields import JSONField, StringField, URLField
 from .managers import RequestManager
-from .utils import browsers, engines, HTTP_STATUS_CODES, request_is_ajax
+from .utils import browsers, engines, HTTP_STATUS_CODES, pipeline_import
 
 
 class Request(models.Model):
@@ -92,38 +92,28 @@ class Request(models.Model):
     def user(self, user):
         self.user_id = user.pk
 
-    def from_http_request(self, request, response=None, commit=True):
-        # Request information.
-        self.method = request.method
-        self.path = request.path
-        self.full_path = request.get_full_path()
-        self.query_params = dict(request.GET)
-        self.headers = dict(request.headers)
-        try:
-            del self.headers["Cookie"]
-        except KeyError:
-            pass
-        self.is_secure = request.is_secure()
-        self.is_ajax = request_is_ajax(request)
-
-        # User information.
-        self.ip = request.headers.get("x-forwarded-for", request.META.get("REMOTE_ADDR", "")).split(",")[0]
-        self.referer = request.headers.get("referer", "")
-        self.user_agent = request.headers.get("user-agent", "")
-        self.language = request.headers.get("accept-language", "")
-
-        if hasattr(request, "user") and hasattr(request.user, "is_authenticated"):
-            if request.user.is_authenticated:
-                self.user_id = request.user.pk
-
-        if response:
-            self.status_code = response.status_code
-
-            if response.status_code in [301, 302, 307, 308]:
-                self.redirect = response["Location"]
+    def from_http_request(self, request, response=None, commit=True, commit_params=None):
+        # implement pipeline hooks
+        REQUEST_PIPELINE = [
+            "metrics.pipeline.get_general_info",
+            "metrics.pipeline.get_response_data",
+            *settings.REQUEST_PIPELINE,
+        ]
+        instance = self
+        for pipeline in [pipeline_import(name) for name in REQUEST_PIPELINE]:
+            instance = pipeline(
+                instance=instance,
+                request=request,
+                response=response,
+                commit=commit,
+                commit_params=commit_params,
+            )
+            if instance is None:
+                break
 
         if commit:
-            self.save()
+            commit_params = {} if commit_params is None else commit_params
+            self.save(**commit_params)
 
     @property
     def browser(self):
