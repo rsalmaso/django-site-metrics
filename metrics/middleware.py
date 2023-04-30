@@ -26,12 +26,14 @@ import logging
 
 from django.core.exceptions import ValidationError
 
+from metrics import get_request_model
+
 from . import settings
-from .models import Request
 from .router import Patterns
 from .utils import request_is_ajax
 
 logger = logging.getLogger("metrics.security.middleware")
+Request = get_request_model()
 
 
 class RequestMiddleware:
@@ -62,7 +64,7 @@ class RequestMiddleware:
             return response
 
         if getattr(request, "user", False):
-            if request.user.get_username() in settings.IGNORE_USERNAME:
+            if hasattr(request.user, "get_username") and request.user.get_username() in settings.IGNORE_USERNAME:
                 return response
 
         instance = Request()

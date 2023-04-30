@@ -24,8 +24,9 @@
 
 from django import template
 
-from ..models import Request
+from metrics import get_request_model
 
+Request = get_request_model()
 register = template.Library()
 
 

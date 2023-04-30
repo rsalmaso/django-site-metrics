@@ -24,6 +24,7 @@
 * Breaking: `LOG_IP`, `ANONYMOUS_IP`, and `LOG_USER` settings and custom
   `Request.save()` method are removed.
   Use the pipeline for better control over recorder data from http request.
+* Make Request model configurable via `METRICS_REQUEST_MODEL` setting
 
 ## 0.1.3
 

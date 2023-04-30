@@ -24,6 +24,8 @@
 
 from .version import get_version
 
+__all__ = ["get_request_model"]
+
 VERSION = (0, 1, 3, "final", 0)
 
 __version__ = get_version(VERSION)
@@ -38,3 +40,22 @@ __authors__ = [
     "krisje8 <krisje8@gmail.com>",
     "Mariusz Felisiak <felisiak.mariusz@gmail.com>",
 ]
+
+
+def get_request_model():
+    from django.apps import apps
+    from django.core.exceptions import ImproperlyConfigured
+
+    from . import settings
+
+    """
+    Returns the Request model that is active in this project.
+    """
+    try:
+        return apps.get_model(settings.REQUEST_MODEL)
+    except ValueError:
+        raise ImproperlyConfigured("METRICS_REQUEST_MODEL must be of the form 'app_label.model_name'")
+    except LookupError:
+        raise ImproperlyConfigured(
+            f"METRICS_REQUEST_MODEL refers to model {settings.REQUEST_MODEL!r} that has not been installed"
+        )

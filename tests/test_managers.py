@@ -28,9 +28,9 @@ from django.contrib.auth import get_user_model
 from django.test import override_settings, TestCase
 from django.utils.timezone import now
 
-from metrics import settings
-from metrics.models import Request
+from metrics import get_request_model, settings
 
+Request = get_request_model()
 User = get_user_model()
 
 

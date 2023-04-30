@@ -56,6 +56,7 @@ class Migration(migrations.Migration):
                 ('language', metrics.fields.StringField(blank=True, verbose_name='language')),
             ],
             options={
+                'swappable': 'METRICS_REQUEST_MODEL',
                 'verbose_name_plural': 'requests',
                 'verbose_name': 'request',
             },

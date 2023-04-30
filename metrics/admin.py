@@ -38,12 +38,14 @@ from django.utils.html import format_html
 from django.utils.text import Truncator
 from django.utils.translation import gettext_lazy as _
 
+from metrics import get_request_model
+
 from .fields import StringField
-from .models import Request
 from .plugins import plugins
 from .serializers import JSONEncoder
 from .traffic import modules
 
+Request = get_request_model()
 User = get_user_model()
 
 

@@ -25,10 +25,13 @@
 from django.db.models import Count
 from django.template.loader import render_to_string
 
+from metrics import get_request_model
+
 from . import settings
-from .models import Request
 from .traffic import modules
 from .utils import get_verbose_name
+
+Request = get_request_model()
 
 
 def set_count(items):

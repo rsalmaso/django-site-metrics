@@ -35,7 +35,7 @@ from .managers import RequestManager
 from .utils import browsers, engines, HTTP_STATUS_CODES, pipeline_import
 
 
-class Request(models.Model):
+class BaseRequest(models.Model):
     # Response information.
     status_code = models.SmallIntegerField(choices=HTTP_STATUS_CODES, default=200, verbose_name=_("status code"))
 
@@ -64,6 +64,7 @@ class Request(models.Model):
     objects = RequestManager()
 
     class Meta:
+        abstract = True
         verbose_name = _("request")
         verbose_name_plural = _("requests")
 
@@ -129,3 +130,8 @@ class Request(models.Model):
             return gethostbyaddr(self.ip)[0]
         except Exception:  # socket.gaierror, socket.herror, etc
             return self.ip
+
+
+class Request(BaseRequest):
+    class Meta(BaseRequest.Meta):
+        swappable = "METRICS_REQUEST_MODEL"

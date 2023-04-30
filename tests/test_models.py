@@ -30,9 +30,9 @@ from django.contrib.auth import get_user_model
 from django.http import HttpRequest, HttpResponse
 from django.test import TestCase
 
-from metrics import settings
-from metrics.models import Request
+from metrics import get_request_model, settings
 
+Request = get_request_model()
 User = get_user_model()
 
 

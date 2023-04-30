@@ -30,9 +30,11 @@ from django.core.management.base import CommandError
 from django.test import TestCase
 from django.utils.timezone import now
 
+from metrics import get_request_model
 from metrics.management.commands.purgerequests import Command as PurgeRequest
 from metrics.management.commands.purgerequests import DURATION_OPTIONS
-from metrics.models import Request
+
+Request = get_request_model()
 
 
 class PurgeRequestsTest(TestCase):

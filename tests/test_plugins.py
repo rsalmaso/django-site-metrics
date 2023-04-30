@@ -27,8 +27,9 @@ from unittest import mock
 from django.core import exceptions
 from django.test import TestCase
 
-from metrics import plugins
-from metrics.models import Request
+from metrics import get_request_model, plugins
+
+Request = get_request_model()
 
 
 class SetCountTestCase(TestCase):

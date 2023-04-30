@@ -24,6 +24,8 @@
 
 from django.conf import settings
 
+REQUEST_MODEL = getattr(settings, "METRICS_REQUEST_MODEL", "metrics.Request")
+
 VALID_METHOD_NAMES = getattr(
     settings,
     "METRICS_VALID_METHOD_NAMES",

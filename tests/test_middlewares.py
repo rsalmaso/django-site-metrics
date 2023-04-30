@@ -28,9 +28,10 @@ from django.contrib.auth import get_user_model
 from django.http import HttpResponse, HttpResponseServerError
 from django.test import RequestFactory, TestCase
 
+from metrics import get_request_model
 from metrics.middleware import RequestMiddleware
-from metrics.models import Request
 
+Request = get_request_model()
 User = get_user_model()
 
 

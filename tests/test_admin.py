@@ -31,9 +31,10 @@ from django.test.utils import override_settings
 from django.urls import reverse
 from django.utils.translation import _trans
 
+from metrics import get_request_model
 from metrics.admin import RequestAdmin
-from metrics.models import Request
 
+Request = get_request_model()
 User = get_user_model()
 
 
