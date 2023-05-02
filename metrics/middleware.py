@@ -25,7 +25,6 @@
 import logging
 
 from django.core.exceptions import ValidationError
-from django.utils.deprecation import MiddlewareMixin
 
 from . import settings
 from .models import Request
@@ -35,8 +34,13 @@ from .utils import request_is_ajax
 logger = logging.getLogger("metrics.security.middleware")
 
 
-class RequestMiddleware(MiddlewareMixin):
-    def process_response(self, request, response):
+class RequestMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+
         if request.method.lower() not in settings.VALID_METHOD_NAMES:
             return response
 
